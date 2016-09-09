@@ -10,3 +10,9 @@ class CSplines:
         
     def otherfunction(self):
         return # something
+        
+    #Git commit test
+    def countAllTheNumbers(self):
+        a=0        
+        while True:
+           a=a+1 
