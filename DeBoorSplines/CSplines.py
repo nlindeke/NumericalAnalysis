@@ -16,8 +16,8 @@ class CSplines:
             spline: s(u)
             
     """
-    def __init__(self,nodepoints):
-        self.nodepoints = nodepoints
+    def __init__(self,knot_sequence):
+        self.knot_sequence = knot_sequence
     
     def __call__(self):
         return # something
@@ -39,17 +39,13 @@ class CSplines:
         else:
             return False
         
-    def basisfunc(self, knots):
+    def basisfunc(self, knot_sequence):
         return # something
         
-    def findhot(self):
-        a = np.array([1,2,3,4])
-        u = 3.
-        i = (a > u).argmax()
-        return i
-        
-    #Git commit test
-    def countAllTheNumbers(self):
-        a=0        
-        while True:
-           a=a+1 
+    def findhot(self,u_in):
+        return (self.knot_sequence > u_in).argmax()
+        """
+           Return the starting index for a given u in the knot sequence.
+           Same as before, just less verbose.
+        """
+ 
