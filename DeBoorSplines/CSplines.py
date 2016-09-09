@@ -10,10 +10,10 @@ class CSplines:
         with the amount of documentation.
         
         input:
-            nodepoints or u_vector / knot_vector
+            knot_sequence: u
             
         output:
-            s(u) (or something)
+            spline: s(u)
             
     """
     def __init__(self,nodepoints):
