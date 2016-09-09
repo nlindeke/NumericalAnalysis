@@ -27,7 +27,7 @@ class CSplines:
     def basisfunc(self, knots):
         return # something
         
-    def findhot(self, a):
+    def findhot(self):
         a = np.array([1,2,3,4])
         u = 3.
         i = (a > u).argmax()
