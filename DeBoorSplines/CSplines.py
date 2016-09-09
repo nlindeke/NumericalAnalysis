@@ -6,7 +6,6 @@ class CSplines:
     """
         Implementation of the De Boor Algorithm for Cubic Splines.
         
-        
         Some general information about the code so that Claus will be pleased 
         with the amount of documentation.
         
@@ -17,12 +16,28 @@ class CSplines:
             s(u) (or something)
             
     """
-    
     def __init__(self,nodepoints):
         self.nodepoints = nodepoints
     
     def __call__(self):
         return # something
+    
+    def plotmethod(self, basis = True):
+        """
+            When basis is True (default) plotmethod plots 
+            the basis function, when false, plotmethod 
+            plots the control polygon
+        """
+        if(basis==True):
+            # Plot thing
+            return #
+            
+        elif(basis==False):
+            # Plot other thing
+            return #
+            
+        else:
+            return False
         
     def basisfunc(self, knots):
         return # something
