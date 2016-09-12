@@ -1,6 +1,6 @@
 # Project 1 for Numerical Algorithms
-import numpy as np
-import scipy as sp
+from numpy import *
+from scipy import *
 
 class CSplines:
     """
@@ -18,7 +18,7 @@ class CSplines:
     """
     def __init__(self,knot_sequence, controlpoints_sequence):
         self.knot_sequence = knot_sequence
-    
+        self.controlpoints_sequence = controlpoints_sequence
     def __call__(self):
         return # something
     
