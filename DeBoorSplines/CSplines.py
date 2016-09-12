@@ -16,7 +16,7 @@ class CSplines:
             spline: s(u)
             
     """
-    def __init__(self,knot_sequence):
+    def __init__(self,knot_sequence, controlpoints_sequence):
         self.knot_sequence = knot_sequence
     
     def __call__(self):
