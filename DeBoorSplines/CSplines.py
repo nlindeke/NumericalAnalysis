@@ -11,13 +11,14 @@ class CSplines:
         
         input:
             knot_sequence: u
+            controlpoints_sequence: 
             
         output:
             spline: s(u)
             
     """
     def __init__(self, knot_sequence, controlpoints_sequence):
-        self.knot_sequence = knot_sequence
+        self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
     def __call__(self):
         return # something
@@ -39,7 +40,7 @@ class CSplines:
         else:
             return False
         
-    def basisfunc_tmp(self, eps, indice):
+    def basicfunc_tmp(self, eps, indice):
         #needs an exception for indice=0
         if indice==0:
             if eps==0 or eps==1:
@@ -55,17 +56,18 @@ class CSplines:
     def basicfunc(self, eps, indice, exponent=3):
         u=self.knot_sequence
         if exponent==0:
-            return self.basicfunc_tmp(indice)
+            return self.basicfunc_tmp(0,indice)
         else:
             return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))*self.basicfunc(eps, indice, exponent-1) + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))*self.basicfunc(eps, indice+1,exponent-1)
     def basicfunc_glob(self):
         listN=[]
-        matrice=array()
-        for eps in range (0,self.knot_sequence.argmax()+1):
+        matrice=[]
+        for eps in range (0,self.knot_sequence.argmax() + 1):
             for indice in range(0,self.knot_sequence.argmax()+1):
                 listN+=self.basicfunc(eps, indice)
             matrice+=listN
         return matrice
+        
     def s(self,u,matrice):
         return matrice[u]
             
