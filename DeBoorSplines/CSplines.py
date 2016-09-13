@@ -1,6 +1,6 @@
 # Project 1 for Numerical Algorithms
-from numpy import *
-from scipy import *
+from numpy import*
+from scipy import*
 
 class CSplines:
     """
@@ -55,18 +55,19 @@ class CSplines:
     def basicfunc(self, eps, indice, exponent=3):
         u=self.knot_sequence
         if exponent==0:
-            return basicfunc_tmp(indice)
+            return self.basicfunc_tmp(indice)
         else:
-            return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))*basicfunc(eps, indice, exponent-1) + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))*basicfunc(eps, indice+1,exponent-1)
+            return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))*self.basicfunc(eps, indice, exponent-1) + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))*self.basicfunc(eps, indice+1,exponent-1)
     def basicfunc_glob(self):
         listN=[]
-        matrix=array()
+        matrice=array()
         for eps in range (0,self.knot_sequence.argmax()+1):
             for indice in range(0,self.knot_sequence.argmax()+1):
-                listN+=basicfunc(eps, indice)
-            matrix+=listN
-        return matrix
-        
+                listN+=self.basicfunc(eps, indice)
+            matrice+=listN
+        return matrice
+    def s(self,u,matrice):
+        return matrice[u]
             
     def findhot(self,u_in):
         return (self.knot_sequence > u_in).argmax()
