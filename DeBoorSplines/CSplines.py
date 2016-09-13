@@ -61,7 +61,7 @@ class CSplines:
             return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))*self.basicfunc(eps, indice, exponent-1) + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))*self.basicfunc(eps, indice+1,exponent-1)
     def basicfunc_glob(self):
         listN=[]
-        matrice=[]
+        matrice=array([])
         for eps in range (0,self.knot_sequence.argmax() + 1):
             for indice in range(0,self.knot_sequence.argmax()+1):
                 listN+=self.basicfunc(eps, indice)
