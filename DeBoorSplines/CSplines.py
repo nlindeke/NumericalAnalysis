@@ -47,7 +47,13 @@ class CSplines:
         d_1_2 = alfa(u_in,u[I-1],u[I+1]) * d_1 + (1 - alfa(u_in,u[I-1],u[I+1])) * d_2
         d_2_2 = alfa(u_in,u[I],u[I+2]) * d_2 + (1 - alfa(u_in,u[I],u[I+2])) * d_3  
         
-        ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2     
+        ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2    
+        
+        di=array()
+        for i in range(3):
+            upIndex=i+1
+            
+            di = di.append(alfa(u_in,u[I-],u[I+])*d[I-]+ (1 - alfa(u_in,u[I-],u[I+])) * d[I-])
         
         return ds
     
