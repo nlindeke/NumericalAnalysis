@@ -49,7 +49,8 @@ class CSplines:
                 return 0
         elif self.knot_sequence[indice-1]==self.knot_sequence[indice]:
             return 0
-        elif self.knot_sequence[eps]>=self.knot_sequence[indice-1] and self.knot_sequence[eps]<self.knot_sequence[indice]:
+        elif self.knot_sequence[eps]>=self.knot_sequence[indice-1] and \
+        self.knot_sequence[eps]<self.knot_sequence[indice]:
             return 1
         else:
             return 0
@@ -58,7 +59,10 @@ class CSplines:
         if exponent==0:
             return self.basicfunc_tmp(0,indice)
         else:
-            return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))*self.basicfunc(eps, indice, exponent-1) + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))*self.basicfunc(eps, indice+1,exponent-1)
+            return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))\
+            *self.basicfunc(eps, indice, exponent-1)\
+            + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))\
+            *self.basicfunc(eps, indice+1,exponent-1)
     def basicfunc_glob(self):
         listN=[]
         matrice=array([])
