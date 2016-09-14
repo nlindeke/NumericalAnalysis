@@ -1,6 +1,6 @@
 # Project 1 for Numerical Algorithms
-from numpy import*
-from scipy import*
+from numpy import *
+from scipy import *
 
 class CSplines:
     """
@@ -17,17 +17,41 @@ class CSplines:
             spline: s(u)
             
     """
-    def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=1000):
+    def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=7.0):
         self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
         self.nbpoints=nbpoints
-        self.step=(knot_sequence[knot_sequence.argmax()]-knot_sequence[0])/nbpoints
+        self.step=long((self.knot_sequence[self.knot_sequence.argmax()]-self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
+        
     def __call__(self):
-        for u in range[self.knot_sequence[0],\
-        self.knot_sequence[self.knot_sequence.argmax()],self.step]:
+        print self.step
+
+        for u in range(self.knot_sequence[0], self.knot_sequence[self.knot_sequence.argmax()],self.step):
             I=self.findhot(u)-1 #ui & not ui+1!!!
             diminus2=[u(I-2),u(I-1),u(I)]
-        return # something
+        return "hej"
+        
+    def blossom(self,u_in):
+       
+        I = self.findhot(u_in) - 1
+        u = self.knot_sequence
+        d = self.controlpoints_sequence
+
+        def alfa(u,u_l,u_r):
+            return (u_r - u) / (u_r - u_l) 
+
+        d_1 = alfa(u_in,u[I-2],u[I+1]) * d[I-2] + (1 - alfa(u_in,u[I-2],u[I+1])) * d[I-1]
+        d_2 = alfa(u_in,u[I-1],u[I+2]) * d[I-1] + (1 - alfa(u_in,u[I-1],u[I+2])) * d[I]
+        d_3 = alfa(u_in,u[I],u[I+3]) * d[I] + (1 - alfa(u_in,u[I],u[I+3])) * d[I+1]
+
+        d_1_2 = alfa(u_in,u[I-1],u[I+1]) * d_1 + (1 - alfa(u_in,u[I-1],u[I+1])) * d_2
+        d_2_2 = alfa(u_in,u[I],u[I+2]) * d_2 + (1 - alfa(u_in,u[I],u[I+2])) * d_3  
+        
+        ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2     
+        
+        return ds
+    
+
     
     def plotmethod(self, basis = True):
         """
@@ -85,9 +109,9 @@ class CSplines:
         return matrice[u]
             
     def findhot(self,u_in):
-        return (self.knot_sequence > u_in).argmax()
         """
            Return the starting index for a given u in the knot sequence.
            Same as before, just less verbose.
-        """
+        """        
+        return (self.knot_sequence > u_in).argmax()
  
