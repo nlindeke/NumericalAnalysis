@@ -50,11 +50,11 @@ class CSplines:
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2    
         
         #Alternative implementation with loops, very quickly written and could probably be shortened and optimized considerably
-        di=array()
+        di=array([])
         for i in range(3):
-            di.append(alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
+            di = append(di,alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
         for i in range(2):
-           di.append(alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1])
+           di = append(di,alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1])
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
     
 
@@ -120,4 +120,3 @@ class CSplines:
            Same as before, just less verbose.
         """        
         return (self.knot_sequence > u_in).argmax()
- 
