@@ -23,8 +23,9 @@ class CSplines:
         self.nbpoints=nbpoints
         self.step=(knot_sequence[knot_sequence.argmax()]-knot_sequence[0])/nbpoints
     def __call__(self):
-        for i in range[self.knot_sequence[0],\
+        for u in range[self.knot_sequence[0],\
         self.knot_sequence[self.knot_sequence.argmax()],self.step]:
+            hot=self.findhot(u)-1 #ui & not ui+1!!!
             
         return # something
     
