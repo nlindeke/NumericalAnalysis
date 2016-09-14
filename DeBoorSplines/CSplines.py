@@ -27,10 +27,18 @@ class CSplines:
         for u in range(self.knot_sequence[0], self.knot_sequence[self.knot_sequence.argmax()],self.step):
             I=self.findhot(u)-1 #ui & not ui+1!!!
             diminus2=[u(I-2),u(I-1),u(I)]
+
+        #everything below is experimental
+        SofU=array([])
+        for step in allSteps:#allSteps doesn't exist yet, but it could be a vector with the values at each step or  modify the loop to move a certain step, shouldn't matter
+            SofU=append(SofU,self.blossom(step))#add all the s(u) we calculate from the blossom method and do this for all "steps"
+
+        #everything above is experimental            
+            
         return "hej"
         
     def blossom(self,u_in):
-       
+        #u_in should be between u[2] and u[size(a)-3], in terms of size, leaving two elements at each edge so the iteration will stay within bounds
         I = self.findhot(u_in) - 1
         u = self.knot_sequence
         d = self.controlpoints_sequence
