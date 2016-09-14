@@ -49,8 +49,7 @@ class CSplines:
         
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2    
         
-        #Här nedanför är ett snabbt alternativ, absolut inte genomtänkt, men marginellt kortare och nu med loop(tm)
-        #man kan säkert baka ihop det ännu mer om man orkar.
+        #Alternative implementation with loops, very quickly written and could probably be shortened and optimized considerably
         di=array()
         for i in range(3):
             di = di.append(alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
