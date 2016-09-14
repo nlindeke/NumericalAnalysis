@@ -24,8 +24,6 @@ class CSplines:
         self.step=long((self.knot_sequence[self.knot_sequence.argmax()]-self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
         
     def __call__(self):
-        print self.step
-
         for u in range(self.knot_sequence[0], self.knot_sequence[self.knot_sequence.argmax()],self.step):
             I=self.findhot(u)-1 #ui & not ui+1!!!
             diminus2=[u(I-2),u(I-1),u(I)]
@@ -55,6 +53,7 @@ class CSplines:
             di = append(di,alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
         for i in range(2):
            di = append(di,alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1])
+
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
     
 
