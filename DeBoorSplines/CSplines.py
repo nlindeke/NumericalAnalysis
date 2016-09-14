@@ -53,7 +53,7 @@ class CSplines:
         #man kan säkert baka ihop det ännu mer om man orkar.
         di=array()
         for i in range(3):
-            di = di.append(alfa(u_in,u[I-2+i],u[I+i+1])*d[I-downIndex]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
+            di = di.append(alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
         for i in range(2):
            di.append(alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1])
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
