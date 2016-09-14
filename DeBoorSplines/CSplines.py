@@ -17,10 +17,15 @@ class CSplines:
             spline: s(u)
             
     """
-    def __init__(self, knot_sequence, controlpoints_sequence):
+    def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=1000):
         self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
+        self.nbpoints=nbpoints
+        self.step=(knot_sequence[knot_sequence.argmax()]-knot_sequence[0])/nbpoints
     def __call__(self):
+        for i in range[self.knot_sequence[0],\
+        self.knot_sequence[self.knot_sequence.argmax()],self.step]:
+            
         return # something
     
     def plotmethod(self, basis = True):
