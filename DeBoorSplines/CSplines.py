@@ -42,20 +42,21 @@ class CSplines:
 
         d_1 = alfa(u_in,u[I-2],u[I+1]) * d[I-2] + (1 - alfa(u_in,u[I-2],u[I+1])) * d[I-1]
         d_2 = alfa(u_in,u[I-1],u[I+2]) * d[I-1] + (1 - alfa(u_in,u[I-1],u[I+2])) * d[I]
-        d_3 = alfa(u_in,u[I],u[I+3]) * d[I] + (1 - alfa(u_in,u[I],u[I+3])) * d[I+1]
+        d_3 = alfa(u_in,u[I],u[I+3]) * d[I] +     (1 - alfa(u_in,u[I],u[I+3])) * d[I+1]
 
         d_1_2 = alfa(u_in,u[I-1],u[I+1]) * d_1 + (1 - alfa(u_in,u[I-1],u[I+1])) * d_2
         d_2_2 = alfa(u_in,u[I],u[I+2]) * d_2 + (1 - alfa(u_in,u[I],u[I+2])) * d_3  
         
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2    
         
+        #Här nedanför är ett snabbt alternativ, absolut inte genomtänkt, men marginellt kortare och nu med loop(tm)
+        #man kan säkert baka ihop det ännu mer om man orkar.
         di=array()
         for i in range(3):
-            upIndex=i+1
-            
-            di = di.append(alfa(u_in,u[I-],u[I+])*d[I-]+ (1 - alfa(u_in,u[I-],u[I+])) * d[I-])
-        
-        return ds
+            di = di.append(alfa(u_in,u[I-2+i],u[I+i+1])*d[I-downIndex]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i])
+        for i in range(2):
+           di.append(alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1])
+        return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
     
 
     
