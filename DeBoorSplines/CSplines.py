@@ -56,13 +56,16 @@ class CSplines:
             return 0
     def basicfunc(self, eps, indice, exponent=3):
         u=self.knot_sequence
-        if exponent==0:
-            return self.basicfunc_tmp(0,indice)
-        else:
-            return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))\
-            *self.basicfunc(eps, indice, exponent-1)\
-            + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))\
-            *self.basicfunc(eps, indice+1,exponent-1)
+        try:
+            if exponent==0:
+                return self.basicfunc_tmp(0,indice)
+            else:
+                return ((u[eps]-u[exponent-1])/(u[indice+exponent-1]-u[indice-1]))\
+                *self.basicfunc(eps, indice, exponent-1)\
+                + ((u[exponent+indice]-u[eps])/(u[exponent+indice]-u[indice]))\
+                *self.basicfunc(eps, indice+1,exponent-1)
+        except ZeroDivisionError:
+            return 0
     def basicfunc_glob(self):
         listN=[]
         matrice=array([])
