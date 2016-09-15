@@ -1,4 +1,5 @@
 # Project 1 for Numerical Algorithms
+#Charles Rohart, Ingrid Odlen, Laroy Sjödahl, Niklas Lindeke
 from numpy import *
 from scipy import *
 from matplotlib.pyplot import *
@@ -38,16 +39,7 @@ class CSplines:
                 None
             u+=self.step
         plot(listpointsx,listpointsy)
-        #return listpointsx,listpointsy
-            
-            
-        #everything below is experimental
-        #SofU=array([])
-        #for step in allSteps:#allSteps doesn't exist yet, but it could be a vector with the values at each step or  modify the loop to move a certain step, shouldn't matter
-            #SofU=append(SofU,self.blossom(step))#add all the s(u) we calculate from the blossom method and do this for all "steps"
-
-        #everything above is experimental            
-            
+        plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')      
         return 
         
     def blossom_old(self,u_in,xory):
