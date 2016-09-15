@@ -43,6 +43,7 @@ class CSplines:
         return 
         
     def blossom_old(self,u_in,xory):
+        #this function is a try at making blossoms cleaner
         #u_in should be between u[2] and u[size(a)-3], in terms of size, leaving two elements at each edge so the iteration will stay within bounds
         I = self.findhot(u_in) - 1 #ui & not ui+1!!!
         u = self.knot_sequence
@@ -120,11 +121,6 @@ class CSplines:
         return (self.knot_sequence > u_in).argmax()
         
     def blossom(self,u_in,xory):
-        """
-            Im not really ready to delete this until 
-            we're sure that the other method is 100%, 
-            so ill just put it in this func
-        """
         I = self.findhot(u_in) - 1 #ui & not ui+1!!!
         u = self.knot_sequence
         d = self.controlpoints_sequence
