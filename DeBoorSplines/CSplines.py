@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Project 1 for Numerical Algorithms
 #Charles Rohart, Ingrid Odlen, Laroy Sjödahl, Niklas Lindeke
 from numpy import *
