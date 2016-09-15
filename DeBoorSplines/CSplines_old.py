@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Project 1 for Numerical Algorithms
 #Charles Rohart, Ingrid Odlen, Laroy Sjödahl, Niklas Lindeke
 from numpy import *
@@ -138,41 +139,6 @@ class CSplines:
         
 #  two test-cases for the BSpline project
 
-    def BSplineBasis(self):
-        j = arange(len(self.knot_sequence))
-        
-        listpointsx=array([])
-        u=self.knot_sequence[self.knot_sequence.argmin()]
-        for i in range(len(j)):
-            while (u<=self.knot_sequence[self.knot_sequence.argmax()] and\
-            u>=self.knot_sequence[self.knot_sequence.argmin()]):
-                try:
-                    listpointsx=append(listpointsx,self.neoblossom(u,i))
-                except:
-                    None
-                u+=self.step      
-        print (listpointsx)
-        return listpointsx
-        
-    def neoblossom(self, u_in, j):
-        I = self.findhot(u_in) - 1 #ui & not ui+1!!!
-        u = self.knot_sequence
-        d = zeros(len(u_in))
-        d[j] = 1
-                
-        def alfa(u,u_l,u_r):
-            return (u_r - u) / (u_r - u_l)
-            
-        d_1 = alfa(u_in,u[I-2],u[I+1]) * d[I-2] + (1 - alfa(u_in,u[I-2],u[I+1])) * d[I-1]
-        d_2 = alfa(u_in,u[I-1],u[I+2]) * d[I-1] + (1 - alfa(u_in,u[I-1],u[I+2])) * d[I]
-        d_3 = alfa(u_in,u[I],u[I+3]) * d[I] +     (1 - alfa(u_in,u[I],u[I+3])) * d[I+1]
-
-        d_1_2 = alfa(u_in,u[I-1],u[I+1]) * d_1 + (1 - alfa(u_in,u[I-1],u[I+1])) * d_2
-        d_2_2 = alfa(u_in,u[I],u[I+2]) * d_2 + (1 - alfa(u_in,u[I],u[I+2])) * d_3  
-        
-        ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2
-         
-        return ds
 
 def spline(clamped=True):
 
