@@ -40,7 +40,7 @@ class CSplines:
             u+=self.step
         plot(listpointsx,listpointsy)
         plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')      
-        return 
+        return listpointsx, listpointsy
         
     def blossom_old(self,u_in,xory):
         #this function is a try at making blossoms cleaner
