@@ -23,8 +23,8 @@ class CSplines:
         self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
         self.nbpoints=nbpoints
-        self.step=long((self.knot_sequence[self.knot_sequence.argmax()]-\
-        self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
+        self.step=abs(long((self.knot_sequence[self.knot_sequence.argmax()])-\
+        abs(self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints))
         
     def __call__(self):
         listpointsx=array([])
