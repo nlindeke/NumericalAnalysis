@@ -31,8 +31,11 @@ class CSplines:
         u=self.knot_sequence[self.knot_sequence.argmin()]
         while (u<=self.knot_sequence[self.knot_sequence.argmax()] and\
         u>=self.knot_sequence[self.knot_sequence.argmin()]):
-            listpointsx=append(listpointsx,self.trash(u,0))
-            listpointsy=append(listpointsy,self.trash(u,1))
+            try:
+                listpointsx=append(listpointsx,self.blossom(u,0))
+                listpointsy=append(listpointsy,self.blossom(u,1))
+            except:
+                None
             u+=self.step
         plot(listpointsx,listpointsy)
         #return listpointsx,listpointsy
@@ -45,9 +48,9 @@ class CSplines:
 
         #everything above is experimental            
             
-        return "hej"
+        return 
         
-    def blossom(self,u_in,xory):
+    def blossom_old(self,u_in,xory):
         #u_in should be between u[2] and u[size(a)-3], in terms of size, leaving two elements at each edge so the iteration will stay within bounds
         I = self.findhot(u_in) - 1 #ui & not ui+1!!!
         u = self.knot_sequence
@@ -124,7 +127,7 @@ class CSplines:
         """        
         return (self.knot_sequence > u_in).argmax()
         
-    def trash(self,u_in,xory):
+    def blossom(self,u_in,xory):
         """
             Im not really ready to delete this until 
             we're sure that the other method is 100%, 
