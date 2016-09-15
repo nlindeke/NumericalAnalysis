@@ -1,6 +1,7 @@
 # Project 1 for Numerical Algorithms
 from numpy import *
 from scipy import *
+from matplotlib.pyplot import *
 
 class CSplines:
     """
@@ -17,7 +18,7 @@ class CSplines:
             spline: s(u)
             
     """
-    def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=7.0):
+    def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=1000):
         self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
         self.nbpoints=nbpoints
@@ -25,31 +26,38 @@ class CSplines:
         self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
         
     def __call__(self):
-        for u in range(self.knot_sequence[0], self.knot_sequence[\
-        self.knot_sequence.argmax()],self.step):
-            I=self.findhot(u)-1 #ui & not ui+1!!!
-            diminus2=[u(I-2),u(I-1),u(I)]
-
+        listpointsx=array([])
+        listpointsy=array([])
+        u=self.knot_sequence[self.knot_sequence.argmin()]
+        while (u<=self.knot_sequence[self.knot_sequence.argmax()] and\
+        u>=self.knot_sequence[self.knot_sequence.argmin()]):
+            listpointsx=append(listpointsx,self.trash(u,0))
+            listpointsy=append(listpointsy,self.trash(u,1))
+            u+=self.step
+        plot(listpointsx,listpointsy)
+        #return listpointsx,listpointsy
+            
+            
         #everything below is experimental
-        SofU=array([])
-        for step in allSteps:#allSteps doesn't exist yet, but it could be a vector with the values at each step or  modify the loop to move a certain step, shouldn't matter
-            SofU=append(SofU,self.blossom(step))#add all the s(u) we calculate from the blossom method and do this for all "steps"
+        #SofU=array([])
+        #for step in allSteps:#allSteps doesn't exist yet, but it could be a vector with the values at each step or  modify the loop to move a certain step, shouldn't matter
+            #SofU=append(SofU,self.blossom(step))#add all the s(u) we calculate from the blossom method and do this for all "steps"
 
         #everything above is experimental            
             
         return "hej"
         
-    def blossom(self,u_in):
+    def blossom(self,u_in,xory):
         #u_in should be between u[2] and u[size(a)-3], in terms of size, leaving two elements at each edge so the iteration will stay within bounds
-        I = self.findhot(u_in) - 1
+        I = self.findhot(u_in) - 1 #ui & not ui+1!!!
         u = self.knot_sequence
         d = self.controlpoints_sequence
         def alfa(u,u_l,u_r):
             return (u_r - u) / (u_r - u_l)   
 
         di=array([])
-        di = append(di,[alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+\
-        (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i] for i in range(3)])
+        di = append(di,[alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i][xory]+\
+        (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i][xory] for i in range(3)])
         di = append(di,[alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] +\
         (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1] for i in range(2)])
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
@@ -116,21 +124,26 @@ class CSplines:
         """        
         return (self.knot_sequence > u_in).argmax()
         
-    def trash():
+    def trash(self,u_in,xory):
         """
             Im not really ready to delete this until 
             we're sure that the other method is 100%, 
             so ill just put it in this func
         """
-        d_1 = alfa(u_in,u[I-2],u[I+1]) * d[I-2] + (1 - alfa(u_in,u[I-2],u[I+1])) * d[I-1]
-        d_2 = alfa(u_in,u[I-1],u[I+2]) * d[I-1] + (1 - alfa(u_in,u[I-1],u[I+2])) * d[I]
-        d_3 = alfa(u_in,u[I],u[I+3]) * d[I] +     (1 - alfa(u_in,u[I],u[I+3])) * d[I+1]
+        I = self.findhot(u_in) - 1 #ui & not ui+1!!!
+        u = self.knot_sequence
+        d = self.controlpoints_sequence
+        def alfa(u,u_l,u_r):
+            return (u_r - u) / (u_r - u_l)   
+        d_1 = alfa(u_in,u[I-2],u[I+1]) * d[I-2][xory] + (1 - alfa(u_in,u[I-2],u[I+1])) * d[I-1][xory]
+        d_2 = alfa(u_in,u[I-1],u[I+2]) * d[I-1][xory] + (1 - alfa(u_in,u[I-1],u[I+2])) * d[I][xory]
+        d_3 = alfa(u_in,u[I],u[I+3]) * d[I][xory] +     (1 - alfa(u_in,u[I],u[I+3])) * d[I+1][xory]
 
         d_1_2 = alfa(u_in,u[I-1],u[I+1]) * d_1 + (1 - alfa(u_in,u[I-1],u[I+1])) * d_2
         d_2_2 = alfa(u_in,u[I],u[I+2]) * d_2 + (1 - alfa(u_in,u[I],u[I+2])) * d_3  
         
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2  
-        return False
+        return ds
         
 #  two test-cases for the BSpline project
 
@@ -165,4 +178,4 @@ def spline(clamped=True):
     if clamped:
         grid[ 1] = grid[ 2] = grid[ 0]
         grid[-3] = grid[-2] = grid[-1]
-    return control_points, grid
+    return (control_points, grid)
