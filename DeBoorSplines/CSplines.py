@@ -139,25 +139,26 @@ class CSplines:
 #  two test-cases for the BSpline project
 
     def BSplineBasis(self):
-        j = arange(len(self.knot_sequence))
+        j=len(self.knot_sequence)
+        listexi=array([0,0])
+        for i in range(2,self.knot_sequence.argmax()-1):
+            listexi=append(listexi,(self.knot_sequence[i]\
+            +self.knot_sequence[i+1]+self.knot_sequence[i+2])/3)
+        listexi=append(listexi,listexi[listexi.argmax()])
+        listexi=append(listexi,listexi[listexi.argmax()])
+        listexi[0]=listexi[2]
+        listexi[1]=listexi[2]
+        print(listexi)
+        N=zeros((j,j))
+        for ji in range(0,len(self.knot_sequence)):
+            for xi in range(0,len(listexi)):
+                N[xi,ji]=self.neoblossom(listexi[xi],ji,j)
+        return N
         
-        listpointsx=array([])
-        u=self.knot_sequence[self.knot_sequence.argmin()]
-        for i in range(len(j)):
-            while (u<=self.knot_sequence[self.knot_sequence.argmax()] and\
-            u>=self.knot_sequence[self.knot_sequence.argmin()]):
-                try:
-                    listpointsx=append(listpointsx,self.neoblossom(u,i))
-                except:
-                    None
-                u+=self.step      
-        print (listpointsx)
-        return listpointsx
-        
-    def neoblossom(self, u_in, j):
+    def neoblossom(self, u_in, j,longueur):
         I = self.findhot(u_in) - 1 #ui & not ui+1!!!
         u = self.knot_sequence
-        d = zeros(len(u_in))
+        d = zeros(longueur)
         d[j] = 1
                 
         def alfa(u,u_l,u_r):
