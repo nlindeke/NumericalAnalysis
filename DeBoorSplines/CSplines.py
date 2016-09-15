@@ -21,10 +21,12 @@ class CSplines:
         self.knot_sequence = array(knot_sequence)
         self.controlpoints_sequence = controlpoints_sequence
         self.nbpoints=nbpoints
-        self.step=long((self.knot_sequence[self.knot_sequence.argmax()]-self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
+        self.step=long((self.knot_sequence[self.knot_sequence.argmax()]-\
+        self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints)
         
     def __call__(self):
-        for u in range(self.knot_sequence[0], self.knot_sequence[self.knot_sequence.argmax()],self.step):
+        for u in range(self.knot_sequence[0], self.knot_sequence[\
+        self.knot_sequence.argmax()],self.step):
             I=self.findhot(u)-1 #ui & not ui+1!!!
             diminus2=[u(I-2),u(I-1),u(I)]
 
@@ -46,8 +48,10 @@ class CSplines:
             return (u_r - u) / (u_r - u_l)   
 
         di=array([])
-        di = append(di,[alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+ (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i] for i in range(3)])
-        di = append(di,[alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] + (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1] for i in range(2)])
+        di = append(di,[alfa(u_in,u[I-2+i],u[I+i+1])*d[I-2+i]+\
+        (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i] for i in range(3)])
+        di = append(di,[alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] +\
+        (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1] for i in range(2)])
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
 
     def plotmethod(self, basis = True):
@@ -127,3 +131,38 @@ class CSplines:
         
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2  
         return False
+        
+#  two test-cases for the BSpline project
+
+
+def spline(clamped=True):
+
+    control_points = [(-12.73564, 9.03455),
+    (-26.77725, 15.89208),
+    (-42.12487, 20.57261),
+    (-15.34799, 4.57169),
+    (-31.72987, 6.85753),
+    (-49.14568, 6.85754),
+    (-38.09753, -1e-05),
+    (-67.92234, -11.10268),
+    (-89.47453, -33.30804),
+    (-21.44344, -22.31416),
+    (-32.16513, -53.33632),
+    (-32.16511, -93.06657),
+    (-2e-05, -39.83887),
+    (10.72167, -70.86103),
+    (32.16511, -93.06658),
+    (21.55219, -22.31397),
+    (51.377, -33.47106),
+    (89.47453, -33.47131),
+    (15.89191, 0.00025),
+    (30.9676, 1.95954),
+    (45.22709, 5.87789),
+    (14.36797, 3.91883),
+    (27.59321, 9.68786),
+    (39.67575, 17.30712)]
+    grid = linspace(0, 1, 26)
+    if clamped:
+        grid[ 1] = grid[ 2] = grid[ 0]
+        grid[-3] = grid[-2] = grid[-1]
+    return control_points, grid
