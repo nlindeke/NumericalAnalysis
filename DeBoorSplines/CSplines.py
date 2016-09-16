@@ -3,6 +3,7 @@
 from numpy import *
 from scipy import *
 from matplotlib.pyplot import *
+import time
 
 class CSplines:
     """
@@ -174,6 +175,15 @@ class CSplines:
         ds = alfa(u_in,u[I],u[I+1]) * d_1_2 + (1 - alfa(u_in,u[I],u[I+1])) * d_2_2
          
         return ds
+        
+        """yay matlab""" #use these exactly as you would in matlab; wrap the thing you want to test in tic and toc
+    def tic(self):
+        self.startTime=time.time()
+        
+    def toc(self):
+        elapsed=time.time()-self.startTime
+        #print("Elapsed time: ",str(elapsed))
+        return float(elapsed)
 
 def spline(clamped=True):
 
