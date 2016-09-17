@@ -217,16 +217,3 @@ def spline(clamped=True):
         grid[-3] = grid[-2] = grid[-1]
     return (control_points, grid)
     
-def testAlgoSpeed(self):#tests the overall speed of __call__, I think would be the easiest to use when testing different versions of functions
-    a=array([])
-    c=CSplines(spline()[1],spline()[0])
-    for i in range(30):
-        c.tic()
-        c()
-        a=append(a,c.toc())
-    average=0
-    Tsum=0
-    for i in range(30):
-        Tsum+=a[i]
-    average=Tsum/30
-    print("Average time over ",str(30)," tries is: ",str(average))
