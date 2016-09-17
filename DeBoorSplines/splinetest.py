@@ -25,15 +25,14 @@ class dtest:
                 
                 second_left = first_left * [2,1,0,0] 
                 second_right = first_right * [2,1,0,0]
-                y = self.y[i:i+4]
+                x = self.x[i:i+4]
                 
-                for j in range(0,len(y-1),1):
+                for j in range(0,len(x),1):
                 
-                    righteval = y[j]*second_right[0] + second_right[1]*y[j]
-                    lefteval = y[j]*second_left[0] + second_left[1]*y[j]
-                
-                print(righteval)
-                print(lefteval)
+                    righteval = x[j]*second_right[0] + second_right[1]*x[j]
+                    lefteval = x[j]*second_left[0] + second_left[1]*x[j]
+                    print(righteval)
+                    print(lefteval)
 
                     
             return False
