@@ -35,9 +35,9 @@ class dtest:
                     lefteval = x[j]*second_left[0] + second_left[1]*x[j]
                     if righteval == lefteval:
                         return "Property 2 holds"
-                    print(righteval)
-                    print(lefteval)
-            return False
+                    #print(righteval)
+                    #print(lefteval)
+            return "Does not seem to hold"
   
         else:
             return "x and y coordinates don't match"
