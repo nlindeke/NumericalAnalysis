@@ -33,6 +33,8 @@ class dtest:
                     # righteval should be equal to lefteval if this prperty holds
                     righteval = x[j]*second_right[0] + second_right[1]*x[j]
                     lefteval = x[j]*second_left[0] + second_left[1]*x[j]
+                    if righteval == lefteval:
+                        return "Property 2 holds"
                     print(righteval)
                     print(lefteval)
             return False
