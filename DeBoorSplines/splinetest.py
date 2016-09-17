@@ -21,23 +21,22 @@ class dtest:
                 right = polyfit(self.x[i+4:i+8],self.y[i+4:i+8],3)
                 
                 first_left = left * [3,2,1,0]
-                first_left = first_left[0]**2
-
                 first_right = right * [3,2,1,0]
-                first_right = first_right[0]**2
                 
                 second_left = first_left * [2,1,0,0] 
                 second_right = first_right * [2,1,0,0]
+                y = self.y[i:i+4]
                 
-                if second_right == second_left:
-                    seconds =+ 1
-                    print("Second hooray")
+                for j in range(0,len(y-1),1):
+                
+                    righteval = y[j]*second_right[0] + second_right[1]*y[j]
+                    lefteval = y[j]*second_left[0] + second_left[1]*y[j]
+                
+                print(righteval)
+                print(lefteval)
+
                     
-                if first_right == first_left:
-                    firsts =+ 1
-                    print("Hooray")
-                    
-            return firsts, seconds
+            return False
                 
   
         else:
