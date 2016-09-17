@@ -14,9 +14,6 @@ class dtest:
         self.x = CS.CSplines(CS.spline()[1],CS.spline()[0])()[0]        
     
     def deriv(self):
-        """
-            Testing the Cubic Spline property f''i-1(xi) = f''i(xi)
-        """
         if len(self.x) == len(self.y):
             for i in range(0,len(self.x)-8,8):
                 # Assuming Polyfit Returns  the vector containing [Ax^3 + Bx^2 + Cx + D] as [ A B C D]
@@ -25,19 +22,21 @@ class dtest:
                 
                 first_left = left * [3,2,1,0]
                 first_right = right * [3,2,1,0]
+                
                 second_left = first_left * [2,1,0,0] 
                 second_right = first_right * [2,1,0,0]
                 x = self.x[i:i+4]
                 
                 for j in range(0,len(x),1):
-                    # righteval should be equal to lefteval if this prperty holds
+                
                     righteval = x[j]*second_right[0] + second_right[1]*x[j]
                     lefteval = x[j]*second_left[0] + second_left[1]*x[j]
-                    if righteval == lefteval:
-                        return "Property 2 holds"
                     print(righteval)
                     print(lefteval)
+
+                    
             return False
+                
   
         else:
             return "x and y coordinates don't match"
@@ -71,4 +70,4 @@ class unittest:
         
 class nosetest:
     def __init__(self):
-        return #     
+return #     
