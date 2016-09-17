@@ -216,4 +216,12 @@ def spline(clamped=True):
         grid[ 1] = grid[ 2] = grid[ 0]
         grid[-3] = grid[-2] = grid[-1]
     return (control_points, grid)
+   
+def spline2(clamped=True):
     
+    control_points = [(75,-10),(160,-90),(180,-140),(130,-120),(60,-50),(80,-80),(0,-100),(-10,-60),(30,-40)]
+    grid = linspace(0, 1, 11)
+    if clamped:
+        grid[ 1] = grid[ 2] = grid[ 0]
+        grid[-3] = grid[-2] = grid[-1]
+    return (control_points, grid)
