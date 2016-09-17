@@ -228,7 +228,7 @@ def spline2(clamped=True):
     
 def spline3(clamped=True):
     
-    control_points = [(0,0),(60,30),(70,70),(5,70),(0,40),(-5,70),(-70,70),(-60,30),(0,0)]
+    control_points = [(0,0),(60,30),(70,70),(1,70),(0,40),(-1,70),(-70,70),(-60,30),(0,0)]
     grid = linspace(0, 1, 11)
     if clamped:
         grid[ 1] = grid[ 2] = grid[ 0]
