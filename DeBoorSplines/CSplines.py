@@ -165,13 +165,12 @@ class CSplines:
          
         return ds
         
-        """yay matlab""" #use these exactly as you would in matlab; wrap the thing you want to test in tic and toc
+        #use these exactly as you would in matlab; wrap the thing you want to test in tic and toc
     def tic(self):
         self.startTime=time.time()
         
     def toc(self):
         elapsed=time.time()-self.startTime
-        #print("Elapsed time: ",str(elapsed))
         return float(elapsed)
 
 def spline(clamped=True):
@@ -206,15 +205,7 @@ def spline(clamped=True):
         grid[-3] = grid[-2] = grid[-1]
     return (control_points, grid)
    
-def spline2(clamped=True):
-    
-    control_points = [(75,-10),(160,-90),(180,-140),(130,-120),(60,-50),(80,-80),(0,-100),(-10,-60),(30,-40)]
-    grid = linspace(0, 1, 11)
-    if clamped:
-        grid[ 1] = grid[ 2] = grid[ 0]
-        grid[-3] = grid[-2] = grid[-1]
-    return (control_points, grid)
-    
+
 def spline3(clamped=True):
     
     control_points = [(0,0),(60,30),(70,70),(1,70),(0,40),(-1,70),(-70,70),(-60,30),(0,0)]
