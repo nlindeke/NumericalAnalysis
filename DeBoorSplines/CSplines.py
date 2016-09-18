@@ -60,10 +60,7 @@ class CSplines:
         """
             Method to plot the Spline with the controlpoints
         """
-        self.x=x_in
-        self.y=y_in
-        
-        plot(self.x,self.y)
+        plot(x_in,y_in)
         plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')
         
     def basicfunc_tmp(self, eps, indice):
