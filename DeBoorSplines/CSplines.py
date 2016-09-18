@@ -8,17 +8,13 @@ import time
 class CSplines:
     """
         Implementation of the De Boor Algorithm for Cubic Splines.
-        
-        Some general information about the code so that Claus will be pleased 
-        with the amount of documentation.
-        
+        * Use __call__ function to recieve the Spline function [u, s(u)]
+        * Use plotmethod function to draw the function based on the __call__  
         input:
             knot_sequence: u
-            controlpoints_sequence: 
-            
+            controlpoints_sequence: d      
         output:
-            spline: s(u)
-            
+            spline: s(u)      
     """
     def __init__(self, knot_sequence, controlpoints_sequence,nbpoints=1000):
         self.knot_sequence = array(knot_sequence)

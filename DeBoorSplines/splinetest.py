@@ -18,6 +18,7 @@ class dtest:
             Testing the Cubic Spline property f''i-1(xi) = f''i(xi)
         """
         if len(self.x) == len(self.y):
+            holds = 0
             for i in range(0,len(self.x)-8,8):
                 # Assuming Polyfit Returns  the vector containing [Ax^3 + Bx^2 + Cx + D] as [ A B C D]
                 left = polyfit(self.x[i:i+4],self.y[i:i+4],3)
@@ -34,19 +35,17 @@ class dtest:
                     righteval = x[j]*second_right[0] + second_right[1]*x[j]
                     lefteval = x[j]*second_left[0] + second_left[1]*x[j]
                     if righteval == lefteval:
-                        return "Property 2 holds"
-                    #print(righteval)
-                    #print(lefteval)
-            return "Does not seem to hold"
-  
+                        holds=+1
         else:
             return "x and y coordinates don't match"
+        holds = str(holds)
+        return "The property held " + holds + " times over the spline."
 
 class speed:
     """
-        tests the overall speed of __call__, 
-        I think would be the easiest to use 
-        when testing different versions of functions
+        tests the overall speed of __call__ in CSplines, 
+        I think would be the easiest to use when testing 
+        different versions of functions
     """
     def testAlgoSpeed(self):
 
