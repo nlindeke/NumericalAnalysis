@@ -23,7 +23,7 @@ class CSplines:
         self.step=abs(long((self.knot_sequence[self.knot_sequence.argmax()])-\
         abs(self.knot_sequence[self.knot_sequence.argmin()]))/long(self.nbpoints))
         
-    def __call__(self):
+    def __call__(self, plot=False):
         listpointsx=array([])
         listpointsy=array([])
         u=self.knot_sequence[self.knot_sequence.argmin()]
@@ -35,7 +35,8 @@ class CSplines:
             except:
                 None
             u+=self.step
-    
+        if plot==True:
+            self.plotmethod()
         return listpointsx, listpointsy
         
     def blossom_old(self,u_in,xory):
