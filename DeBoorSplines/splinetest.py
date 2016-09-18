@@ -1,3 +1,5 @@
+# Project 1 for Numerical Algorithms
+#Charles Rohart, Ingrid Odlen, Laroy Sjödahl, Niklas Lindeke
 import CSplines as CS
 from numpy import *
 """
