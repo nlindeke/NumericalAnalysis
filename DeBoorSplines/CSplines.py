@@ -36,7 +36,7 @@ class CSplines:
                 None
             u+=self.step
         if plot==True:
-            self.plotmethod()
+            self.plotmethod(listpointsx,listpointsy)
         return listpointsx, listpointsy
         
     def blossom_old(self,u_in,xory):
@@ -56,14 +56,14 @@ class CSplines:
         
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
 
-    def plotmethod(self):
+    def plotmethod(self,x_in,y_in):
         """
             Method to plot the Spline with the controlpoints
         """
-        listpointsx=self.__call__()[0]
-        listpointsy=self.__call__()[1]
+        self.x=x_in
+        self.y=y_in
         
-        plot(listpointsx,listpointsy)
+        plot(self.x,self.y)
         plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')
         
     def basicfunc_tmp(self, eps, indice):
