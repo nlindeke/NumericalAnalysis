@@ -205,7 +205,6 @@ def spline(clamped=True):
         grid[-3] = grid[-2] = grid[-1]
     return (control_points, grid)
    
-
 def spline3(clamped=True):
     
     control_points = [(0,0),(60,30),(70,70),(1,70),(0,40),(-1,70),(-70,70),(-60,30),(0,0)]
