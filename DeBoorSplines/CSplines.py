@@ -39,8 +39,7 @@ class CSplines:
             except:
                 None
             u+=self.step
-        plot(listpointsx,listpointsy)
-        plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')      
+    
         return listpointsx, listpointsy
         
     def blossom_old(self,u_in,xory):
@@ -57,24 +56,18 @@ class CSplines:
         (1 - alfa(u_in,u[I-2+i],u[I+i+1])) * d[I-1+i][xory] for i in range(3)])
         di = append(di,[alfa(u_in,u[I-i+1],u[I+i+1]) * di[i] +\
         (1 - alfa(u_in,u[I-i+1],u[I+i+1])) * di[i+1] for i in range(2)])
+        
         return alfa(u_in,u[I],u[I+1]) * di[3] + (1 - alfa(u_in,u[I],u[I+1])) * di[4]
 
-    def plotmethod(self, basis = True):
+    def plotmethod(self):
         """
-            When basis is True (default) plotmethod plots 
-            the basis function, when false, plotmethod 
-            plots the control polygon
+            Method to plot the Spline with the controlpoints
         """
-        if(basis==True):
-            # Plot thing
-            return #
-            
-        elif(basis==False):
-            # Plot other thing
-            return #
-            
-        else:
-            return False
+        listpointsx=self.__call__()[0]
+        listpointsy=self.__call__()[1]
+        
+        plot(listpointsx,listpointsy)
+        plot(array(self.controlpoints_sequence)[:,0],array(self.controlpoints_sequence)[:,1],'ro--')
         
     def basicfunc_tmp(self, eps, indice):
         #needs an exception for indice=0
