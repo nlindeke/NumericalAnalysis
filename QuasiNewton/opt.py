@@ -2,8 +2,8 @@ from numpy import *
 from scipy import *
 
 def f():
-    x,y,z = mgrid[0:101:25., 0:101:25., 0:101:25.]
-    obj = 2*x**2 + 3*y**2 - 4*z 
+    x,y = mgrid[0:101:50, 0:101:50]
+    obj = 2*x**3 + 3*y**2
     return obj
     
 def dfdx():
@@ -13,6 +13,20 @@ def dfdx():
 def df2dx():
     hess = gradient(dfdx())
     return hess
+    
+def hessian()
+    x = f()
+    x_grad = gradient(x) 
+    hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
+    for k, grad_k in enumerate(x_grad):
+        # iterate over dimensions
+        # apply gradient again to every component of the first derivative.
+        tmp_grad = gradient(grad_k) 
+        for l, grad_kl in enumerate(tmp_grad):
+            hessian[k, l, :, :] = grad_kl
+    return hessian
+
+h = hessian()
 
 class OPC:
     """
@@ -31,10 +45,12 @@ class OPC:
     def NewtonDirection(x):
         return InvHessian(x)*Gradient(x)
     def InvHessian(x):
+        return None
     def Gradient(x):
         if grad!=None:
             return grad
         else:
+            return None
             
             
     
