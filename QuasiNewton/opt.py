@@ -11,6 +11,7 @@ class OPC:
     def base_newton(self,xzero):
         x=xzero
         k=0
+        termination_criterion=False
         while termination_criteron!=True:
             x=x-NewtonDirection(x)
             k=k+1
@@ -18,6 +19,10 @@ class OPC:
         return InvHessian(x)*Gradient(x)
     def InvHessian(x):
     def Gradient(x):
+        if grad!=None:
+            return grad
+        else:
+            
             
     
 class QN(OPC):
