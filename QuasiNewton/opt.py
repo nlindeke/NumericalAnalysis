@@ -28,12 +28,14 @@ class OPC:
         x=xzero
         k=0
         termination_criterion=False
-        while termination_criteron!=True:
-            x=x-NewtonDirection(x)
+        while termination_criterion!=True:
+            x=x-self.NewtonDirection(x)
             k=k+1
-        
+            if x<=0.0001 and x>=-0.0001:
+                termination_criterion=True
+        return x
     def NewtonDirection(x):
-        return InvHessian(x)*Gradient(x)
+        return self.InvHessian(x)*self.Gradient(x)
         
     def InvHessian(x):
         return linagl.inv(hessian())
@@ -43,7 +45,6 @@ class OPC:
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
         for k, grad_k in enumerate(x_grad):
-
             tmp_grad = gradient(grad_k) 
             for l, grad_kl in enumerate(tmp_grad):
                 hessian[k, l, :, :] = grad_kl
