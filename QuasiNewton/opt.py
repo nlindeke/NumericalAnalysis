@@ -1,6 +1,19 @@
 from numpy import *
 from scipy import *
 
+def f():
+    x,y,z = mgrid[0:101:25., 0:101:25., 0:101:25.]
+    obj = 2*x**2 + 3*y**2 - 4*z 
+    return obj
+    
+def dfdx():
+    grad = gradient(f())
+    return grad
+    
+def df2dx():
+    hess = gradient(dfdx())
+    return hess
+
 class OPC:
     """
     Some stuff
@@ -37,4 +50,3 @@ class IE(OPC):
     def __call(self):
         return False
         
-    
