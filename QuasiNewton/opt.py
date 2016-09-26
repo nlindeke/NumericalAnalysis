@@ -2,8 +2,8 @@ from numpy import *
 from scipy import *
 
 def f():
-    x,y,z = mgrid[0:101:25., 0:101:25., 0:101:25.]
-    obj = 2*x**2 + 3*y**2 - 4*z 
+    x,y = mgrid[0:26:25., 0:26:25.]
+    obj = 2*x**2 + 3*y**2
     return obj
     
 def dfdx():
@@ -31,11 +31,14 @@ class OPC:
     def NewtonDirection(x):
         return InvHessian(x)*Gradient(x)
     def InvHessian(x):
+        None
+    def Hessian(x):
+        None
     def Gradient(x):
         if grad!=None:
             return grad
         else:
-            
+            return gradient()
             
     
 class QN(OPC):
