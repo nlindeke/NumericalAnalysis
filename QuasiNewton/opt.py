@@ -14,17 +14,6 @@ def df2dx():
     hess = gradient(dfdx())
     return hess
     
-def hessian():
-    x = f()
-    x_grad = gradient(x) 
-    hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
-    for k, grad_k in enumerate(x_grad):
-        # iterate over dimensions
-        # apply gradient again to every component of the first derivative.
-        tmp_grad = gradient(grad_k) 
-        for l, grad_kl in enumerate(tmp_grad):
-            hessian[k, l, :, :] = grad_kl
-    return hessian
 
 h = hessian()
 
@@ -42,12 +31,24 @@ class OPC:
         while termination_criteron!=True:
             x=x-NewtonDirection(x)
             k=k+1
+        
     def NewtonDirection(x):
         return InvHessian(x)*Gradient(x)
+        
     def InvHessian(x):
-        None
-    def Hessian(x):
-        return None
+        return linagl.inv(hessian())
+        
+    def hessian():
+        x = f()
+        x_grad = gradient(x) 
+        hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
+        for k, grad_k in enumerate(x_grad):
+
+            tmp_grad = gradient(grad_k) 
+            for l, grad_kl in enumerate(tmp_grad):
+                hessian[k, l, :, :] = grad_kl
+        return hessian
+        
     def Gradient(x):
         if grad!=None:
             return grad
