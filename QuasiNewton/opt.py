@@ -34,13 +34,13 @@ class OPC:
             if x<=0.0001 and x>=-0.0001:
                 termination_criterion=True
         return x
-    def NewtonDirection(x):
+    def NewtonDirection(self,x):
         return self.InvHessian(x)*self.Gradient(x)
         
-    def InvHessian(x):
-        return linagl.inv(hessian())
+    def InvHessian(self,x):
+        return numpy.linagl.inv(hessian())
         
-    def hessian():
+    def hessian(self):
         x = f()
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
@@ -50,7 +50,7 @@ class OPC:
                 hessian[k, l, :, :] = grad_kl
         return hessian
         
-    def Gradient(x):
+    def Gradient(self,x):
         if grad!=None:
             return grad
         else:
