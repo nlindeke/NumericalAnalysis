@@ -14,12 +14,14 @@ class OPC:
         def __call__(self):
             return False
     
-    class E:
-        def __call__(self):
-            return False
-        
-    class IE:
-        def __call(self):
-            return False
+    
+    class LS(OPC):
+        class E:
+            def __call__(self):
+                return False
+            
+        class IE:
+            def __call(self):
+                return False
         
     
