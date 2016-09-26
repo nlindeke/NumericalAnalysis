@@ -2,13 +2,8 @@ from numpy import *
 from scipy import *
 
 def f():
-<<<<<<< HEAD
-    x,y = mgrid[0:26:25., 0:26:25.]
-    obj = 2*x**2 + 3*y**2
-=======
     x,y = mgrid[0:101:50, 0:101:50]
     obj = 2*x**3 + 3*y**2
->>>>>>> origin/master
     return obj
     
 def dfdx():
@@ -19,7 +14,7 @@ def df2dx():
     hess = gradient(dfdx())
     return hess
     
-def hessian()
+def hessian():
     x = f()
     x_grad = gradient(x) 
     hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
