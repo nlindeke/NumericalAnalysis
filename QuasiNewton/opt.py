@@ -26,11 +26,9 @@ class OPC:
         self.grad = grad
     def base_newton(self,xzero):
         x=xzero
-        k=0
         termination_criterion=False
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
-            k=k+1
             if x<=0.0001 and x>=-0.0001:
                 termination_criterion=True
         return x
