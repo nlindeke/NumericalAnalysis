@@ -50,24 +50,15 @@ class OPC:
     def NewtonDirection(x):
         return InvHessian(x)*Gradient(x)
     def InvHessian(x):
-<<<<<<< HEAD
         None
     def Hessian(x):
-        None
-=======
         return None
->>>>>>> origin/master
     def Gradient(x):
         if grad!=None:
             return grad
         else:
-<<<<<<< HEAD
             return gradient()
-=======
-            return None
-            
->>>>>>> origin/master
-            
+                        
     
 class QN(OPC):
     def __call__(self):
