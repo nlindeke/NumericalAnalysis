@@ -38,10 +38,10 @@ class OPC:
         return self.InvHessian(x)*self.Gradient(x)
         
     def InvHessian(self,x):
-        return numpy.linagl.inv(hessian())
+        return linalg.inv(hessian())
         
     def hessian(self):
-        x = f()
+        x = obj_func
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
         for k, grad_k in enumerate(x_grad):
