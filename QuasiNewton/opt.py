@@ -10,18 +10,16 @@ class OPC:
         self.obj_func = obj_func
         self.grad = grad
     
-    class QN(OPC):
-        def __call__(self):
-            return False
+class QN(OPC):
+    def __call__(self):
+        return False
+
+class E(OPC):
+    def __call__(self):
+        return False
     
-    
-    class LS(OPC):
-        class E:
-            def __call__(self):
-                return False
-            
-        class IE:
-            def __call(self):
-                return False
+class IE(OPC):
+    def __call(self):
+        return False
         
     
