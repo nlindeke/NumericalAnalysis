@@ -1,15 +1,9 @@
 from numpy import *
 from scipy import *
 
-<<<<<<< HEAD
 def f():
     x,y = mgrid[0:10:1,0:2:1]
     obj = 2*x**3 - 10*y**2
-=======
-
-def f(x):
-    obj = 2*x**3 - 10*x**2
->>>>>>> origin/master
     return obj
     
 def grad():
