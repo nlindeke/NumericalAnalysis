@@ -4,17 +4,11 @@ from itertools import *
 
 def f(x):
     return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
-    
-def multigrad(f):
-    h=0.00000001
-    space = 10
-    grad = zeros((3,space))
-    for x in range(0,space):
-        grad[0][x] = (f(x+h,1,1)-f(x-h,1,1))/2*h
-        grad[1][x] = (f(1,x+h,1)-f(1,x-h,1))/2*h
-        grad[2][x] = (f(1,1,x+h)-f(1,1,x-h))/2*h        
-    return grad
-    
+def f2(x):
+    return 3*x[0]**4+2*x[1]**5
+def f3(x):
+    return 5*x[0]**3-10*x[1]**2
+
 def grad(f,x):
     h=10**(-8)
     dim=len(x)
@@ -23,15 +17,15 @@ def grad(f,x):
     for i in range(dim):
         arr[0][i]=(f(x+h*e[:][i])-f(x))/h
     return arr
-def hessian(f,x):
+def besthessian(f,x):
     h=10**(-8)
     dim=len(x)
     e=identity(dim)
-    arr=zeros((dim,dim))
+    arr=empty((dim,dim))
     for i in range(dim):
-        for j in range(dim):
-            arr[i][j]=array(((grad(f,x+h*e[:][i])-grad(f,x))/h))
-
+        arr[i][:]=array(((grad(f,x+h*e[:][i])-grad(f,x))/h))
+    return arr
+    
 class OPC:
     """
     Some stuff
