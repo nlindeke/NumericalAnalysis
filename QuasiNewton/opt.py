@@ -1,8 +1,8 @@
 from numpy import *
 from scipy import *
 
-def f(x,y):
-    return 2*x**2+3*y**2    
+def f(x,y,z):
+    return (2*x**3-10*y**2)/(5-z**2)
     
 def grad():
     h = 0.001
@@ -10,6 +10,18 @@ def grad():
     grad = empty(space) #what are we living for
     for x in range(0,space):
         grad[x] = (f(x+h)-f(x-h))/2*h
+    return grad
+
+def multigrad():
+    h=0.0001
+    space = 10
+    grad = zeros((3,space))
+
+    for x in range(0,space):
+        grad[0][x] = (f(x+h,1,1)-f(x-h,1,1))/2*h
+        grad[1][x] = (f(1,x+h,1)-f(1,x-h,1))/2*h
+        grad[2][x] = (f(1,1,x+h)-f(1,1,x-h))/2*h        
+
     return grad
 
 def dfdx():
@@ -68,6 +80,7 @@ class OPC:
             for j in range(nbvalues):
                 matricevaleurs[i][j]=f(i*step,j*step)
         return matricevaleurs
+    
     def gradientmaison(self,dim,point,nbvalues):
         matricefinale=zeros((nbvalues,nbvalues))
         matricevaleurs=computefunc(self.obj_func,10)
