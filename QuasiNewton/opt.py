@@ -12,7 +12,7 @@ def grad():
         grad[x] = (f(x+h)-f(x-h))/2*h
     return grad
 
-def multigrad():
+def multigrad(f):
     h=0.0001
     space = 10
     grad = zeros((3,space))
