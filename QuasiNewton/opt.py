@@ -56,6 +56,10 @@ class OPC:
         for i in range(dim):
             for j in range(dim):
                 matrice[i][j]=None
+        try:
+            a=numpy.linalg.cholesky(matrice)
+        except LinAlgError as e:
+            print("not positive-definite: ",e)
         
     def Gradient(self,x):
         if self.grad!=None:
