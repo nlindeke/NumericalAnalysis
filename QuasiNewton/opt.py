@@ -90,11 +90,14 @@ class OPC:
                 matricefinale[i][j]=None
         None
       
+    #Line search for getting alfa_k as in the lecture slides with a nifty function I found in scipy.optimize
     #http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar
     #check the example at the bottom, seems to look ok, haven't actually tested it yet :)))
-    def LinearSearch(self,x,s):
+    def LineSearch(self,x,s):
         alfa_k=f(x+alfa*s)
         return minimize_scalar(alfa_k).x
+        
+    def InexactLineSearch(self,s,k):
     
 class QN(OPC):
     def __call__(self):
