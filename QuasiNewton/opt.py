@@ -56,6 +56,7 @@ class OPC:
         for i in range(dim):
             for j in range(dim):
                 matrice[i][j]=None
+        #error handling, maybe do this check when we actual values to check :))
         try:
             a=numpy.linalg.cholesky(matrice)
         except LinAlgError as e:
