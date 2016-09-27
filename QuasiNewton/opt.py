@@ -7,7 +7,7 @@ def f(x,y):
 def grad():
     h = 0.001
     space = 10
-    grad = empty(space)
+    grad = empty(space) #what are we living for
     for x in range(0,space):
         grad[x] = (f(x+h)-f(x-h))/2*h
     return grad
