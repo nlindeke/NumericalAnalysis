@@ -2,7 +2,7 @@ from numpy import *
 from scipy import *
 
 def f():
-    x,y = mgrid[0:101:50, 0:101:50]
+    x,y = mgrid[0:101:50, -101:0:50]
     obj = 2*x**3 + 3*y**2
     return obj
     
@@ -13,9 +13,6 @@ def dfdx():
 def df2dx():
     hess = gradient(dfdx())
     return hess
-    
-
-h = hessian()
 
 class OPC:
     """
@@ -49,10 +46,10 @@ class OPC:
         return hessian
         
     def Gradient(self,x):
-        if grad!=None:
-            return grad
+        if self.grad!=None:
+            return self.grad
         else:
-            return gradient()
+            return gradient(x)
                         
     
 class QN(OPC):
