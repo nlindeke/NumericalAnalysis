@@ -2,36 +2,35 @@ from numpy import *
 from scipy import *
 from itertools import *
 
-def f(x,y,z):
-    return (2*x**3-10*y**2)/(5-z**2)
+def f(x):
+    return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
     
-def grad():
-    h = 0.001
-    space = 10
-    grad = empty(space) #what are we living for
-    for x in range(0,space):
-        grad[x] = (f(x+h)-f(x-h))/2*h
-    return grad
-
 def multigrad(f):
-    h=0.0001
+    h=0.00000001
     space = 10
     grad = zeros((3,space))
-
     for x in range(0,space):
         grad[0][x] = (f(x+h,1,1)-f(x-h,1,1))/2*h
         grad[1][x] = (f(1,x+h,1)-f(1,x-h,1))/2*h
         grad[2][x] = (f(1,1,x+h)-f(1,1,x-h))/2*h        
-
-    return grad
-
-def dfdx():
-    grad = gradient(f(2))
     return grad
     
-def df2dx():
-    hess = gradient(dfdx())
-    return hess
+def grad(f,x):
+    h=10**(-8)
+    dim=len(x)
+    e=identity(dim)
+    arr=zeros((1,dim))
+    for i in range(dim):
+        arr[0][i]=(f(x+h*e[:][i])-f(x))/h
+    return arr
+def hessian(f,x):
+    h=10**(-8)
+    dim=len(x)
+    e=identity(dim)
+    arr=zeros((dim,dim))
+    for i in range(dim):
+        for j in range(dim):
+            arr[i][j]=array(((grad(f,x+h*e[:][i])-grad(f,x))/h))
 
 class OPC:
     """
@@ -81,7 +80,7 @@ class OPC:
             for j in range(nbvalues):
                 matricevaleurs[i][j]=f(i*step,j*step)
         return matricevaleurs
-    def computefunc(self,dim,nbvalues=1000,step=1):
+    def computefuncneu(self,dim,nbvalues=1000,step=1):
         #We decide the dimension to be 2 for the time being
         f=self.obj_func
         matricevaleurs=zeros((nbvalues,nbvalues))
