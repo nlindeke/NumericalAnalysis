@@ -115,6 +115,7 @@ class OPC:
         alfa_0=1
         def f_a(x,s,alfa):
             return f(x+alfa*s)
+            
         def extrapolate(alfa_0,_alfa_L):
             return stuff
             
