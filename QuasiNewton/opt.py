@@ -105,11 +105,42 @@ class OPC:
         alfa_k=f(x+alfa*s)
         return minimize_scalar(alfa_k).x
         
+    def f_der(self,x):
+        h=10**-8
+        return (f(x+h)-f(x))/h
+        
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
-        #basic iteration
+        alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
+        alfa_U=10**99
+        alfa_0=1
+        def f_a(x,s,alfa):
+            return f(x+alfa*s)
+        def extrapolate(alfa_0,_alfa_L):
+            return stuff
+            
+        def interpolate(alfa_0,_alfa_U):
+            return stuff
+
+        LC = f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
+        RC = f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
+        
         while not (LC and RC):
             if (not LC):
-                
+                d_alfa_0=extrapolate(alfa_0,alfa_L)
+                d_alfa_0=numpy.max([d_alfa_0,tau*(alfa_0-alfa_L)])
+                d_alfa_0=numpy.min([d_alfa_0,X*(alfa_0-alfa_L)])
+                alfa_L=alfa_0
+                alfa_0=alfa_0+d_alfa_0
+            else:
+                alfa_U=numpy.min(alfa_0,alfa_U)
+                alfa_hat=interpolate(alfa_0,alfa_U)
+                alfa_hat=numpy.max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
+                alfa_hat=numpy.min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
+                alfa_0=alfa_hat
+            #calculate new f_a(alfa_L),f_a(alfa_0)
+            LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
+            RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
+        return alfa_0,f(alfa_0)
     
 class QN(OPC):
     def __call__(self):
