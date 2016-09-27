@@ -3,6 +3,7 @@ from scipy import *
 
 def f(x,y):
     return 2*x**2+3*y**2    
+    
 def grad():
     h = 0.001
     space = 10
@@ -39,15 +40,7 @@ class OPC:
         
     def InvHessian(self,x):
         return linalg.inv(hessian())
-        
-    def hessian(self,x):
-        x_grad = gradient(x) 
-        hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
-        for k, grad_k in enumerate(x_grad):
-            tmp_grad = gradient(grad_k)
-            for l, grad_kl in enumerate(tmp_grad):
-                hessian[k, l, :, :] = grad_kl
-        return hessian
+
     def betterhessian(self,grad):
         dim=shape(grad)[0]
         matrice=zeros(dim,dim)
