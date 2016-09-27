@@ -1,13 +1,27 @@
 from numpy import *
 from scipy import *
 
+<<<<<<< HEAD
 def f():
     x,y = mgrid[0:10:1,0:2:1]
     obj = 2*x**3 - 10*y**2
+=======
+
+def f(x):
+    obj = 2*x**3 - 10*x**2
+>>>>>>> origin/master
     return obj
     
+def grad():
+    h = 0.001
+    space = 10
+    grad = empty(space)
+    for x in range(0,space):
+        grad[x] = (f(x+h)-f(x-h))/2*h
+    return grad
+
 def dfdx():
-    grad = gradient(f())
+    grad = gradient(f(2))
     return grad
     
 def df2dx():
@@ -40,7 +54,7 @@ class OPC:
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
         for k, grad_k in enumerate(x_grad):
-            tmp_grad = gradient(grad_k) 
+            tmp_grad = gradient(grad_k)
             for l, grad_kl in enumerate(tmp_grad):
                 hessian[k, l, :, :] = grad_kl
         return hessian
