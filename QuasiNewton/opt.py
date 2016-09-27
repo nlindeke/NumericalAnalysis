@@ -89,6 +89,12 @@ class OPC:
             for j in range(nbvalues):
                 matricefinale[i][j]=None
         None
+      
+    #http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize_scalar.html#scipy.optimize.minimize_scalar
+    #check the example at the bottom, seems to look ok, haven't actually tested it yet :)))
+    def LinearSearch(self,x,s):
+        alfa_k=f(x+alfa*s)
+        return minimize_scalar(alfa_k).x
     
 class QN(OPC):
     def __call__(self):
