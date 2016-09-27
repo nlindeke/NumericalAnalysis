@@ -2,23 +2,7 @@ from numpy import *
 from scipy import *
 
 def f(x,y):
-    return 2*x**2+3*y**2
-def dimgrid(dim,nbvalues=1000):
-    A=zeros((nbvalues,dim))
-    for i in range(dim):
-        for j in range (nbvalues):
-            A[j][i]=j
-    return A
-def computefunc(f,nbvalues=1000):
-    matricevaleurs=zeros((nbvalues,nbvalues))
-    for j in range(nbvalues):
-        for i in range(nbvalues):
-            matricevaleurs[j][i]=f(j,i)
-    return matricevaleurs
-def gradientmaison(f,dim,point):
-    return f()
-    
-    
+    return 2*x**2+3*y**2    
 def grad():
     h = 0.001
     space = 10
@@ -57,7 +41,6 @@ class OPC:
         return linalg.inv(hessian())
         
     def hessian(self,x):
-        x = obj_func
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
         for k, grad_k in enumerate(x_grad):
@@ -77,7 +60,28 @@ class OPC:
             return self.grad
         else:
             return gradient(x)
-                        
+            
+    def dimgrid(self,dim,nbvalues=1000,step=1):
+        A=zeros((nbvalues,dim))
+        for i in range(dim):
+            for j in range (nbvalues):
+                A[j][i]=j*step
+        return A
+    def computefunc(self,nbvalues=1000,step=1):
+        #We decide the dimension to be 2 for the time being
+        f=self.obj_func
+        matricevaleurs=zeros((nbvalues,nbvalues))
+        for i in range(nbvalues):
+            for j in range(nbvalues):
+                matricevaleurs[i][j]=f(i*step,j*step)
+        return matricevaleurs
+    def gradientmaison(self,dim,point,nbvalues):
+        matricefinale=zeros((nbvalues,nbvalues))
+        matricevaleurs=computefunc(self.obj_func,10)
+        for i in range(nbvalues):
+            for j in range(nbvalues):
+                matricefinale[i][j]=None
+        None
     
 class QN(OPC):
     def __call__(self):
