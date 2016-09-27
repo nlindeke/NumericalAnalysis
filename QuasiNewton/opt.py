@@ -2,8 +2,8 @@ from numpy import *
 from scipy import *
 
 def f():
-    x,y = mgrid[0:101:50, -101:0:50]
-    obj = 2*x**3 + 3*y**2
+    x,y = mgrid[0:10:1,0:2:1]
+    obj = 2*x**3 - 10*y**2
     return obj
     
 def dfdx():
@@ -49,7 +49,7 @@ class OPC:
         matrice=zeros(dim,dim)
         for i in range(dim):
             for j in range(dim):
-                matrice[i][j]=
+                matrice[i][j]=None
         
     def Gradient(self,x):
         if self.grad!=None:
