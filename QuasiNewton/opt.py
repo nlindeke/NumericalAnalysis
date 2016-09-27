@@ -1,5 +1,6 @@
 from numpy import *
 from scipy import *
+from itertools import *
 
 def f(x,y,z):
     return (2*x**3-10*y**2)/(5-z**2)
@@ -78,6 +79,13 @@ class OPC:
         matricevaleurs=zeros((nbvalues,nbvalues))
         for i in range(nbvalues):
             for j in range(nbvalues):
+                matricevaleurs[i][j]=f(i*step,j*step)
+        return matricevaleurs
+    def computefunc(self,dim,nbvalues=1000,step=1):
+        #We decide the dimension to be 2 for the time being
+        f=self.obj_func
+        matricevaleurs=zeros((nbvalues,nbvalues))
+        for i in itertools.product(range(nbvalues),dim):
                 matricevaleurs[i][j]=f(i*step,j*step)
         return matricevaleurs
     
