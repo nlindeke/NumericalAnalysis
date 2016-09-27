@@ -8,6 +8,9 @@ def f2(x):
     return 3*x[0]**4+2*x[1]**5
 def f3(x):
     return 5*x[0]**3-10*x[1]**2
+    
+def Rosenbrock(x):
+    return 100*(x[1]-x[0]**2)**2+(1-x[0])**2
 
 def grad(f,x):
     h=10**(-8)
