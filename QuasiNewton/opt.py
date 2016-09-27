@@ -35,7 +35,7 @@ class OPC:
     def InvHessian(self,x):
         return linalg.inv(hessian())
         
-    def hessian(self):
+    def hessian(self,x):
         x = obj_func
         x_grad = gradient(x) 
         hessian = empty((x.ndim, x.ndim) + x.shape, dtype=x.dtype) 
@@ -44,6 +44,12 @@ class OPC:
             for l, grad_kl in enumerate(tmp_grad):
                 hessian[k, l, :, :] = grad_kl
         return hessian
+    def betterhessian(self,grad):
+        dim=shape(grad)[0]
+        matrice=zeros(dim,dim)
+        for i in range(dim):
+            for j in range(dim):
+                matrice[i][j]=
         
     def Gradient(self,x):
         if self.grad!=None:
