@@ -1,10 +1,23 @@
 from numpy import *
 from scipy import *
 
-def f():
-    x,y = mgrid[0:10:1,0:2:1]
-    obj = 2*x**3 - 10*y**2
-    return obj
+def f(x,y):
+    return 2*x**2+3*y**2
+def dimgrid(dim,nbvalues=1000):
+    A=zeros((nbvalues,dim))
+    for i in range(dim):
+        for j in range (nbvalues):
+            A[j][i]=j
+    return A
+def computefunc(f,nbvalues=1000):
+    matricevaleurs=zeros((nbvalues,nbvalues))
+    for j in range(nbvalues):
+        for i in range(nbvalues):
+            matricevaleurs[j][i]=f(j,i)
+    return matricevaleurs
+def gradientmaison(f,dim,point):
+    return f()
+    
     
 def grad():
     h = 0.001
