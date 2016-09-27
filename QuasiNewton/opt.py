@@ -56,7 +56,7 @@ class OPC:
         for i in range(dim):
             for j in range(dim):
                 matrice[i][j]=None
-        #error handling, maybe do this check when we actual values to check :))
+        #error handling, maybe do this check when we have actual values to check :))
         try:
             a=numpy.linalg.cholesky(matrice)
         except LinAlgError as e:
@@ -105,7 +105,11 @@ class OPC:
         alfa_k=f(x+alfa*s)
         return minimize_scalar(alfa_k).x
         
-    def InexactLineSearch(self,s,k):
+    def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
+        #basic iteration
+        while not (LC and RC):
+            if (not LC):
+                
     
 class QN(OPC):
     def __call__(self):
