@@ -5,7 +5,7 @@ from itertools import *
 def f(x):
     return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
 def f2(x):
-    return 3*x[0]**4+2*x[1]**5
+    return 3*x[0][0]**4+2*x[0][1]**5
 def f3(x):
     return (5*(x[0][0])**3)-(10*(x[0][1])**2)
 
@@ -22,20 +22,15 @@ class OPC:
         x=self.listtoarray(xzero)
         termination_criterion=False
         k=0
-        try:
-            while termination_criterion!=True:
-                k+=1
-                x=x-self.NewtonDirection(x)
-                if sum(x)<=0.0001 and sum(x)>=-0.0001:
-                    termination_criterion=True
-        except linalg.linalg.LinAlgError:
-            return None
-        return k
+        #try:
         while termination_criterion!=True:
-            x=x-self.NewtonDirection(x)
+            k+=1
+            x[0]=x[0]-self.NewtonDirection(x)
             if sum(x)<=0.0001 and sum(x)>=-0.0001:
                 termination_criterion=True
-        return x
+        #except linalg.linalg.LinAlgError:
+        #    return None
+        return k
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
@@ -68,7 +63,7 @@ class OPC:
     
     def grad(self,x):
         f=self.obj_func
-        h=10**(-8)
+        h=10**(-3)
         dim=len(x[0])
         e=identity(dim)
         arr=zeros((1,dim))
@@ -78,18 +73,20 @@ class OPC:
 
     def besthessian(self,x):
         f=self.obj_func
-        h=10**(-8)
+        h=10**(-3)
         dim=len(x[0])
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
             # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
+        
+            print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
                 #error handling
-        try:
+        """try:
             linalg.cholesky(arr)
         except linalg.linalg.LinAlgError as e:
-            print("not positive-definite: ",e)
+            print("not positive-definite: ",e)"""
         return arr
 
     def listtoarray(self,x):
