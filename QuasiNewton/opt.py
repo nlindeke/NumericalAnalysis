@@ -7,7 +7,7 @@ def f(x):
 def f2(x):
     return 3*x[0]**4+2*x[1]**5
 def f3(x):
-    return 5*x[0][0]**3-10*x[0][1]**2
+    return (5*(x[0][0])**3)-(10*(x[0][1])**2)
 
     
 class OPC:
@@ -33,15 +33,15 @@ class OPC:
         return k
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
-
-            print(x.any()<=0.001)
             if sum(x)<=0.0001 and sum(x)>=-0.0001:
                 termination_criterion=True
         return x
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
-        
+    def NewtonDirection2(self,x):
+        return array(transpose(-1*matrix(self.besthessian(x))*matrix(transpose(self.Gradient(x)))))
+
     def InvHessian(self,x):
         return linalg.inv(self.besthessian(x))
        
@@ -69,7 +69,7 @@ class OPC:
     def grad(self,x):
         f=self.obj_func
         h=10**(-8)
-        dim=len(x)
+        dim=len(x[0])
         e=identity(dim)
         arr=zeros((1,dim))
         for i in range(dim):
@@ -79,7 +79,7 @@ class OPC:
     def besthessian(self,x):
         f=self.obj_func
         h=10**(-8)
-        dim=len(x)
+        dim=len(x[0])
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
@@ -87,7 +87,7 @@ class OPC:
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
                 #error handling
         try:
-            a=numpy.linalg.cholesky(arr)
+            linalg.cholesky(arr)
         except linalg.linalg.LinAlgError as e:
             print("not positive-definite: ",e)
         return arr
