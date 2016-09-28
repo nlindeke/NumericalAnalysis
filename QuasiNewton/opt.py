@@ -21,7 +21,6 @@ class OPC:
     def base_newton(self,xzero):
         x=self.listtoarray(xzero)
         termination_criterion=False
-<<<<<<< HEAD
         k=0
         try:
             while termination_criterion!=True:
@@ -32,7 +31,6 @@ class OPC:
         except linalg.linalg.LinAlgError:
             return None
         return k
-=======
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
 
@@ -40,7 +38,6 @@ class OPC:
             if sum(x)<=0.0001 and sum(x)>=-0.0001:
                 termination_criterion=True
         return x
->>>>>>> origin/master
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
