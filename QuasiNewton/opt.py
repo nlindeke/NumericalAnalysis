@@ -35,7 +35,7 @@ class OPC:
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
-    def NewtonDirection2(self,x):
+    def NewtonDirection2(self,x): #useless, besthessian should also be inverse, don't use
         return array(transpose(-1*matrix(self.besthessian(x))*matrix(transpose(self.Gradient(x)))))
 
     def InvHessian(self,x):
