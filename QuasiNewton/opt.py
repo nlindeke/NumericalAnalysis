@@ -73,14 +73,12 @@ class OPC:
         for i in range(dim):
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x))/h))
         return arr
-<<<<<<< HEAD
     def listtoarray(self,x):
         dim=len(x)
         matrice=zeros((1,dim))
         for i in range(dim):
             matrice[0][i]=x[i]
         return matrice
-=======
         
     def LineSearch(self,x,s):
         alfa_k=f(x+alfa*s)
@@ -124,7 +122,6 @@ class OPC:
             LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
->>>>>>> origin/master
 
 class QN(OPC):
     def __call__(self):
