@@ -75,6 +75,11 @@ class OPC:
         for i in range(dim):
             # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
+                #error handling
+        try:
+            a=numpy.linalg.cholesky(arr)
+        except LinAlgError as e:
+            print("not positive-definite: ",e)
         return arr
 
     def listtoarray(self,x):
