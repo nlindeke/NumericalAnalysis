@@ -88,7 +88,7 @@ class OPC:
                 #error handling
         try:
             a=numpy.linalg.cholesky(arr)
-        except LinAlgError as e:
+        except linalg.linalg.LinAlgError as e:
             print("not positive-definite: ",e)
         return arr
 
@@ -155,9 +155,10 @@ class IE(OPC):
         return False
 
 class BadBroyden(OPC):
-
+    None
 class GoodBroyden(OPC):
-    
+    None
 class DFP(OPC):
-    
+    None
 class BFGS(OPC):
+    None
