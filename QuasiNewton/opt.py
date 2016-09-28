@@ -7,7 +7,7 @@ def f(x):
 def f2(x):
     return 3*x[0]**4+2*x[1]**5
 def f3(x):
-    return 5*x[0]**3-10*x[1]**2
+    return 5*x[0][0]**3-10*x[0][1]**2
 
     
 class OPC:
@@ -19,16 +19,17 @@ class OPC:
         self.gradis = gradis
         
     def base_newton(self,xzero):
-        x=xzero
+        x=a.listtoarray(xzero)
         termination_criterion=False
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
+            print(x)
             if x.any()<=0.0001 and x.any()>=-0.0001:
                 termination_criterion=True
         return x
     
     def NewtonDirection(self,x):
-        return transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x))))
+        return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
         
     def InvHessian(self,x):
         return linalg.inv(self.besthessian(x))
@@ -72,6 +73,12 @@ class OPC:
         for i in range(dim):
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x))/h))
         return arr
+    def listtoarray(self,x):
+        dim=len(x)
+        matrice=zeros((1,dim))
+        for i in range(dim):
+            matrice[0][i]=x[i]
+        return matrice
 
 class QN(OPC):
     def __call__(self):
