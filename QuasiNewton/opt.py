@@ -155,7 +155,10 @@ class IE(OPC):
         return False
 
 class BadBroyden(OPC):
-    None
+    
+    def __init__(self):
+        super(BadBroyden,self).__init__()
+        
 class GoodBroyden(OPC):
     None
 class DFP(OPC):
