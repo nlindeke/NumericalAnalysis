@@ -116,9 +116,9 @@ class OPC:
         def interpolate(alfa_0,_alfa_U):
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
-        def f_der(self,x):
-            h=self.h_glob
-            return (f_a(x+h,s)-f_a(x))/h
+        def f_der(x):
+            h=10**(-3)
+            return (f_a(x+h,s,alfa_0)-f_a(x,s,alfa_0))/h
 
         LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
         RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
@@ -136,8 +136,8 @@ class OPC:
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-            LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
-            RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
+            LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
+            RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
 
 class QN(OPC):
