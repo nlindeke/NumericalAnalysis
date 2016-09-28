@@ -62,7 +62,7 @@ class OPC:
         e=identity(dim)
         arr=zeros((1,dim))
         for i in range(dim):
-            arr[0][i]=(f(x+h*e[:][i])-f(x))/h
+            arr[0][i]=(f(x+h*e[:][i])-f(x-h*e[:][i]))/(2*h)
         return arr
     def besthessian(self,x):
         f=self.obj_func
@@ -71,7 +71,7 @@ class OPC:
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
-            arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x))/h))
+            arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
         return arr
     def listtoarray(self,x):
         dim=len(x)
