@@ -23,8 +23,9 @@ class OPC:
         termination_criterion=False
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
-            print(x)
-            if x.any()<=0.0001 and x.any()>=-0.0001:
+
+            print(x.any()<=0.001)
+            if mean(x)<=0.0001 and mean(x)>=-0.0001:
                 termination_criterion=True
         return x
     
@@ -72,7 +73,7 @@ class OPC:
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
-            print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
+            # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
         return arr
 
