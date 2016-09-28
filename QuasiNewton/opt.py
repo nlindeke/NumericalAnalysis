@@ -79,8 +79,6 @@ class OPC:
         arr=empty((dim,dim))
         for i in range(dim):
             # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
-        
-            print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
                 #error handling
         """try:
@@ -107,8 +105,11 @@ class OPC:
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**99
         alfa_0=1
+        
+        print(s)
+        print(alfa)
         def f_a(x,s,alfa):
-            return f(x+alfa*s)
+            return f3(x+alfa*s)
             
         def extrapolate(alfa_0,_alfa_L):
             return (alfa_0-alfa_L)*(f_der(alfa_0)/(f_der(alfa_L)-f_der(alfa_0)))
@@ -126,15 +127,15 @@ class OPC:
         while not (LC and RC):
             if (not LC):
                 d_alfa_0=extrapolate(alfa_0,alfa_L)
-                d_alfa_0=numpy.max([d_alfa_0,tau*(alfa_0-alfa_L)])
-                d_alfa_0=numpy.min([d_alfa_0,X*(alfa_0-alfa_L)])
+                d_alfa_0=max([d_alfa_0,tau*(alfa_0-alfa_L)])
+                d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
                 alfa_L=alfa_0
                 alfa_0=alfa_0+d_alfa_0
             else:
-                alfa_U=numpy.min(alfa_0,alfa_U)
+                alfa_U=min(alfa_0,alfa_U)
                 alfa_hat=interpolate(alfa_0,alfa_U)
-                alfa_hat=numpy.max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
-                alfa_hat=numpy.min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
+                alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
+                alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
             LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
