@@ -134,7 +134,6 @@ class OPC:
                 alfa_hat=numpy.max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=numpy.min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-            #calculate new f_a(alfa_L),f_a(alfa_0)
             LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
@@ -151,13 +150,22 @@ class IE(OPC):
     def __call(self):
         return False
 
-class BadBroyden(OPC):
-    def __init__(self):
-        super(BadBroyden,self).__init__()
-        
 class GoodBroyden(OPC):
     def __init__(self):
         super(GoodBroyden,self).__init__()
+        
+    #one update
+    def Update(self,H):
+        u=0
+        u_T=transpose(u)
+        a=0
+        H_k=H*a*u*u_T
+        return H_k
+        
+        
+class BadBroyden(OPC):
+    def __init__(self):
+        super(BadBroyden,self).__init__()
         
 class DFP(OPC):
     None
