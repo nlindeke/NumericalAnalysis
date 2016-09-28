@@ -156,4 +156,11 @@ class E(OPC):
 class IE(OPC):
     def __call(self):
         return False
-        
+
+class BadBroyden(OPC):
+
+class GoodBroyden(OPC):
+    
+class DFP(OPC):
+    
+class BFGS(OPC):
