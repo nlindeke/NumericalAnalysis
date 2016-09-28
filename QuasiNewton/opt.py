@@ -63,7 +63,7 @@ class OPC:
     
     def grad(self,x):
         f=self.obj_func
-        h=10**(-8)
+        h=10**(-3)
         dim=len(x[0])
         e=identity(dim)
         arr=zeros((1,dim))
@@ -73,12 +73,14 @@ class OPC:
 
     def besthessian(self,x):
         f=self.obj_func
-        h=10**(-8)
+        h=10**(-3)
         dim=len(x[0])
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
             # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
+        
+            print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
                 #error handling
         """try:
