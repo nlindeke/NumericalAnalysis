@@ -25,7 +25,7 @@ class OPC:
             x=x-self.NewtonDirection(x)
 
             print(x.any()<=0.001)
-            if mean(x)<=0.0001 and mean(x)>=-0.0001:
+            if sum(x)<=0.0001 and sum(x)>=-0.0001:
                 termination_criterion=True
         return x
     
