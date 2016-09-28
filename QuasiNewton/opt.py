@@ -22,14 +22,14 @@ class OPC:
         x=self.listtoarray(xzero)
         termination_criterion=False
         k=0
-        #try:
-        while termination_criterion!=True:
-            k+=1
-            x[0]=x[0]-self.NewtonDirection(x)
-            if sum(x)<=0.0001 and sum(x)>=-0.0001:
-                termination_criterion=True
-        #except linalg.linalg.LinAlgError:
-        #    return None
+        try:
+            while termination_criterion!=True:
+                k+=1
+                x[0]=x[0]-self.NewtonDirection(x)
+                if sum(x)<=0.0001 and sum(x)>=-0.0001:
+                    termination_criterion=True
+        except linalg.linalg.LinAlgError:
+            return None
         return k
     
     def NewtonDirection(self,x):
