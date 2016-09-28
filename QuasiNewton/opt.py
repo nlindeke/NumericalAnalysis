@@ -105,9 +105,6 @@ class OPC:
         alfa_k=f(x+alfa*s)
         return minimize_scalar(alfa_k).x
         
-    def f_der(self,x):
-        h=10**-8
-        return (f(x+h)-f(x))/h
         
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
@@ -121,6 +118,10 @@ class OPC:
             
         def interpolate(alfa_0,_alfa_U):
             return stuff
+           
+        def f_der(self,x):
+			h=10**-8
+			return (f_a(x+h)-f_a(x))/h
 
         LC = f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
         RC = f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
@@ -141,7 +142,7 @@ class OPC:
             #calculate new f_a(alfa_L),f_a(alfa_0)
             LC=f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
-        return alfa_0,f(alfa_0)
+        return alfa_0,f_a(alfa_0)
     
 class QN(OPC):
     def __call__(self):
