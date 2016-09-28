@@ -21,6 +21,7 @@ class OPC:
     def base_newton(self,xzero):
         x=self.listtoarray(xzero)
         termination_criterion=False
+<<<<<<< HEAD
         k=0
         try:
             while termination_criterion!=True:
@@ -31,6 +32,15 @@ class OPC:
         except linalg.linalg.LinAlgError:
             return None
         return k
+=======
+        while termination_criterion!=True:
+            x=x-self.NewtonDirection(x)
+
+            print(x.any()<=0.001)
+            if sum(x)<=0.0001 and sum(x)>=-0.0001:
+                termination_criterion=True
+        return x
+>>>>>>> origin/master
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
@@ -78,6 +88,11 @@ class OPC:
         for i in range(dim):
             # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
+                #error handling
+        try:
+            a=numpy.linalg.cholesky(arr)
+        except LinAlgError as e:
+            print("not positive-definite: ",e)
         return arr
 
     def listtoarray(self,x):
