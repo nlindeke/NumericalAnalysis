@@ -86,10 +86,10 @@ class OPC:
             return f(x+alfa*s)
             
         def extrapolate(alfa_0,_alfa_L):
-            return stuff
+            return (alfa_0-alfa_L)*(f_der(alfa_0)/(f_der(alfa_L)-f_der(alfa_0)))
             
         def interpolate(alfa_0,_alfa_U):
-            return stuff
+            return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
         def f_der(self,x):
 			h=10**-8
