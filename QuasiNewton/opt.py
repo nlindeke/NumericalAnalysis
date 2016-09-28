@@ -17,6 +17,7 @@ class OPC:
     def __init__(self, obj_func, gradis=None):
         self.obj_func = obj_func
         self.gradis = gradis
+        self.h_glob = 10**(-3)
         
     def base_newton(self,xzero):
         x=self.listtoarray(xzero)
@@ -63,7 +64,7 @@ class OPC:
     
     def grad(self,x):
         f=self.obj_func
-        h=10**(-3)
+        h=self.h_glob
         dim=len(x[0])
         e=identity(dim)
         arr=zeros((1,dim))
@@ -73,7 +74,7 @@ class OPC:
 
     def besthessian(self,x):
         f=self.obj_func
-        h=10**(-3)
+        h=self.h_glob
         dim=len(x[0])
         e=identity(dim)
         arr=empty((dim,dim))
@@ -105,9 +106,7 @@ class OPC:
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**99
         alfa_0=1
-        
         print(s)
-        print(alfa)
         def f_a(x,s,alfa):
             return f3(x+alfa*s)
             
@@ -118,11 +117,11 @@ class OPC:
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
         def f_der(self,x):
-            h=10**(-8)
-            return (f_a(x+h)-f_a(x))/h
+            h=self.h_glob
+            return (f_a(x+h,s)-f_a(x))/h
 
-        LC = f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
-        RC = f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
+        LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
+        RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         
         while not (LC and RC):
             if (not LC):
