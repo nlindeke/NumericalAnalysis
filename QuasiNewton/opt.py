@@ -100,6 +100,7 @@ class OPC:
            
         def f_der(self,x):
 			h=10**-8
+               print("hej")
 			return (f_a(x+h)-f_a(x))/h
 
         LC = f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
