@@ -19,7 +19,7 @@ class OPC:
         self.gradis = gradis
         
     def base_newton(self,xzero):
-        x=a.listtoarray(xzero)
+        x=self.listtoarray(xzero)
         termination_criterion=False
         while termination_criterion!=True:
             x=x-self.NewtonDirection(x)
@@ -64,6 +64,7 @@ class OPC:
         for i in range(dim):
             arr[0][i]=(f(x+h*e[:][i])-f(x-h*e[:][i]))/(2*h)
         return arr
+
     def besthessian(self,x):
         f=self.obj_func
         h=10**(-8)
@@ -71,8 +72,10 @@ class OPC:
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
+            print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
         return arr
+
     def listtoarray(self,x):
         dim=len(x)
         matrice=zeros((1,dim))
@@ -99,9 +102,9 @@ class OPC:
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
         def f_der(self,x):
-			h=10**-8
-               print("hej")
-			return (f_a(x+h)-f_a(x))/h
+            h=10**(-8)
+            print("hej")
+            return (f_a(x+h)-f_a(x))/h
 
         LC = f_a(alfa_0)>=f_(alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
         RC = f_a(alfa_0)<=f_(alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
