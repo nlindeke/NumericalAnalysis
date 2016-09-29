@@ -153,21 +153,20 @@ class IE(OPC):
         return False
 
 class GoodBroyden(OPC):
-    def __init__(self):
-        super(GoodBroyden,self).__init__()
-        
-    #one update
-    def Update(self,H):
-        u=0
+    #we'll have to compute gamma and delta beforehand, think that's easier
+    def Update(self,invH,gamma,delta):
+        u=delta-invH*gamma
         u_T=transpose(u)
-        a=0
-        H_k=H*a*u*u_T
+        a=1/(u_T*gamma)
+        H_k=invH+a*u*u_T
         return H_k
         
         
 class BadBroyden(OPC):
-    def __init__(self):
-        super(BadBroyden,self).__init__()
+
+    def Update(self,invH,gamma,delta):
+        #slide 54? straight codified version, anyway
+        return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
         
 class DFP(OPC):
     None
