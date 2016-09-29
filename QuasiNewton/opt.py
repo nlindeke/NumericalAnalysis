@@ -170,7 +170,7 @@ class QN(OPC):
                 elif UpdateVariant=="bfgs":
                     return self.BFGS.Update(iH,g,d)
                 else:
-                    print("wut u doin")
+                    print("Err")
        
         invH=self.InvHessian(x)
         
