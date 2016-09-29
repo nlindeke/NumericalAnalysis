@@ -117,27 +117,23 @@ class OPC:
             h=10**(-3)
             return (f_a(x+h,s,alfa_0)-f_a(x,s,alfa_0))/h
 
-
         LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
         RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
-        print(extrapolate(alfa_0,alfa_L))
-        
+        d_alfa_0=extrapolate(alfa_0,alfa_L)
+              
         while not (LC and RC):
             if (not LC):
-
-                d_alfa_0=extrapolate(alfa_0,alfa_L)
                 d_alfa_0=max([d_alfa_0,tau*(alfa_0-alfa_L)])
                 d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
                 alfa_L=alfa_0
                 alfa_0=alfa_0+d_alfa_0
-
             else:
                 alfa_U=min([alfa_0,alfa_U])
                 alfa_hat=interpolate(alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-
+            print(f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L))
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
