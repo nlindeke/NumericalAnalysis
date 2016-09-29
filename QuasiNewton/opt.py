@@ -139,6 +139,12 @@ class OPC:
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
+        
+    def GetGamma(self):
+        return something
+        
+    def GetDelta(self):
+        return something
 
 class QN(OPC):
     def __call__(self):
