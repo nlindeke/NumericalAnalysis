@@ -114,8 +114,10 @@ class OPC:
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
         def f_der(x):
-            h=10**(-3)
-            return (f_a(x+h,s,alfa_0)-f_a(x,s,alfa_0))/h
+            #h=10**(-3)
+            #return (f_a(x+h,s,alfa_0)-f_a(x,s,alfa_0))/h
+            a=OPC(f_a)
+            return a.grad(x)
 
         LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)       
         RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
