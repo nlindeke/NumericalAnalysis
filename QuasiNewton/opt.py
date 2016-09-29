@@ -96,7 +96,7 @@ class OPC:
         
     def InexactLineSearch(self,xx,rho=0.1,sigma=0.7,tau=0.1,X=9):
         x = self.listtoarray(xx)
-        s = self.NewtonDirection2(x)
+        s = -self.NewtonDirection(x)
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**99
         alfa_0=1
