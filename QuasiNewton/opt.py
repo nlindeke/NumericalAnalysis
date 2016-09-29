@@ -156,13 +156,13 @@ class QN(OPC):
         if NumOfIterations==None:
             NumOfIterations=30
             
-        def ChosenLineSearch(self,x,s):
+        def ChosenLineSearch(x,s):
             if lineSearchVariant=="exact":
                 return self.ExactLineSearch(x,s)
             elif lineSearchVariant=="inexact":
                 return self.InexactLineSearch(x)
     
-        def ChosenUpdate(self,iH,g,d): #only broyden this far :))
+        def ChosenUpdate(iH,g,d): #only broyden this far :))
             if UpdateVariant=="good":
                 return self.GoodBroyden.Update(iH,g,d)
             elif UpdateVariant=="bad":
@@ -179,13 +179,13 @@ class QN(OPC):
         for i in range(NumOfIterations):
             grad=self.Gradient(x)
             s=-invH*grad #step 1
-            alfa=self.ChosenLineSearch(x,s) #step 2
+            alfa=ChosenLineSearch(x,s) #step 2
             next_x=x+alfa*s #step 3
             delta=next_x-x
             next_grad=self.Gradient(next_x)
             gamma=next_grad-grad
             x=next_x #prepare for next iteration
-            invH=self.ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
+            invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
         
 
 
