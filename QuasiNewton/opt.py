@@ -210,4 +210,5 @@ class BFGS(QN):
         -(delta*transpose(delta)*invH+invH*gamma*transpose(delta))/(transpose(delta)*gamma)
 
 class DFP(QN):
-    return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
+    def Update(self,invH,gamma,delta)
+        return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
