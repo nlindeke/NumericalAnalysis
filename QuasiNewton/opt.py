@@ -85,11 +85,14 @@ class OPC:
         return arr
 
     def listtoarray(self,x):
-        dim=len(x)
-        matrice=zeros((1,dim))
-        for i in range(dim):
-            matrice[0][i]=x[i]
-        return matrice
+        try:
+            dim=len(x)
+            matrice=zeros((1,dim))
+            for i in range(dim):
+                matrice[0][i]=x[i]
+            return matrice
+        except:
+            return x
         
     def LineSearch(self,x,s):
         alfa_k=f(x+alfa*s)
