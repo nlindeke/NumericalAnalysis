@@ -197,7 +197,10 @@ class BadBroyden(QN):
         #slide 54? straight codified version, anyway
         return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
         
-class DFP(QN):
-    None
 class BFGS(QN):
-    None
+    def Update(self,invH,gamma,delta):
+        return invH+(1+(transpose(gamma)*invH*gamma)/(transpose(delta)*gamma))*((delta*transpose(delta))/(transpose(delta)*gamma))\
+        -(delta*transpose(delta)*invH+invH*gamma*transpose(delta))/(transpose(delta)*gamma)
+
+class DFP(QN):
+    return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
