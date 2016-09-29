@@ -8,6 +8,8 @@ def f2(x):
     return 3*x[0][0]**4+2*x[0][1]**5
 def f3(x):
     return (5*(x[0][0])**3)-(10*(x[0][1])**2)
+def f4(x): #Rosenbrock function
+    return (100(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
 
     
 class OPC:
