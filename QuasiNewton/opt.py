@@ -108,7 +108,7 @@ class OPC:
         def extrapolate(alfa_0,_alfa_L):
             return (alfa_0-_alfa_L)*(f_der(alfa_0)/(f_der(_alfa_L)-f_der(alfa_0)))
             
-        def interpolate(alfa_0,_alfa_U):
+        def interpolate(alfa_0,_alfa_L):
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
         def f_der(x):
@@ -131,7 +131,7 @@ class OPC:
 
             else:
                 alfa_U=min(alfa_0,alfa_U)
-                alfa_hat=interpolate(alfa_0,alfa_U)
+                alfa_hat=interpolate(alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
