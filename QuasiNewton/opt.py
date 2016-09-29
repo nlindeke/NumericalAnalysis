@@ -160,10 +160,10 @@ class QN(OPC):
             return InexactLineSearch(x)
     
     def ChosenUpdate(self,iH,g,d): #only broyden this far :))
-        if BroydenVariant=="good":
-            return GoodBroyden.Update(iH,g,d)
-        elif BroydenVariant=="bad":
-            retun BadBroyden.Update(iH,g,d)
+        if UpdateVariant=="good":
+            return self.GoodBroyden.Update(iH,g,d)
+        elif UpdateVariant=="bad":
+            return self.BadBroyden.Update(iH,g,d)
        
         invH=self.InvHessian(x)
         
