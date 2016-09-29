@@ -126,6 +126,8 @@ class OPC:
         
         print(LC)
         print(RC)
+        count=1
+        alfa_old=0
         while not (LC and RC):
             if (not LC):
                 d_alfa_0=extrapolate(x,s,alfa_0,alfa_L)
@@ -133,14 +135,21 @@ class OPC:
                 d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
                 alfa_L=alfa_0
                 alfa_0=alfa_0+d_alfa_0
+                if abs(alfa_0-alfa_old)<0.0000001: #the change is fucking small, it drives me crazy, i don't know what's going on
+                    break
+                alfa_old=alfa_0
                 #print("hello from IF ",str(f_a(x,s,alfa_0)))
+                #print("LC alfa is: ",alfa_0)
+                if count==1 or count ==100:
+                    print("wat ",alfa_0)
+                count=count+1
             else:
                 alfa_U=min([alfa_0,alfa_U])
                 alfa_hat=interpolate(x,s,alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-               # print("hello from ELSE")
+                print("hello from ELSE")
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         return alfa_0,f_a(x,s,alfa_0)
@@ -185,11 +194,11 @@ class QN(OPC):
             
             print("round: ",counter)
             grad=self.Gradient(x).T
-            #print("grad is: ",grad)
+            print("grad is: ",grad)
             s=-invH*grad #step 1
-            #print("x is: ",x," s is: ",s)
+            print("x is: ",x," s is: ",s)
             alfa=ChosenLineSearch(x,s) #step 2
-            #print("alfa is: ",alfa)
+            print("alfa is: ",alfa)
             next_x=x+alfa*s #step 3
             delta=next_x-x
             next_grad=self.Gradient(next_x)
@@ -198,14 +207,14 @@ class QN(OPC):
             if(lin.norm(grad)<0.00001):
                 return x
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
-            #print("updated invH is: ",invH)
+            print("updated invH is: ",invH)
             counter=counter+1
             print("grad is: ",grad)
         return x
 
 
 class GoodBroyden(QN):
-    #we'll have to compute gamma and delta beforehand, think that's easier
+    #i think this works
     def Update(invH,gamma,delta):
         u=delta-dot(invH,gamma)
         u_T=u.T
@@ -216,8 +225,8 @@ class GoodBroyden(QN):
         
 class BadBroyden(QN):
     def Update(invH,gamma,delta):
-        #slide 54? straight codified version, anyway
-        return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
+        #slide 54? straight codified version, anyway, does not work
+        return invH+divide((gamma-invH*delta),(transpose(delta)*delta))*transpose(delta)
         
 class BFGS(QN):
     def Update(invH,gamma,delta):
