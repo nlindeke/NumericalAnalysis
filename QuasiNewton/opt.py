@@ -108,9 +108,12 @@ class OPC:
             return f3(x_in+alfa*s_in)
             
         def extrapolate(x_in,s_in,a_0,_a_L):
-            return (a_0-_a_L)*(f_der(x_in,s_in,a_0)/(f_der(x_in,s_in,_a_L)-f_der(x_in,s_in,a_0)))
+            temp =(f_der(x_in,s_in,_a_L)-f_der(x_in,s_in,a_0))
+            if temp == 0:
+                temp=0.000001
+            return (a_0-_a_L)*(f_der(x_in,s_in,a_0)/temp)
             
-        def interpolate(a_0,_a_L):
+        def interpolate(x_in,s_in,a_0,a_L):
             return ((a_0-a_L)**2)*f_der(x_in,s_in,a_L)/(2*(f_a(x_in,s_in,a_L)-f_a(x_in,s_in,a_0)*f_der(x_in,s_in,a_L)))
            
         def f_der(x_in,s_in,a_0):
@@ -125,7 +128,6 @@ class OPC:
         while not (LC and RC):
             if (not LC):
                 d_alfa_0=extrapolate(x,s,alfa_0,alfa_L)
-                print("d alfa",d_alfa_0)
                 d_alfa_0=max([d_alfa_0,tau*(alfa_0-alfa_L)])
                 d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
                 alfa_L=alfa_0
@@ -136,8 +138,6 @@ class OPC:
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-                print("hat")
-            #print(f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L))
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         return alfa_0,f_a(x,s,alfa_0)
