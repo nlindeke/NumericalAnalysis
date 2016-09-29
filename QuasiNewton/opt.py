@@ -100,7 +100,7 @@ class OPC:
         x = self.listtoarray(xx)
         s = -self.NewtonDirection(x)
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
-        alfa_U=10**99
+        alfa_U=10**9
         alfa_0=1
         d_alfa_0=0
         alfa_hat=0
