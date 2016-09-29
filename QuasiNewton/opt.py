@@ -106,6 +106,8 @@ class OPC:
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**99
         alfa_0=1
+        d_alfa_0=0
+        alfa_hat=0
         print(s)
         def f_a(x,s,alfa):
             return f3(x+alfa*s)
