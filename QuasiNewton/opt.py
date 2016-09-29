@@ -167,8 +167,8 @@ class QN(OPC):
                     return self.GoodBroyden.Update(iH,g,d)
                 elif UpdateVariant=="bad":
                     return self.BadBroyden.Update(iH,g,d)
-                elif UpdateVariant=="dfs":
-                    return self.DFS.Update(iH,g,d)
+                elif UpdateVariant=="dfp":
+                    return self.DFP.Update(iH,g,d)
                 elif UpdateVariant=="bfgs":
                     return self.BFGS.Update(iH,g,d)
                 else:
