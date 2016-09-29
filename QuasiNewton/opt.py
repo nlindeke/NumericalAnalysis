@@ -153,17 +153,18 @@ class QN(OPC):
     def Iterate(self,guess,lineSearchVariant=None,UpdateVariant=None,NumOfIterations=None):
         if NumOfIterations==None:
             NumOfIterations=30
-    def ChosenLineSearch(self,x,s):
-        if lineSearchVariant=="exact":
-            return ExactLineSearch(x,s)
-        elif lineSearchVariant=="inexact":
-            return InexactLineSearch(x)
+            
+            def ChosenLineSearch(self,x,s):
+                if lineSearchVariant=="exact":
+                    return ExactLineSearch(x,s)
+                elif lineSearchVariant=="inexact":
+                    return InexactLineSearch(x)
     
-    def ChosenUpdate(self,iH,g,d): #only broyden this far :))
-        if UpdateVariant=="good":
-            return self.GoodBroyden.Update(iH,g,d)
-        elif UpdateVariant=="bad":
-            return self.BadBroyden.Update(iH,g,d)
+            def ChosenUpdate(self,iH,g,d): #only broyden this far :))
+                if UpdateVariant=="good":
+                    return self.GoodBroyden.Update(iH,g,d)
+                elif UpdateVariant=="bad":
+                    return self.BadBroyden.Update(iH,g,d)
        
         invH=self.InvHessian(x)
         
