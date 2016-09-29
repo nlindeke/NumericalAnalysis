@@ -79,13 +79,7 @@ class OPC:
         e=identity(dim)
         arr=empty((dim,dim))
         for i in range(dim):
-            # print(array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h))))
             arr[i][:]=array(((self.grad(x+h*e[:][i])-self.grad(x-h*e[:][i]))/(2*h)))
-                #error handling
-        """try:
-            linalg.cholesky(arr)
-        except linalg.linalg.LinAlgError as e:
-            print("not positive-definite: ",e)"""
         return arr
 
     def listtoarray(self,x):
@@ -113,6 +107,7 @@ class OPC:
             return f3(x+alfa*s)
             
         def extrapolate(alfa_0,_alfa_L):
+
             return (alfa_0-alfa_L)*(f_der(alfa_0)/(f_der(alfa_L)-f_der(alfa_0)))
             
         def interpolate(alfa_0,_alfa_U):
@@ -210,5 +205,5 @@ class BFGS(QN):
         -(delta*transpose(delta)*invH+invH*gamma*transpose(delta))/(transpose(delta)*gamma)
 
 class DFP(QN):
-    def Update(self,invH,gamma,delta)
+    def Update(self,invH,gamma,delta):
         return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
