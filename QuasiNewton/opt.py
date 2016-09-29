@@ -164,7 +164,7 @@ class QN(OPC):
             elif lineSearchVariant=="inexact":
                 return self.InexactLineSearch(x,s)[0]
     
-        def ChosenUpdate(iH,g,d): #only broyden this far :))
+        def ChosenUpdate(iH,g,d):
             if UpdateVariant=="good":
                 return GoodBroyden.Update(iH,g,d)
             elif UpdateVariant=="bad":
@@ -177,33 +177,40 @@ class QN(OPC):
                 print("Err")
         x=self.listtoarray(guess)
         invH=self.InvHessian(x)
-        
+        print("invH is: ",invH)
+        print("bestHessian is: ",self.besthessian(x))
+        print("inverse is: ",linalg.inv(self.besthessian(x)))
+        counter=1
         for i in range(NumOfIterations):
-            print("hello")
-            grad=self.Gradient(x)
-            print("grad is: ",grad)
+            
+            print("round: ",counter)
+            grad=self.Gradient(x).T
+            #print("grad is: ",grad)
             s=-invH*grad #step 1
-            print("x is: ",x," s is: ",s)
+            #print("x is: ",x," s is: ",s)
             alfa=ChosenLineSearch(x,s) #step 2
-            print("alfa is: ",alfa)
+            #print("alfa is: ",alfa)
             next_x=x+alfa*s #step 3
             delta=next_x-x
             next_grad=self.Gradient(next_x)
             gamma=next_grad-grad
             x=next_x #prepare for next iteration
+            if(lin.norm(grad)<0.00001):
+                return x
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
-            print("invH is: ",invH)
-            
+            #print("updated invH is: ",invH)
+            counter=counter+1
+            print("grad is: ",grad)
         return x
 
 
 class GoodBroyden(QN):
     #we'll have to compute gamma and delta beforehand, think that's easier
     def Update(invH,gamma,delta):
-        u=delta-invH*gamma
-        u_T=transpose(u)
-        a=1/(u_T*gamma)
-        H_k=invH+a*u*u_T
+        u=delta-dot(invH,gamma)
+        u_T=u.T
+        a=1/dot(u_T,gamma)
+        H_k=invH+a*dot(u,u_T)
         return H_k
         
         
