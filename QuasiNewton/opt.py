@@ -165,6 +165,12 @@ class QN(OPC):
                     return self.GoodBroyden.Update(iH,g,d)
                 elif UpdateVariant=="bad":
                     return self.BadBroyden.Update(iH,g,d)
+                elif UpdateVariant=="dfs":
+                    return self.DFS.Update(iH,g,d)
+                elif UpdateVariant=="bfgs":
+                    return self.BFGS.Update(iH,g,d)
+                else:
+                    print("wut u doin")
        
         invH=self.InvHessian(x)
         
@@ -192,7 +198,6 @@ class GoodBroyden(QN):
         
         
 class BadBroyden(QN):
-
     def Update(self,invH,gamma,delta):
         #slide 54? straight codified version, anyway
         return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
