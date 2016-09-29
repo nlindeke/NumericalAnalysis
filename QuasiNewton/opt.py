@@ -113,7 +113,7 @@ class OPC:
         def interpolate(alfa_0,_alfa_L):
             return ((alfa_0-alfa_L)**2)*f_der(alfa_L)/(2*(f_a(alfa_L)-f_a(alfa_0)*f_der(alfa_L)))
            
-        def f_der(x):
+        def f_der(alfa_0):
             h=10**(-3)
             return (f_a(x+h,s,alfa_0)-f_a(x,s,alfa_0))/h
 
