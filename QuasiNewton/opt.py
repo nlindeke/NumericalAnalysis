@@ -130,7 +130,7 @@ class OPC:
                 alfa_0=alfa_0+d_alfa_0
 
             else:
-                alfa_U=min(alfa_0,alfa_U)
+                alfa_U=min([alfa_0,alfa_U])
                 alfa_hat=interpolate(alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
