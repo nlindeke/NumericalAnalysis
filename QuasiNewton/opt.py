@@ -139,16 +139,7 @@ class OPC:
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(alfa_L)
         return alfa_0,f_a(alfa_0)
-        
-    def GetGamma(self):
-        return something
-        
-    def GetDelta(self):
-        return something
 
-class QN(OPC):
-    def __call__(self):
-        return False
 
 class E(OPC):
     def __call__(self):
@@ -158,7 +149,38 @@ class IE(OPC):
     def __call(self):
         return False
 
-class GoodBroyden(OPC):
+class QN(OPC):
+    def Iterate(self,guess,lineSearchVariant=None,UpdateVariant=None,NumOfIterations=None):
+        if NumOfIterations==None:
+            NumOfIterations=30
+    def ChosenLineSearch(self,x,s):
+        if lineSearchVariant=="exact":
+            return ExactLineSearch(x,s)
+        elif lineSearchVariant=="inexact":
+            return InexactLineSearch(x)
+    
+    def ChosenUpdate(self,iH,g,d): #only broyden this far :))
+        if BroydenVariant=="good":
+            return GoodBroyden.Update(iH,g,d)
+        elif BroydenVariant=="bad":
+            retun BadBroyden.Update(iH,g,d)
+       
+        invH=self.InvHessian(x)
+        
+        for i in range(NumOfIterations):
+            grad=self.Gradient(x)
+            s=-invH*grad #step 1
+            alfa=self.ChosenLineSearch(x,s) #step 2
+            next_x=x+alfa*s #step 3
+            delta=next_x-x
+            next_grad=self.Gradient(next_x)
+            gamma=next_grad-grad
+            x=next_x #prepare for next iteration
+            invH=self.ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
+        
+
+
+class GoodBroyden(QN):
     #we'll have to compute gamma and delta beforehand, think that's easier
     def Update(self,invH,gamma,delta):
         u=delta-invH*gamma
@@ -168,13 +190,13 @@ class GoodBroyden(OPC):
         return H_k
         
         
-class BadBroyden(OPC):
+class BadBroyden(QN):
 
     def Update(self,invH,gamma,delta):
         #slide 54? straight codified version, anyway
         return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
         
-class DFP(OPC):
+class DFP(QN):
     None
-class BFGS(OPC):
+class BFGS(QN):
     None
