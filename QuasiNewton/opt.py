@@ -1,6 +1,7 @@
 from numpy import *
 from scipy import *
 from itertools import *
+import scipy.linalg as lin
 
 def f(x):
     return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
@@ -85,23 +86,20 @@ class OPC:
         return arr
 
     def listtoarray(self,x):
-        try:
-            dim=len(x)
-            matrice=zeros((1,dim))
-            for i in range(dim):
-                matrice[0][i]=x[i]
-            return matrice
-        except:
-            return x
+        dim=len(x)
+        matrice=zeros((1,dim))
+        for i in range(dim):
+            matrice[0][i]=x[i]
+        return matrice
         
     def LineSearch(self,x,s):
         alfa_k=f(x+alfa*s)
         return minimize_scalar(alfa_k).x
         
         
-    def InexactLineSearch(self,xx,rho=0.1,sigma=0.7,tau=0.1,X=9):
-        x = self.listtoarray(xx)
-        s = -self.NewtonDirection(x)
+    def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
+        #x = self.listtoarray(xx)
+        #s = -self.NewtonDirection(x)
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**9
         alfa_0=1
@@ -135,12 +133,14 @@ class OPC:
                 d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
                 alfa_L=alfa_0
                 alfa_0=alfa_0+d_alfa_0
+                #print("hello from IF ",str(f_a(x,s,alfa_0)))
             else:
                 alfa_U=min([alfa_0,alfa_U])
                 alfa_hat=interpolate(x,s,alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
+               # print("hello from ELSE")
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         return alfa_0,f_a(x,s,alfa_0)
@@ -158,43 +158,48 @@ class QN(OPC):
     def Iterate(self,guess,lineSearchVariant=None,UpdateVariant=None,NumOfIterations=None):
         if NumOfIterations==None:
             NumOfIterations=30
-            
         def ChosenLineSearch(x,s):
             if lineSearchVariant=="exact":
                 return self.ExactLineSearch(x,s)
             elif lineSearchVariant=="inexact":
-                return self.InexactLineSearch(x)
+                return self.InexactLineSearch(x,s)[0]
     
         def ChosenUpdate(iH,g,d): #only broyden this far :))
             if UpdateVariant=="good":
-                return self.GoodBroyden.Update(iH,g,d)
+                return GoodBroyden.Update(iH,g,d)
             elif UpdateVariant=="bad":
-                return self.BadBroyden.Update(iH,g,d)
+                return BadBroyden.Update(iH,g,d)
             elif UpdateVariant=="dfp":
-                return self.DFP.Update(iH,g,d)
+                return DFP.Update(iH,g,d)
             elif UpdateVariant=="bfgs":
-                return self.BFGS.Update(iH,g,d)
+                return BFGS.Update(iH,g,d)
             else:
                 print("Err")
         x=self.listtoarray(guess)
         invH=self.InvHessian(x)
         
         for i in range(NumOfIterations):
+            print("hello")
             grad=self.Gradient(x)
+            print("grad is: ",grad)
             s=-invH*grad #step 1
+            print("x is: ",x," s is: ",s)
             alfa=ChosenLineSearch(x,s) #step 2
+            print("alfa is: ",alfa)
             next_x=x+alfa*s #step 3
             delta=next_x-x
             next_grad=self.Gradient(next_x)
             gamma=next_grad-grad
             x=next_x #prepare for next iteration
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
-        
+            print("invH is: ",invH)
+            
+        return x
 
 
 class GoodBroyden(QN):
     #we'll have to compute gamma and delta beforehand, think that's easier
-    def Update(self,invH,gamma,delta):
+    def Update(invH,gamma,delta):
         u=delta-invH*gamma
         u_T=transpose(u)
         a=1/(u_T*gamma)
@@ -203,15 +208,15 @@ class GoodBroyden(QN):
         
         
 class BadBroyden(QN):
-    def Update(self,invH,gamma,delta):
+    def Update(invH,gamma,delta):
         #slide 54? straight codified version, anyway
         return invH+((gamma-invH*delta)/(transpose(delta)*delta))*transpose(delta)
         
 class BFGS(QN):
-    def Update(self,invH,gamma,delta):
+    def Update(invH,gamma,delta):
         return invH+(1+(transpose(gamma)*invH*gamma)/(transpose(delta)*gamma))*((delta*transpose(delta))/(transpose(delta)*gamma))\
         -(delta*transpose(delta)*invH+invH*gamma*transpose(delta))/(transpose(delta)*gamma)
 
 class DFP(QN):
-    def Update(self,invH,gamma,delta):
+    def Update(invH,gamma,delta):
         return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
