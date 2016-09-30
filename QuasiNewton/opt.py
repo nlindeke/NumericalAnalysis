@@ -191,25 +191,22 @@ class QN(OPC):
 #        print("inverse is: ",linalg.inv(self.besthessian(x)))
         counter=1
         for i in range(NumOfIterations):
-            
- #           print("round: ",counter)
             grad=self.Gradient(x).T
- #           print("grad is: ",grad)
             s=self.InvHessian(x)*grad #step 1
- #           print("x is: ",x," s is: ",s)
             alfa=ChosenLineSearch(x,s) #step 2
- #           print("alfa is: ",alfa)
-            next_x=x+alfa*s #step 3
+            next_x= x + (alfa*s) #step 3
+            print("Alfa: ", alfa)
+            print("S: ", s)
             delta=next_x-x
             next_grad=self.Gradient(next_x)
             gamma=next_grad-grad
             x=next_x #prepare for next iteration
-            if(lin.norm(grad)<0.00001):
+            if(lin.norm(grad)<0.01):
+                print("Something")
                 return x
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
- #           print("updated invH is: ",invH)
             counter=counter+1
- #           print("grad is: ",grad)
+            print("x: ",next_x)
         return x
 
 
