@@ -130,6 +130,7 @@ class OPC:
         alfa_old=0
         while not (LC and RC):
             if (not LC):
+                #print("LC is false")
                 d_alfa_0=extrapolate(x,s,alfa_0,alfa_L)
                 d_alfa_0=max([d_alfa_0,tau*(alfa_0-alfa_L)])
                 d_alfa_0=min([d_alfa_0,X*(alfa_0-alfa_L)])
@@ -140,10 +141,10 @@ class OPC:
                 alfa_old=alfa_0
                 #print("hello from IF ",str(f_a(x,s,alfa_0)))
                 #print("LC alfa is: ",alfa_0)
-                if count==1 or count ==100:
-                    print("wat ",alfa_0)
-                count=count+1
+                #if count==1 or count ==100:
+                    #print("wat ",alfa_0)
             else:
+                #print("LC is true")
                 alfa_U=min([alfa_0,alfa_U])
                 alfa_hat=interpolate(x,s,alfa_0,alfa_L)
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
@@ -191,6 +192,7 @@ class QN(OPC):
 #        print("inverse is: ",linalg.inv(self.besthessian(x)))
         counter=1
         for i in range(NumOfIterations):
+            print("counter is: ",counter)
             grad=self.Gradient(x).T
             s=-self.InvHessian(x)*grad #step 1
             alfa=ChosenLineSearch(x,s) #step 2
@@ -205,6 +207,7 @@ class QN(OPC):
             if(lin.norm(grad)<0.01):
                 print("Something")
                 return x
+            print("grad is: ",grad)
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
             counter=counter+1
             print("x: ",next_x)
