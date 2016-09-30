@@ -124,8 +124,8 @@ class OPC:
         LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)       
         RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         
-        print(LC)
-        print(RC)
+#        print(LC)
+#        print(RC)
         count=1
         alfa_old=0
         while not (LC and RC):
@@ -149,7 +149,7 @@ class OPC:
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-                print("hello from ELSE")
+#                print("hello from ELSE")
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         return alfa_0,f_a(x,s,alfa_0)
@@ -186,19 +186,19 @@ class QN(OPC):
                 print("Err")
         x=self.listtoarray(guess)
         invH=self.InvHessian(x)
-        print("invH is: ",invH)
-        print("bestHessian is: ",self.besthessian(x))
-        print("inverse is: ",linalg.inv(self.besthessian(x)))
+#        print("invH is: ",invH)
+#        print("bestHessian is: ",self.besthessian(x))
+#        print("inverse is: ",linalg.inv(self.besthessian(x)))
         counter=1
         for i in range(NumOfIterations):
             
-            print("round: ",counter)
+ #           print("round: ",counter)
             grad=self.Gradient(x).T
-            print("grad is: ",grad)
-            s=-invH*grad #step 1
-            print("x is: ",x," s is: ",s)
+ #           print("grad is: ",grad)
+            s=self.InvHessian(x)*grad #step 1
+ #           print("x is: ",x," s is: ",s)
             alfa=ChosenLineSearch(x,s) #step 2
-            print("alfa is: ",alfa)
+ #           print("alfa is: ",alfa)
             next_x=x+alfa*s #step 3
             delta=next_x-x
             next_grad=self.Gradient(next_x)
@@ -207,9 +207,9 @@ class QN(OPC):
             if(lin.norm(grad)<0.00001):
                 return x
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
-            print("updated invH is: ",invH)
+ #           print("updated invH is: ",invH)
             counter=counter+1
-            print("grad is: ",grad)
+ #           print("grad is: ",grad)
         return x
 
 
