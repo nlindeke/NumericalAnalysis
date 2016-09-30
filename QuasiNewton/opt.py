@@ -94,7 +94,7 @@ class OPC:
         
     def ExactLineSearch(self,x,s):
         alfa_k=f3(x+alfa*s)
-        return minimize_scalar(alfa_k).x
+        return minimize_scalar(alfa_k).alfa
         
         
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
