@@ -192,9 +192,10 @@ class QN(OPC):
         counter=1
         for i in range(NumOfIterations):
             grad=self.Gradient(x).T
-            s=self.InvHessian(x)*grad #step 1
+            s=-self.InvHessian(x)*grad #step 1
             alfa=ChosenLineSearch(x,s) #step 2
             next_x= x + (alfa*s) #step 3
+            print("next x is: ",next_x)
             print("Alfa: ", alfa)
             print("S: ", s)
             delta=next_x-x
