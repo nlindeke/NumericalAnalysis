@@ -92,8 +92,8 @@ class OPC:
             matrice[0][i]=x[i]
         return matrice
         
-    def LineSearch(self,x,s):
-        alfa_k=f(x+alfa*s)
+    def ExactLineSearch(self,x,s):
+        alfa_k=f3(x+alfa*s)
         return minimize_scalar(alfa_k).x
         
         
