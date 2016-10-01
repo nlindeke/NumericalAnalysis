@@ -3,19 +3,24 @@ from scipy import *
 from itertools import *
 import scipy.linalg as lin
 
-def f(x):
+def f1(x):
     return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
 def f2(x):
     return 3*x[0][0]**4+2*x[0][1]**5
 def f3(x):
-    return (5*(x[0][0])**3)-(10*(x[0][1])**2)
+    return (2*(x[0][0])**3)-(10*(x[0][1])**2)
 def f4(x): #Rosenbrock function
     return (100(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
 
     
 class OPC:
     """
-    Some stuff
+    The general class containing implementation of:
+        - Gradient
+        - Hessian
+        - Direction Based on the Newton Method
+        - Exact and Inexact Line Search
+    Input of class is one of the four pre-defined function f1-f4
     """
     def __init__(self, obj_func, gradis=None):
         self.obj_func = obj_func
@@ -38,24 +43,25 @@ class OPC:
     
     def NewtonDirection(self,x):
         return array(transpose(matrix(self.InvHessian(x))*matrix(transpose(self.Gradient(x)))))
+        
     def NewtonDirection2(self,x): #useless, besthessian should also be inverse, don't use
         return array(transpose(-1*matrix(self.besthessian(x))*matrix(transpose(self.Gradient(x)))))
-
+        
     def InvHessian(self,x):
         return linalg.inv(self.besthessian(x))
-       
+        
     def Gradient(self,x):
         if self.gradis!=None:
             return self.gradis
         else:
-            return self.grad(x)
-            
+            return self.grad(x)     
     def dimgrid(self,dim,nbvalues=1000,step=1):
         A=zeros((nbvalues,dim))
         for i in range(dim):
             for j in range (nbvalues):
                 A[j][i]=j*step
         return A
+        
     def computefunc(self,nbvalues=1000,step=1):
         #We decide the dimension to be 2 for the time being
         f=self.obj_func
@@ -93,10 +99,10 @@ class OPC:
         return matrice
         
     def ExactLineSearch(self,x,s):
+        alfa = 0
         alfa_k=f3(x+alfa*s)
         return minimize_scalar(alfa_k).alfa
-        
-        
+
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
         #x = self.listtoarray(xx)
         #s = -self.NewtonDirection(x)
@@ -123,9 +129,6 @@ class OPC:
 
         LC = f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)       
         RC = f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
-        
-#        print(LC)
-#        print(RC)
         count=1
         alfa_old=0
         while not (LC and RC):
@@ -139,10 +142,6 @@ class OPC:
                 if abs(alfa_0-alfa_old)<0.0000001: #the change is fucking small, it drives me crazy, i don't know what's going on
                     break
                 alfa_old=alfa_0
-                #print("hello from IF ",str(f_a(x,s,alfa_0)))
-                #print("LC alfa is: ",alfa_0)
-                #if count==1 or count ==100:
-                    #print("wat ",alfa_0)
             else:
                 #print("LC is true")
                 alfa_U=min([alfa_0,alfa_U])
@@ -150,24 +149,25 @@ class OPC:
                 alfa_hat=max([alfa_hat,alfa_L+tau*(alfa_U-alfa_L)])
                 alfa_hat=min([alfa_hat,alfa_U-tau*(alfa_U-alfa_L)])
                 alfa_0=alfa_hat
-#                print("hello from ELSE")
             LC=f_a(x,s,alfa_0)>=f_a(x,s,alfa_L)+(1-rho)*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
             RC=f_a(x,s,alfa_0)<=f_a(x,s,alfa_L)+rho*(alfa_0-alfa_L)*f_der(x,s,alfa_L)
         return alfa_0,f_a(x,s,alfa_0)
 
-
-class E(OPC):
-    def __call__(self):
-        return False
-    
-class IE(OPC):
-    def __call(self):
-        return False
-
 class QN(OPC):
+    """
+    Quasi-Newton Optimization Class which implements the 
+    actual Quasi-Newton process based on the information 
+    gathered from the OPC class
+    
+    Input one of pre-defined functions f1-f4 and utilize
+    iteration function which takes an initial array 
+    guess of x_i values
+    
+    """
     def Iterate(self,guess,lineSearchVariant=None,UpdateVariant=None,NumOfIterations=None):
         if NumOfIterations==None:
             NumOfIterations=30
+            
         def ChosenLineSearch(x,s):
             if lineSearchVariant=="exact":
                 return self.ExactLineSearch(x,s)
@@ -187,32 +187,21 @@ class QN(OPC):
                 print("Err")
         x=self.listtoarray(guess)
         invH=self.InvHessian(x)
-#        print("invH is: ",invH)
-#        print("bestHessian is: ",self.besthessian(x))
-#        print("inverse is: ",linalg.inv(self.besthessian(x)))
         counter=1
         for i in range(NumOfIterations):
-            print("counter is: ",counter)
             grad=self.Gradient(x).T
             s=-self.InvHessian(x)*grad #step 1
             alfa=ChosenLineSearch(x,s) #step 2
             next_x= x + (alfa*s) #step 3
-            print("next x is: ",next_x)
-            print("Alfa: ", alfa)
-            print("S: ", s)
             delta=next_x-x
             next_grad=self.Gradient(next_x)
             gamma=next_grad-grad
             x=next_x #prepare for next iteration
             if(lin.norm(grad)<0.01):
-                print("Something")
                 return x
-            print("grad is: ",grad)
             invH=ChosenUpdate(invH,gamma,delta)# step 4: update the hessian
             counter=counter+1
-            print("x: ",next_x)
         return x
-
 
 class GoodBroyden(QN):
     #i think this works
@@ -222,8 +211,7 @@ class GoodBroyden(QN):
         a=1/dot(u_T,gamma)
         H_k=invH+a*dot(u,u_T)
         return H_k
-        
-        
+
 class BadBroyden(QN):
     def Update(invH,gamma,delta):
         #slide 54? straight codified version, anyway, does not work
