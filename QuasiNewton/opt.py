@@ -28,6 +28,9 @@ class OPC:
         self.h_glob = 10**(-3)
         
     def base_newton(self,xzero):
+    """
+    Implementation of the Base Method in the Newton Iteration
+    """
         x=self.listtoarray(xzero)
         termination_criterion=False
         k=0
@@ -48,9 +51,17 @@ class OPC:
         return array(transpose(-1*matrix(self.besthessian(x))*matrix(transpose(self.Gradient(x)))))
         
     def InvHessian(self,x):
+    """
+    Evaluate the inverse of the Hessian
+    """
         return linalg.inv(self.besthessian(x))
         
     def Gradient(self,x):
+    """
+    Function to recieve possible pre-defined Gradient vector
+    rarely used as we saw that our grad-function using 
+    the centered finite difference formula has good accuracy
+    """
         if self.gradis!=None:
             return self.gradis
         else:
@@ -72,6 +83,10 @@ class OPC:
         return matricevaleurs
     
     def grad(self,x):
+        """
+        Function evaluating the n-dimensional Gradient vector by using the
+        centered finite difference formula
+        """
         f=self.obj_func
         h=self.h_glob
         dim=len(x[0])
@@ -82,6 +97,10 @@ class OPC:
         return arr
 
     def besthessian(self,x):
+        """
+        Function evaluating the Hessian of an n-dimensional
+        objective function taking the Jacobian of the Gradient vector
+        """
         f=self.obj_func
         h=self.h_glob
         dim=len(x[0])
@@ -92,6 +111,10 @@ class OPC:
         return arr
 
     def listtoarray(self,x):
+        """
+        Function which transforms the input values in x into
+        a matrix that is more easy to work with
+        """
         dim=len(x)
         matrice=zeros((1,dim))
         for i in range(dim):
@@ -99,11 +122,17 @@ class OPC:
         return matrice
         
     def ExactLineSearch(self,x,s):
+        """
+        Implementation of the Exact Line Search Method
+        """
         alfa = 0
         alfa_k=f3(x+alfa*s)
         return minimize_scalar(alfa_k).alfa
 
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
+        """
+        Implementation of the Inexact Line Search Method
+        """        
         #x = self.listtoarray(xx)
         #s = -self.NewtonDirection(x)
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
@@ -169,12 +198,20 @@ class QN(OPC):
             NumOfIterations=30
             
         def ChosenLineSearch(x,s):
+        """
+        Depending on input "lineSearchVariant" in the parent funcion
+        ChosenLineSeach will return either the Exact Linesearch Method
+        or the Inexact Linesearch Method
+        """
             if lineSearchVariant=="exact":
                 return self.ExactLineSearch(x,s)
             elif lineSearchVariant=="inexact":
                 return self.InexactLineSearch(x,s)[0]
     
         def ChosenUpdate(iH,g,d):
+        """
+        Receives some string to chose between four different update methods
+        """
             if UpdateVariant=="good":
                 return GoodBroyden.Update(iH,g,d)
             elif UpdateVariant=="bad":
@@ -204,6 +241,9 @@ class QN(OPC):
         return x
 
 class GoodBroyden(QN):
+    """
+    Class implementing the Good Broyden method depending on the QN parent class
+    """    
     #i think this works
     def Update(invH,gamma,delta):
         u=delta-dot(invH,gamma)
@@ -213,15 +253,24 @@ class GoodBroyden(QN):
         return H_k
 
 class BadBroyden(QN):
+    """
+    Class implementing the Bad Broyden method depending on the QN parent class
+    """
     def Update(invH,gamma,delta):
         #slide 54? straight codified version, anyway, does not work
         return invH+divide((gamma-invH*delta),(transpose(delta)*delta))*transpose(delta)
         
 class BFGS(QN):
+    """
+    Class implementing the BFGGS method depending on the QN parent class
+    """    
     def Update(invH,gamma,delta):
         return invH+(1+(transpose(gamma)*invH*gamma)/(transpose(delta)*gamma))*((delta*transpose(delta))/(transpose(delta)*gamma))\
         -(delta*transpose(delta)*invH+invH*gamma*transpose(delta))/(transpose(delta)*gamma)
 
 class DFP(QN):
+    """
+    Class implementing the DFP method depending on the QN parent class
+    """    
     def Update(invH,gamma,delta):
         return invH+((delta*transpose(delta))/(transpose(delta)*gamma))-((invH*gamma*transpose(gamma)*invH)/(transpose(gamma)*invH*gamma))
