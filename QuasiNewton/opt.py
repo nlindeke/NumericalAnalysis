@@ -1,8 +1,9 @@
 from numpy import *
 from scipy import *
-from itertools import *
 import scipy.linalg as lin
+#Projet of Niklas Lindeke, Laroy Sjödahl, Charles Rohart and Ingrid Odlen
 
+#List of functions to test the code
 def f1(x):
     return (2*x[0]**3-10*x[1]**2)/(5-x[2]**2)
 def f2(x):
@@ -66,7 +67,11 @@ class OPC:
         if self.gradis!=None:
             return self.gradis
         else:
-            return self.grad(x)     
+            return self.grad(x) 
+    """
+    dimgrid and computefunc are legacy functions that were used to create values
+    to compute onto
+    """
     def dimgrid(self,dim,nbvalues=1000,step=1):
         A=zeros((nbvalues,dim))
         for i in range(dim):
