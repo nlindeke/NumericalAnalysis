@@ -10,7 +10,7 @@ def f2(x):
 def f3(x):
     return (2*(x[0][0])**3)-(10*(x[0][1])**2)
 def f4(x): #Rosenbrock function
-    return (100(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
+    return (100*(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
 
     
 class OPC:
@@ -28,9 +28,10 @@ class OPC:
         self.h_glob = 10**(-3)
         
     def base_newton(self,xzero):
-    """
-    Implementation of the Base Method in the Newton Iteration
-    """
+        """
+        Implementation of the Base Method in the Newton Iteration
+        """
+    
         x=self.listtoarray(xzero)
         termination_criterion=False
         k=0
@@ -51,17 +52,17 @@ class OPC:
         return array(transpose(-1*matrix(self.besthessian(x))*matrix(transpose(self.Gradient(x)))))
         
     def InvHessian(self,x):
-    """
-    Evaluate the inverse of the Hessian
-    """
+        """
+        Evaluate the inverse of the Hessian
+        """
         return linalg.inv(self.besthessian(x))
         
     def Gradient(self,x):
-    """
-    Function to recieve possible pre-defined Gradient vector
-    rarely used as we saw that our grad-function using 
-    the centered finite difference formula has good accuracy
-    """
+        """
+        Function to recieve possible pre-defined Gradient vector
+        rarely used as we saw that our grad-function using 
+        the centered finite difference formula has good accuracy
+        """
         if self.gradis!=None:
             return self.gradis
         else:
@@ -198,20 +199,20 @@ class QN(OPC):
             NumOfIterations=30
             
         def ChosenLineSearch(x,s):
-        """
-        Depending on input "lineSearchVariant" in the parent funcion
-        ChosenLineSeach will return either the Exact Linesearch Method
-        or the Inexact Linesearch Method
-        """
+            """
+            Depending on input "lineSearchVariant" in the parent funcion
+            ChosenLineSeach will return either the Exact Linesearch Method
+            or the Inexact Linesearch Method
+            """
             if lineSearchVariant=="exact":
                 return self.ExactLineSearch(x,s)
             elif lineSearchVariant=="inexact":
                 return self.InexactLineSearch(x,s)[0]
     
         def ChosenUpdate(iH,g,d):
-        """
-        Receives some string to chose between four different update methods
-        """
+            """
+            Receives some string to chose between four different update methods
+            """
             if UpdateVariant=="good":
                 return GoodBroyden.Update(iH,g,d)
             elif UpdateVariant=="bad":
