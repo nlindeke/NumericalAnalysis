@@ -1,7 +1,7 @@
 from numpy import *
 from scipy import *
 import scipy.linalg as lin
-from scipy.optimize import minimize, rosen, rosen_der
+from scipy.optimize import minimize, rosen
 #Projet of Niklas Lindeke, Laroy Sjödahl, Charles Rohart and Ingrid Odlen
 
 #List of functions to test the code
@@ -11,10 +11,10 @@ def f2(x):
     return 3*x[0][0]**4+2*x[0][1]**5
 def f3(x):
     return (2*(x[0][0])**3)-(10*(x[0][1])**2)
-def f4(x): #Rosenbrock function
+def f4(x): #Rosenbrock functionres.
     return (100*(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
 
-
+#To compare with the scipy optimization package run res.x in Python Console
 x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
 res = minimize(rosen, x0, method='BFGS', tol=1e-6)
     
