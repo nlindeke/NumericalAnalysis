@@ -16,7 +16,6 @@ def f4(x): #Rosenbrock function
 
 
 x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-x1 = (1,1)
 res = minimize(rosen, x0, method='BFGS', tol=1e-6)
     
 class OPC:
