@@ -1,6 +1,7 @@
 from numpy import *
 from scipy import *
 import scipy.linalg as lin
+from scipy.optimize import minimize, rosen, rosen_der
 #Projet of Niklas Lindeke, Laroy Sjödahl, Charles Rohart and Ingrid Odlen
 
 #List of functions to test the code
@@ -13,6 +14,10 @@ def f3(x):
 def f4(x): #Rosenbrock function
     return (100*(x[0][1]-x[0][0]**2)**2)+((1-x[0][0])**2)
 
+
+x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
+x1 = (1,1)
+res = minimize(rosen, x0, method='BFGS', tol=1e-6)
     
 class OPC:
     """
@@ -26,7 +31,7 @@ class OPC:
     def __init__(self, obj_func, gradis=None):
         self.obj_func = obj_func
         self.gradis = gradis
-        self.h_glob = 10**(-3)
+        self.h_glob = 10**(-4)
         
     def base_newton(self,xzero):
         """
@@ -201,7 +206,7 @@ class QN(OPC):
     """
     def Iterate(self,guess,lineSearchVariant=None,UpdateVariant=None,NumOfIterations=None):
         if NumOfIterations==None:
-            NumOfIterations=30
+            NumOfIterations=100
             
         def ChosenLineSearch(x,s):
             """
