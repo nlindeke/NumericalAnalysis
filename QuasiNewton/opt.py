@@ -136,7 +136,7 @@ class OPC:
         Implementation of the Exact Line Search Method
         """
         alfa = 0
-        alfa_k=f3(x+alfa*s)
+        alfa_k=self.obj_func(x+alfa*s)
         return minimize_scalar(alfa_k).alfa
 
     def InexactLineSearch(self,x,s,rho=0.1,sigma=0.7,tau=0.1,X=9):
@@ -145,13 +145,14 @@ class OPC:
         """        
         #x = self.listtoarray(xx)
         #s = -self.NewtonDirection(x)
+        func=self.obj_func
         alfa_L=0 #define starting interval a_0 ∈ [a_L,a_U]
         alfa_U=10**9
         alfa_0=1
         d_alfa_0=0
         alfa_hat=0
         def f_a(x_in,s_in,alfa):
-            return f3(x_in+alfa*s_in)
+            return func(x_in+alfa*s_in)
             
         def extrapolate(x_in,s_in,a_0,_a_L):
             temp =(f_der(x_in,s_in,_a_L)-f_der(x_in,s_in,a_0))
