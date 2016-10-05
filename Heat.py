@@ -3,7 +3,7 @@ from scipy import *
 import scipy.linalg as lin
 
 class Room:
-    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1/3,dimx=1,dimy=1):
+    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1/3,dimx=1,dimy=1,omega=0.8):
         self.uh=uh
         self.uw=uw
         self.uwf=uwf
@@ -11,6 +11,7 @@ class Room:
         self.dimx=dimx
         self.dimy=dimy
         self.nbroom=nbroom
+        self.omega=omega
         self.dimxx=int(dimx/dx)
         self.dimyy=int(dimy/dx)
         self.matrice=self.matrice_func()
@@ -34,4 +35,7 @@ class Room:
                 matrice[0,i]=self.uh
                 matrice[self.dimyy,i]=self.uwf
         return matrice
-    
+    def compute_func(self):
+        for i in range(self.dimyy+1):
+            for j in range(self.dimxx+1):
+                None
