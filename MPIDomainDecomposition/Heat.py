@@ -3,7 +3,7 @@ from scipy import *
 import scipy.linalg as lin
 
 class Room:
-    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1/3,dimx=1,dimy=1,omega=0.8):
+    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8):
         self.uh=uh
         self.uw=uw
         self.uwf=uwf
@@ -37,9 +37,42 @@ class Room:
         return matrice
     def compute_func(self):
         matric=zeros(((self.dimyy+1)**2,(self.dimxx+1)**2))
+        if self.nbroom==2:
+            dim=(self.dimxx-1)*(self.dimyy-1)
+        else:
+            dim=(self.dimxx-1)*(self.dimyy)
+        #matric=zeros((dim,dim))
+        print (dim)
         k=0
-        print(matric)
+        """
         for j in range(1,self.dimyy):
             for i in range(1,self.dimxx):
                 None
+        """
+        for k in range(0,(self.dimyy+1)**2):
+            #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
+            i=k//dim
+            j=k%dim
+            for k2 in range(0,(self.dimyy+1)**2):
+                i2=k2//dim
+                j2=k2%dim
+                if i2==i and j2==j+1:
+                    matric[k][k2]=1
+                elif i2==i and j2==j-1:
+                    matric[k][k2]=1
+                elif i2==i and j2==j:
+                    matric[k][k2]=-4
+                elif i2==i+1 and j2==j:
+                    matric[k][k2]=1
+                elif i2==i+1 and j2==j:
+                    matric[k][k2]=1
+                print ("_____________")
+                print ("i")
+                print (i)
+                print (i2)
+                print ("j")
+                print (j)
+                print (j2)
+                print ("_____________")
+        
         return matric
