@@ -16,7 +16,7 @@ class Room:
         self.dimyy=int(dimy/dx)
         self.matrice=self.matrice_func()
     def matrice_func(self):
-        matrice=empty((self.dimyy+1,self.dimxx+1))
+        matrice=zeros((self.dimyy+1,self.dimxx+1))
         if self.nbroom!=2:
             for i in range(self.dimyy+1):
                 if self.nbroom==1:
@@ -36,6 +36,10 @@ class Room:
                 matrice[self.dimyy,i]=self.uwf
         return matrice
     def compute_func(self):
-        for i in range(self.dimyy+1):
-            for j in range(self.dimxx+1):
+        matric=zeros(((self.dimyy+1)**2,(self.dimxx+1)**2))
+        k=0
+        print(matric)
+        for j in range(1,self.dimyy):
+            for i in range(1,self.dimxx):
                 None
+        return matric
