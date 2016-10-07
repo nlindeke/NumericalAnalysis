@@ -22,7 +22,7 @@ comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 #np=comm.size
 
-#initial setup for rooms herex1
+#initial setup for rooms here
 #-------------------------------------
 nbrIter=sys.argv[1] #command line argument
 #print(nbrIter)
