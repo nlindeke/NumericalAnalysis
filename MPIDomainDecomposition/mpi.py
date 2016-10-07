@@ -30,7 +30,7 @@ neumannLeft="some initial stuff"
 neumannRight="some initial stuff"
 dirichletLeft="some initial stuff"
 dirichletRight="some initial stuff"
-
+omega=0.8
 #--------------------------------------
 
 #iteration
