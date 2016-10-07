@@ -17,7 +17,9 @@ np=comm.size
 
 #initial setup for rooms here, I guess
 nbrIter=sys.argv[1]
-print(nbrIter)
+#print(nbrIter)
+
+
 
 
 #iteration
@@ -29,12 +31,19 @@ for i in range(nbrIter):
     
     if rank is 0:
         comm.Recv(neumannLeft,source=1)
+        #do stuff
+        comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
         comm.Recv(dirichletLeft,source=0)
         comm.Recv(dirichletRight,source=2)
+        #do stuff
+        comm.Send(neumannLeft,dest=0)
+        comm.Send(neumannRight,dest=2)
         
     if rank is 2:
         comm.Recv(neumannRight,source=1)
+        #do stuff
+        comm.Send(dirichletRight,dest=1)
         
     
