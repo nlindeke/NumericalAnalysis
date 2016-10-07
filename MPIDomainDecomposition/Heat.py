@@ -52,8 +52,8 @@ class Room:
         """
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
-            i=k//(self.dimyy+1)
-            j=k%(self.dimyy+1)
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
             for k2 in range(0,(self.dimxx+1)*(self.dimyy+1)):
                 i2=k2//(self.dimxx+1)
                 j2=k2%(self.dimxx+1)
@@ -82,8 +82,8 @@ class Room:
         print(matric)
         arrayb=zeros((dim,1))
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
-            i=k//(self.dimyy+1)
-            j=k%(self.dimyy+1)
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
             print(i,j)
             if self.matrice[i,j]!=0:
                 matric2=delete(matric2,(l),0)
@@ -91,8 +91,8 @@ class Room:
             l+=1
         l=0
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
-            i=k//(self.dimyy+1)
-            j=k%(self.dimyy+1)
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
             if self.matrice[i,j]!=0:
                 for m in range(dim):
                     if matric2[m,l]!=0:
