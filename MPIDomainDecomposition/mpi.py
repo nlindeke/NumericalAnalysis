@@ -20,14 +20,18 @@ import sys
 
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
-np=comm.size
+#np=comm.size
 
 #initial setup for rooms here, I guess
+#-------------------------------------
 nbrIter=sys.argv[1] #command line argument
 #print(nbrIter)
+neumannLeft= "some initial stuff"
+neumannRight= "some initial stuff"
+dirichletLeft= "some initial stuff"
+dirichletRight= "some initial stuff"
 
-
-
+#--------------------------------------
 
 #iteration
 #the rooms get a "rank" in the setup like this:
