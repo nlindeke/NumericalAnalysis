@@ -37,6 +37,7 @@ class Room:
         return matrice
     def compute_func(self):
         matric=zeros(((self.dimyy+1)**2,(self.dimxx+1)**2))
+        print(matric)
         if self.nbroom==2:
             dim=(self.dimxx-1)*(self.dimyy-1)
         else:
@@ -64,8 +65,9 @@ class Room:
                     matric[k][k2]=-4
                 elif i2==i+1 and j2==j:
                     matric[k][k2]=1
-                elif i2==i+1 and j2==j:
+                elif i2==i-1 and j2==j:
                     matric[k][k2]=1
+                """
                 print ("_____________")
                 print ("i")
                 print (i)
@@ -74,16 +76,32 @@ class Room:
                 print (j)
                 print (j2)
                 print ("_____________")
-        """
+                """
+        l=0
+        matric2=matric
+        arrayb=zeros((dim,1))
         for k in range(0,(self.dimyy+1)**2):
             #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
-            i=k//dim
-            j=k%dim
-            matric2=matric
-            l=0
-            print(i,j)
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
             if self.matrice[i,j]!=0:
-                delete(matric2,l)
+                matric2=delete(matric2,(l),0)
                 l-=1
-        """
-        return matric
+            l+=1
+        l=0
+        for k in range(0,(self.dimyy+1)**2):
+            #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
+            if self.matrice[i,j]!=0:
+                for m in range(dim):
+                    if matric2[m,l]!=0:
+                        arrayb[m,0]+=-1*self.matrice[i,j]
+                matric2=delete(matric2,(l),1)
+                l-=1
+            l+=1
+        print(matric)
+        print(matric2)
+        print(arrayb)
+        print(lin.solve(matric2,arrayb))
+        return matric2
