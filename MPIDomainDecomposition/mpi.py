@@ -4,6 +4,10 @@ Created on Fri Oct  7 13:14:24 2016
 
 @author: Laroy
 """
+
+#call with: mpiexec -n 3 python "pathToFile" arg1 arg2 ... argn
+
+
 import Heat
 from mpi4py import MPI
 from numpy import *
@@ -16,7 +20,7 @@ rank=comm.Get_rank()
 np=comm.size
 
 #initial setup for rooms here, I guess
-nbrIter=sys.argv[1]
+nbrIter=sys.argv[1] #command line argument
 #print(nbrIter)
 
 
