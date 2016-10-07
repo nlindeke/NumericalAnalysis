@@ -22,14 +22,14 @@ comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 #np=comm.size
 
-#initial setup for rooms here, I guess
+#initial setup for rooms here
 #-------------------------------------
 nbrIter=sys.argv[1] #command line argument
 #print(nbrIter)
-neumannLeft= "some initial stuff"
-neumannRight= "some initial stuff"
-dirichletLeft= "some initial stuff"
-dirichletRight= "some initial stuff"
+neumannLeft="some initial stuff"
+neumannRight="some initial stuff"
+dirichletLeft="some initial stuff"
+dirichletRight="some initial stuff"
 
 #--------------------------------------
 
