@@ -51,11 +51,11 @@ class Room:
         """
         for k in range(0,(self.dimyy+1)**2):
             #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
-            i=k//dim
-            j=k%dim
+            i=k//(self.dimxx+1)
+            j=k%(self.dimxx+1)
             for k2 in range(0,(self.dimyy+1)**2):
-                i2=k2//dim
-                j2=k2%dim
+                i2=k2//(self.dimyy+1)
+                j2=k2%(self.dimyy+1)
                 if i2==i and j2==j+1:
                     matric[k][k2]=1
                 elif i2==i and j2==j-1:
@@ -74,5 +74,16 @@ class Room:
                 print (j)
                 print (j2)
                 print ("_____________")
-        
+        """
+        for k in range(0,(self.dimyy+1)**2):
+            #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
+            i=k//dim
+            j=k%dim
+            matric2=matric
+            l=0
+            print(i,j)
+            if self.matrice[i,j]!=0:
+                delete(matric2,l)
+                l-=1
+        """
         return matric
