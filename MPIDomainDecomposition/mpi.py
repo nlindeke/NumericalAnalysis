@@ -8,6 +8,7 @@ import Heat.py
 from mpi4py import MPI
 from numpy import *
 from scipy import *
+import sys
 
 
 comm=MPI_COMM_WORLD
@@ -15,10 +16,14 @@ rank=comm.Get_rank()
 np=comm.size
 
 #initial setup for rooms here, I guess
-
+nbrIter=sys.argv[0]
 
 
 #iteration
+#the rooms get a "rank" in the setup like this:
+#left=0
+#mid=1
+#right=2
 for i in range(nbrIter):
     
     if rank is 0:
