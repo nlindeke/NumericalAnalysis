@@ -4,19 +4,20 @@ Created on Fri Oct  7 13:14:24 2016
 
 @author: Laroy
 """
-import Heat.py
+import Heat
 from mpi4py import MPI
 from numpy import *
 from scipy import *
 import sys
 
 
-comm=MPI_COMM_WORLD
+comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 np=comm.size
 
 #initial setup for rooms here, I guess
-nbrIter=sys.argv[0]
+nbrIter=sys.argv[1]
+print(nbrIter)
 
 
 #iteration
@@ -27,12 +28,13 @@ nbrIter=sys.argv[0]
 for i in range(nbrIter):
     
     if rank is 0:
-        comm.Recv(something,source=??)
+        comm.Recv(neumannLeft,source=1)
         
     if rank is 1:
-        comm.Recv(somethingelse,source=??)
+        comm.Recv(dirichletLeft,source=0)
+        comm.Recv(dirichletRight,source=2)
         
     if rank is 2:
-        comm.Recv(somethingother,source=??)
+        comm.Recv(neumannRight,source=1)
         
     
