@@ -24,7 +24,7 @@ rank=comm.Get_rank()
 
 #initial setup for rooms here
 #-------------------------------------
-nbrIter=sys.argv[1] #command line argument
+nbrIter=int(sys.argv[1]) #command line argument
 #print(nbrIter)
 neumannLeft="some initial stuff"
 neumannRight="some initial stuff"
