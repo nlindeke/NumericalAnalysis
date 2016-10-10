@@ -42,13 +42,7 @@ class Room:
             dim=(self.dimxx-1)*(self.dimyy-1)
         else:
             dim=(self.dimxx-1)*(self.dimyy)
-        #print (dim)
         k=0
-        """
-        for j in range(1,self.dimyy):
-            for i in range(1,self.dimxx):
-                None
-        """
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
             i=k//(self.dimxx+1)
@@ -56,16 +50,6 @@ class Room:
             for k2 in range(0,(self.dimxx+1)*(self.dimyy+1)):
                 i2=k2//(self.dimxx+1)
                 j2=k2%(self.dimxx+1)
-                """
-                print ("_____________")
-                print ("i")
-                print (i)
-                print (i2)
-                print ("j")
-                print (j)
-                print (j2)
-                print ("_____________")
-                """
                 if i2==i and j2==j+1:
                     matric[k][k2]=1
                 elif i2==i and j2==j-1:
@@ -78,7 +62,6 @@ class Room:
                     matric[k][k2]=1
         l=0
         matric2=matric
-        #print(matric)
         arrayb=zeros((dim,1))
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             i=k//(self.dimxx+1)
@@ -102,17 +85,10 @@ class Room:
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
                 if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
-                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):
-                    #print(i,j)                    
+                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     arrayb[m,0]-=self.tmptemp
                     m+=1
-        """
-        print(matric)
-        print(matric2)
-        print(arrayb)
-        """
         arraysol=lin.solve(matric2,arrayb)
-        #print(arraysol)
         m=0
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
@@ -120,5 +96,4 @@ class Room:
                 (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     self.matrice[i,j]=arraysol[m]
                     m+=1
-        #print(self.matrice)
             
