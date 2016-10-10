@@ -3,7 +3,7 @@ from scipy import *
 import scipy.linalg as lin
 
 class Room:
-    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8):
+    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8,tmptemp=16):
         self.uh=uh
         self.uw=uw
         self.uwf=uwf
@@ -12,6 +12,7 @@ class Room:
         self.dimy=dimy
         self.nbroom=nbroom
         self.omega=omega
+        self.tmptemp=tmptemp
         self.dimxx=int(dimx/dx)
         self.dimyy=int(dimy/dx)
         self.matrice=self.matrice_func()
@@ -36,14 +37,12 @@ class Room:
                 matrice[self.dimyy,i]=self.uwf
         return matrice
     def compute_func(self):
-        #try dimxx+1+dimyy+1 **2
         matric=zeros(((self.dimxx+1)*(self.dimyy+1),(self.dimxx+1)*(self.dimyy+1)))
         if self.nbroom==2:
             dim=(self.dimxx-1)*(self.dimyy-1)
         else:
             dim=(self.dimxx-1)*(self.dimyy)
-        #matric=zeros((dim,dim))
-        print (dim)
+        #print (dim)
         k=0
         """
         for j in range(1,self.dimyy):
@@ -84,7 +83,6 @@ class Room:
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             i=k//(self.dimxx+1)
             j=k%(self.dimxx+1)
-            print(i,j)
             if self.matrice[i,j]!=0:
                 matric2=delete(matric2,(l),0)
                 l-=1
@@ -100,8 +98,25 @@ class Room:
                 matric2=delete(matric2,(l),1)
                 l-=1
             l+=1
+        m=0
+        for i in range(self.dimyy+1):
+            for j in range(self.dimxx+1):
+                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):
+                    print(i,j)                    
+                    arrayb[m,0]-=self.tmptemp
+                    m+=1
+        """
         print(matric)
         print(matric2)
         print(arrayb)
-        print(lin.solve(matric2,arrayb))
-        return matric2
+        """
+        arraysol=lin.solve(matric2,arrayb)
+        #print(arraysol)
+        m=0
+        for i in range(self.dimyy+1):
+            for j in range(self.dimxx+1):
+                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
+                    self.matrice[i,j]=arraysol[m]
+                    m+=1
+        #print(self.matrice)
+            
