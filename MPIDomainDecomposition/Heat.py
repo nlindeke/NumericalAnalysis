@@ -78,7 +78,7 @@ class Room:
                     matric[k][k2]=1
         l=0
         matric2=matric
-        print(matric)
+        #print(matric)
         arrayb=zeros((dim,1))
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             i=k//(self.dimxx+1)
@@ -101,8 +101,9 @@ class Room:
         m=0
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
-                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):
-                    print(i,j)                    
+                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
+                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):
+                    #print(i,j)                    
                     arrayb[m,0]-=self.tmptemp
                     m+=1
         """
@@ -115,7 +116,8 @@ class Room:
         m=0
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
-                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
+                if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
+                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     self.matrice[i,j]=arraysol[m]
                     m+=1
         #print(self.matrice)
