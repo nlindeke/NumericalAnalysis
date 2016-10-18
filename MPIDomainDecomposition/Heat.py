@@ -63,6 +63,12 @@ class Room:
                     matric[k][k2]=1
                 elif i2==i-1 and j2==j:
                     matric[k][k2]=1
+        if self.nbroom==2:
+            for j in range (self.dimyy+1):
+                if j<=(self.dimyy+1)/2-1:
+                    self.matrice[j,self.dimxx]=self.tmptemp
+                if j>=(self.dimyy+1)/2-1:
+                    self.matrice[j,0]=self.tmptemp
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
@@ -75,7 +81,6 @@ class Room:
                     self.liste_valeurs1+=[[i,j]]
                 l-=1
             l+=1
-        #print (matric2)
         if self.initial==True:
             self.initial=False
         l=0
@@ -83,7 +88,6 @@ class Room:
             i=k//(self.dimxx+1)
             j=k%(self.dimxx+1)
             if self.matrice[i,j]!=0 and [i,j] in self.liste_valeurs1:
-                print(i,j)
                 for m in range(dim):
                     if matric2[m,l]!=0:
                         arrayb[m,0]+=-1*self.matrice[i,j]
@@ -98,7 +102,6 @@ class Room:
                     if (self.nbroom==1 and j==self.dimxx) or (self.nbroom==3 and j==0):
                         arrayb[m,0]-=self.tmptemp
                     m+=1
-        print (matric2)
         arraysol=lin.solve(matric2,arrayb)
         m=0
         for i in range(self.dimyy+1):
