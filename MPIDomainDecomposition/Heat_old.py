@@ -16,8 +16,6 @@ class Room:
         self.dimxx=int(dimx/dx)
         self.dimyy=int(dimy/dx)
         self.matrice=self.matrice_func()
-        self.liste_valeurs1=[]
-        #self.liste_valeurs2=[]
         self.initial=True
     def matrice_func(self):
         matrice=zeros((self.dimyy+1,self.dimxx+1))
@@ -39,6 +37,13 @@ class Room:
                 matrice[0,i]=self.uh
                 matrice[self.dimyy,i]=self.uwf
         return matrice
+
+    def compute(self):
+        if self.initial==True:
+            self.initial=False
+            compute_func(self)
+        else:
+            compute_func2(self)
     def compute_func(self):
         matric=zeros(((self.dimxx+1)*(self.dimyy+1),(self.dimxx+1)*(self.dimyy+1)))
         if self.nbroom==2:
@@ -69,21 +74,15 @@ class Room:
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             i=k//(self.dimxx+1)
             j=k%(self.dimxx+1)
-            if self.matrice[i,j]!=0 and (([i,j] not in self.liste_valeurs1 and self.initial) or ([i,j] in self.liste_valeurs1 and not self.initial)):
+            if self.matrice[i,j]!=0:
                 matric2=delete(matric2,(l),0)
-                if self.initial==True:
-                    self.liste_valeurs1+=[[i,j]]
                 l-=1
             l+=1
-        #print (matric2)
-        if self.initial==True:
-            self.initial=False
         l=0
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
             i=k//(self.dimxx+1)
             j=k%(self.dimxx+1)
-            if self.matrice[i,j]!=0 and [i,j] in self.liste_valeurs1:
-                print(i,j)
+            if self.matrice[i,j]!=0:
                 for m in range(dim):
                     if matric2[m,l]!=0:
                         arrayb[m,0]+=-1*self.matrice[i,j]
@@ -98,7 +97,6 @@ class Room:
                     if (self.nbroom==1 and j==self.dimxx) or (self.nbroom==3 and j==0):
                         arrayb[m,0]-=self.tmptemp
                     m+=1
-        print (matric2)
         arraysol=lin.solve(matric2,arrayb)
         m=0
         for i in range(self.dimyy+1):
@@ -107,4 +105,6 @@ class Room:
                 (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     self.matrice[i,j]=arraysol[m]
                     m+=1
+    def compute_func2(self):
+        None
             
