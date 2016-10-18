@@ -20,7 +20,7 @@ import sys
 
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
-#np=comm.size
+np=comm.size
 
 #initial setup for rooms here
 #-------------------------------------
@@ -39,21 +39,7 @@ omega=0.8
 #mid=1
 #right=2
 for i in range(nbrIter):
-    if rank is 0:
-        comm.Recv(neumannLeft,source=1)
-        r = Room(1).comupte_func()
-        comm.Send(dirichletLeft,dest=1)
-        
-    if rank is 1:
-        comm.Recv(dirichletLeft,source=0)
-        comm.Recv(dirichletRight,source=2)
-        #do stuff
-        comm.Send(neumannLeft,dest=0)
-        comm.Send(neumannRight,dest=2)
-        
-    if rank is 2:
-        comm.Recv(neumannRight,source=1)
-        #do stuff
-        comm.Send(dirichletRight,dest=1)
-        
-    
+    status = MPI.Status()
+    Recieve = comm.Recv(NeumannLeft,source=(rank-1)%np,status=status)
+    #do some stuff wtih the conditions
+    comm.send(dirichletLeft,(rank+1)%np,0)
