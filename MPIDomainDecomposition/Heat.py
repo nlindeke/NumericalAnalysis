@@ -3,7 +3,7 @@ from scipy import *
 import scipy.linalg as lin
 
 class Room:
-    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8,tmptemp=16):
+    def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8,tmptemp=24):
         self.uh=uh
         self.uw=uw
         self.uwf=uwf
@@ -85,8 +85,9 @@ class Room:
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
                 if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
-                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
-                    arrayb[m,0]-=self.tmptemp
+                (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):    
+                    if (self.nbroom==1 and j==self.dimxx) or (self.nbroom==3 and j==0):
+                        arrayb[m,0]-=self.tmptemp
                     m+=1
         arraysol=lin.solve(matric2,arrayb)
         m=0
