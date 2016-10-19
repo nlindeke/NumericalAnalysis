@@ -68,15 +68,16 @@ class Room:
                     matric[k][k2]=1
         if self.nbroom==2:
             for j in range (self.dimyy+1):
+                print (j)
                 if j!=0 and j!=self.dimyy:
-                    if j<=(self.dimyy+1)/2:
+                    if j<=(self.dimyy)/2:
                         try:
                             self.matrice[j,self.dimxx]=self.bound1[j-1]
                         except:
                             self.matrice[j,self.dimxx]=self.uw
-                    if j>=(self.dimyy+1)/2:
+                    if j>(self.dimyy)/2:
                         try:
-                            self.matrice[j,0]=self.bound2[j-(dimyy+1)/2]
+                            self.matrice[j,0]=self.bound2[j-int((self.dimyy)/2)-1]
                         except:
                             self.matrice[j,0]=self.uw
         l=0
