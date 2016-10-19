@@ -68,7 +68,6 @@ class Room:
                     matric[k][k2]=1
         if self.nbroom==2:
             for j in range (self.dimyy+1):
-                print (j)
                 if j!=0 and j!=self.dimyy:
                     if j<=(self.dimyy)/2:
                         try:
@@ -106,6 +105,7 @@ class Room:
                 l-=1
             l+=1
         m=0
+        vu=0
         for i in range(self.dimyy+1):
             for j in range(self.dimxx+1):
                 if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
@@ -114,7 +114,8 @@ class Room:
                         if self.unc==None:
                             arrayb[m,0]-=self.tmptemp
                         else:
-                            arrayb[m,0]-=self.unc[i]
+                            arrayb[m,0]-=self.unc[vu]
+                            vu+=1
                     m+=1
         arraysol=lin.solve(matric2,arrayb)
         m=0
@@ -140,7 +141,7 @@ class Room:
         elif self.nbroom==2:
             for i in range (self.dimyy+1):
                 if i!=0 and i!=self.dimyy:
-                    if i<=(self.dimyy+1)/2:
+                    if i<(self.dimyy+1)/2:
                         bound+=[self.matrice[i,self.dimxx-1]]
                     if i>=(self.dimyy+1)/2:
                         bound2+=[self.matrice[i,1]]
