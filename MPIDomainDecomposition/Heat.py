@@ -73,12 +73,12 @@ class Room:
                         try:
                             self.matrice[j,self.dimxx]=self.bound1[j-1]
                         except:
-                            self.matrice[j,self.dimxx]=self.tmptemp
+                            self.matrice[j,self.dimxx]=self.uw
                     if j>=(self.dimyy+1)/2:
                         try:
                             self.matrice[j,0]=self.bound2[j-(dimyy+1)/2]
                         except:
-                            self.matrice[j,0]=self.tmptemp
+                            self.matrice[j,0]=self.uw
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
