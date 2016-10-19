@@ -68,10 +68,11 @@ class Room:
                     matric[k][k2]=1
         if self.nbroom==2:
             for j in range (self.dimyy+1):
-                if j<=(self.dimyy+1)/2-1:
-                    self.matrice[j,self.dimxx]=self.bound1
-                if j>=(self.dimyy+1)/2-1:
-                    self.matrice[j,0]=self.bound2
+                if j!=0 and j!=self.dimyy:
+                    if j<=(self.dimyy+1)/2:
+                        self.matrice[j,self.dimxx]=self.bound1[j-1]
+                    if j>=(self.dimyy+1)/2:
+                        self.matrice[j,0]=self.bound2[j-(dimyy+1)/2]
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
@@ -116,6 +117,27 @@ class Room:
                 (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     self.matrice[i,j]=arraysol[m]
                     m+=1
+    def get_boundary(self):
+        bound=[]
+        bound2=[]
+        if self.nbroom==1:
+            for i in range (self.dimyy+1):
+                if i!=0 and i!=self.dimyy:
+                    bound+=[self.matrice[i,self.dimxx]]
+            return bound
+        elif self.nbroom==3:
+            for i in range (self.dimyy+1):
+                if i!=0 and i!=self.dimyy:
+                    bound+=[self.matrice[i,0]]
+            return bound
+        elif self.nbroom==2:
+            for i in range (self.dimyy+1):
+                if i!=0 and i!=self.dimyy:
+                    if i<=(self.dimyy+1)/2:
+                        bound+=[self.matrice[i,self.dimxx-1]]
+                    if i>=(self.dimyy+1)/2:
+                        bound2+=[self.matrice[i,1]]
+            return bound,bound2
     def boundary(self,bound1,bound2):
         self.bound1=bound1
         self.bound2=bound2
