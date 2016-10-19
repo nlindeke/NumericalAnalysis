@@ -25,35 +25,48 @@ rank=comm.Get_rank()
 #initial setup for rooms here
 #-------------------------------------
 nbrIter=int(sys.argv[1]) #command line argument
+dx=int(sys.argv[2])
 #print(nbrIter)
-neumannLeft="some initial stuff"
-neumannRight="some initial stuff"
-dirichletLeft="some initial stuff"
-dirichletRight="some initial stuff"
+neumannLeft=zeros(1,dx)
+neumannRight=zeros(1,dx)
+dirichletLeft=zeros(1,dx)
+dirichletRight=zeros(1,dx)
 omega=0.8
-#--------------------------------------
+#-------------------------------------
 
 #iteration
-#the rooms get a "rank" in the setup like this:
-#left=0
-#mid=1
-#right=2
+
+#create the rooms
+LeftRoom = Room(1)
+LeftMatrix=LeftRoom.matrice #don't know if this is needed in here
+
+MidRoom = Room(2)
+MidMatrix=MidRoom.matrice
+
+RightRoom = Room(3)
+RightMatrix=RightRoom.matrice
+
 for i in range(nbrIter):
+    
     if rank is 0:
         comm.Recv(neumannLeft,source=1)
-        r = Room(1).comupte_func()
+        LeftRoom=LeftRoom.compute_with_neu(neumannLeft,rank)#function that doesn't exist, but you get the idea
+        dirichletLeft=LeftRoom.compute_dir(rank)
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
         comm.Recv(dirichletLeft,source=0)
         comm.Recv(dirichletRight,source=2)
-        #do stuff
+        MidRoom=MidRoom.compute_with_neu(neumannLeft,neumannRight,rank)
+        neumannLeft="compute the left side"
+        neumannRight="compute the right side"
         comm.Send(neumannLeft,dest=0)
         comm.Send(neumannRight,dest=2)
+        if i is nbtIter-1: #end condition
+            "plot and exit"
         
     if rank is 2:
         comm.Recv(neumannRight,source=1)
-        #do stuff
+        RightRoom=RightRoom.compute_neu(neumannRight,rank)
+        dirichletRight=LeftRoom.compute_dir(rank)
         comm.Send(dirichletRight,dest=1)
-        
-    
