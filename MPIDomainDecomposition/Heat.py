@@ -70,9 +70,15 @@ class Room:
             for j in range (self.dimyy+1):
                 if j!=0 and j!=self.dimyy:
                     if j<=(self.dimyy+1)/2:
-                        self.matrice[j,self.dimxx]=self.bound1[j-1]
+                        try:
+                            self.matrice[j,self.dimxx]=self.bound1[j-1]
+                        except:
+                            self.matrice[j,self.dimxx]=self.tmptemp
                     if j>=(self.dimyy+1)/2:
-                        self.matrice[j,0]=self.bound2[j-(dimyy+1)/2]
+                        try:
+                            self.matrice[j,0]=self.bound2[j-(dimyy+1)/2]
+                        except:
+                            self.matrice[j,0]=self.tmptemp
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
@@ -107,7 +113,7 @@ class Room:
                         if self.unc==None:
                             arrayb[m,0]-=self.tmptemp
                         else:
-                            arrayb[m,0]-=self.unc
+                            arrayb[m,0]-=self.unc[i]
                     m+=1
         arraysol=lin.solve(matric2,arrayb)
         m=0
