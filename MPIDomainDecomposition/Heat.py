@@ -19,6 +19,9 @@ class Room:
         self.liste_valeurs1=[]
         #self.liste_valeurs2=[]
         self.initial=True
+        self.bound1=tmptemp
+        self.bound2=tmptemp
+        self.unc=None
     def matrice_func(self):
         matrice=zeros((self.dimyy+1,self.dimxx+1))
         if self.nbroom!=2:
@@ -66,9 +69,9 @@ class Room:
         if self.nbroom==2:
             for j in range (self.dimyy+1):
                 if j<=(self.dimyy+1)/2-1:
-                    self.matrice[j,self.dimxx]=self.tmptemp
+                    self.matrice[j,self.dimxx]=self.bound1
                 if j>=(self.dimyy+1)/2-1:
-                    self.matrice[j,0]=self.tmptemp
+                    self.matrice[j,0]=self.bound2
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
@@ -100,7 +103,10 @@ class Room:
                 if (i!=0 and i!=self.dimyy) and ((j!=0 and self.nbroom==1) or\
                 (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):    
                     if (self.nbroom==1 and j==self.dimxx) or (self.nbroom==3 and j==0):
-                        arrayb[m,0]-=self.tmptemp
+                        if self.unc==None:
+                            arrayb[m,0]-=self.tmptemp
+                        else:
+                            arrayb[m,0]-=self.unc
                     m+=1
         arraysol=lin.solve(matric2,arrayb)
         m=0
@@ -110,4 +116,8 @@ class Room:
                 (j!=self.dimxx and self.nbroom==3) or (j!=0 and j!=self.dimxx and self.nbroom==2)):                   
                     self.matrice[i,j]=arraysol[m]
                     m+=1
-            
+    def boundary(self,bound1,bound2):
+        self.bound1=bound1
+        self.bound2=bound2
+    def border(self,unc):
+        self.unc=unc
