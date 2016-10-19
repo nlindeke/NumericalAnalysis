@@ -1,8 +1,9 @@
 from Heat import Room
+import matplotlib.pyplot as plt
 
-a = Room(1)
-b = Room(2,dimy=2)
-c = Room(3)
+a = Room(1,dx=1.0/30)
+b = Room(2,dimy=2,dx=1.0/30)
+c = Room(3,dx=1.0/30)
 for i in range(10):
     a.compute_func()
     c.compute_func()
@@ -19,3 +20,6 @@ for i in range(10):
 print(a.matrice)
 print(b.matrice)
 print(c.matrice)
+plt.imshow(a.matrice)
+#plt.imshow(b.matrice)
+#plt.imshow(c.matrice)
