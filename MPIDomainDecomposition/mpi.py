@@ -48,11 +48,11 @@ for i in range(nbrIter):
         LeftRoom.compute_func()
         tempLeft=LeftRoom
         tempLeft.border(neumannLeft.T)#!!! is the border even used anywhere?
-        for i in range(0,tempLeft.dimyy):
-            tempLeft[tempLeft.dimxx-1,i]=neumannLeft[i]
-        tempLeft.compute_func()
+        for i in range(0,LeftRoom.dimyy):
+            LeftRoom[LeftLeft.dimxx-1,i]=neumannLeft[i]
+        LeftRoom.compute_func()
         LeftRoom.matrice=omega*LeftRoom.matrice+(1-omega)*tempLeft.matrice#relax
-        dirichletLeft=LeftRoom.get_boundary()#is this right?
+        dirichletLeft=LeftRoom.get_boundary()[0]#is this right?
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
@@ -61,7 +61,12 @@ for i in range(nbrIter):
         
         MidRoom.compute_func
         tempMid=MidRoom
-        
+        MidRoom.boundary(dirichletLeft,dirichletRight)
+        MidRoom.compute_func()
+        MidRoom=omega*MidRoom.matrice+(1-omega)*tempMid.matrice
+        boundaries=MidRoom.get_boundary()
+        neumannLeft=boundaries[0]
+        neumannRight=boundaries[1]
         
         if i is nbtIter-1: #end condition
             "plot and exit"
@@ -74,9 +79,9 @@ for i in range(nbrIter):
         RightRoom.compute_func()
         tempRight=RightRoom
         tempRight.border(neumannRight.T)#!!!
-        for i in range(0,tempRight.dimyy):
-            tempRight[0,i]=neumannLeft[i]
-        tempRight.compute_func()
-        RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempLeft.matrice#relax
-        dirichletRight=RightRoom.get_boundary()#is this right?
+        for i in range(0,RightRoom.dimyy):
+            tempRightRoom[0,i]=neumannRight[i]
+        RightRoom.compute_func()
+        RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempRight.matrice#relax
+        dirichletRight=RightRoom.get_boundary()[0]#is this right?
         comm.Send(dirichletRight,dest=1)
