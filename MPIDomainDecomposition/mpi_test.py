@@ -10,7 +10,7 @@ from scipy import ndimage
 import matplotlib.pyplot as plt
 from mpi4py import MPI
 from numpy import *
-
+print('hello')
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 a = Room(1,dx=1.0/30)
@@ -22,29 +22,31 @@ bound1=zeros((a.dimyy,1))
 bound2=zeros((a.dimyy,1))
 
 for i in range(10):
-    
+    print(rank)
     if rank==0:#left room
-        a.border(comm.recv(leftborder,source=2))
+        comm.recv(leftborder,source=2)
+        a.border(leftborder)
         a.compute_func()
         bound1 = a.get_boundary()
-        comm.send(bound1,dest=2)
+        comm.send(ascontiguousarray(bound1),dest=2)
         
     if rank==1:#right room
-        c.border(comm.recv(rightborder,source=2))
+        comm.recv(rightborder,source=2)
+        c.border(rightborder)        
         c.compute_func()
         bound2 = c.get_boundary()
-        comm.send(bound2,dest=2)
+        comm.send(ascontiguousarray(bound2),dest=2)
         
     if rank==2:#big room
-        bound1=comm.recv(bound1,source=0)
-        bound2=comm.recv(bound2,source=1)
+        comm.recv(bound1,source=0)
+        comm.recv(bound2,source=1)
         b.boundary(bound2,bound1)
         b.compute_func()
         boundaries=b.get_boundary()
         leftborder=boundaries[0]
         rightborder=boundaries[1]
-        comm.send(leftborder,dest=0)
-        comm.send(rightborder,dest=1)
+        comm.send(ascontiguousarray(leftborder),dest=0)
+        comm.send(ascontiguousarray(rightborder),dest=1)
         if i == 9:
             plot_func(a,b,c)
         
