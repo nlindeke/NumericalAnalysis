@@ -25,7 +25,7 @@ rank=comm.Get_rank()
 #initial setup for rooms here
 #-------------------------------------
 nbrIter=int(sys.argv[1]) #command line argument
-dx=int(sys.argv[2])
+dx=float(sys.argv[2])
 #print(nbrIter)
 neumannLeft=zeros(1,dx)
 neumannRight=zeros(1,dx)
@@ -37,29 +37,25 @@ omega=0.8
 #iteration
 
 #create the rooms
-LeftRoom = Room(1)
-LeftMatrix=LeftRoom.matrice #don't know if this is needed in here
-
-MidRoom = Room(2)
-MidMatrix=MidRoom.matrice
-
-RightRoom = Room(3)
-RightMatrix=RightRoom.matrice
+LeftRoom = Room(1,dx)  #left
+MidRoom = Room(2,dx)   #mid
+RightRoom = Room(3,dx) #right
 
 for i in range(nbrIter):
     
     if rank is 0:
         comm.Recv(neumannLeft,source=1)
-        LeftRoom=LeftRoom.compute_with_neu(neumannLeft,rank)#function that doesn't exist, but you get the idea
-        dirichletLeft=LeftRoom.compute_dir(rank)
+        LeftRoom.compute_func()
+        tempLeft=LeftRoom
+        tempLeft.border(neumannLeft.T)#!!!
+        tempLeft.compute_func()
+        LeftRoom.matrice=omega*LeftRoom.matrice+(1-omega)*tempLeft.matrice#relax
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
         comm.Recv(dirichletLeft,source=0)
         comm.Recv(dirichletRight,source=2)
-        MidRoom=MidRoom.compute_with_neu(neumannLeft,neumannRight,rank)
-        neumannLeft="compute the left side"
-        neumannRight="compute the right side"
+       
         comm.Send(neumannLeft,dest=0)
         comm.Send(neumannRight,dest=2)
         if i is nbtIter-1: #end condition
@@ -67,6 +63,5 @@ for i in range(nbrIter):
         
     if rank is 2:
         comm.Recv(neumannRight,source=1)
-        RightRoom=RightRoom.compute_neu(neumannRight,rank)
-        dirichletRight=LeftRoom.compute_dir(rank)
+        
         comm.Send(dirichletRight,dest=1)
