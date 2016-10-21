@@ -52,7 +52,7 @@ for i in range(nbrIter):
             tempLeft[tempLeft.dimxx-1,i]=neumannLeft[i]
         tempLeft.compute_func()
         LeftRoom.matrice=omega*LeftRoom.matrice+(1-omega)*tempLeft.matrice#relax
-        dirichletLeft=LeftRoom.get_boundary#is this right?
+        dirichletLeft=LeftRoom.get_boundary()#is this right?
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
@@ -62,10 +62,12 @@ for i in range(nbrIter):
         MidRoom.compute_func
         tempMid=MidRoom
         
-        comm.Send(neumannLeft,dest=0)
-        comm.Send(neumannRight,dest=2)
+        
         if i is nbtIter-1: #end condition
             "plot and exit"
+        else:
+            comm.Send(neumannLeft,dest=0)
+            comm.Send(neumannRight,dest=2)
         
     if rank is 2:
         comm.Recv(neumannRight,source=1)
@@ -76,5 +78,5 @@ for i in range(nbrIter):
             tempRight[0,i]=neumannLeft[i]
         tempRight.compute_func()
         RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempLeft.matrice#relax
-        dirichletRight=RightRoom.get_boundary#is this right?
+        dirichletRight=RightRoom.get_boundary()#is this right?
         comm.Send(dirichletRight,dest=1)
