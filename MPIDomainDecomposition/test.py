@@ -28,7 +28,7 @@ def plot_func():
     A plotting function for the heat distribution
     """
     #Rotated_Plot = ndimage.rotate(Your_Plot, 90)
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8,8))
     ax1 = fig.add_subplot(131)
     img = plt.imshow(a.matrice)
     plt.axis('off')
@@ -36,7 +36,7 @@ def plot_func():
     img = plt.imshow(b.matrice)
     plt.axis('off')
     ax2 = fig.add_subplot(133)
-    img = plt.imshow(c.matrice, interpolation='nearest')
+    img = plt.imshow(c.matrice)
     plt.axis('off')
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
