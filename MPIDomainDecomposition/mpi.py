@@ -18,29 +18,31 @@ from scipy import *
 import sys
 
 
-
+print("hello from mpi")
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 #np=comm.size
 
 #initial setup for rooms here
 #-------------------------------------
-nbrIter=int(sys.argv[1]) #command line argument
-dx=float(sys.argv[2])
+#nbrIter=int(sys.argv[1]) #command line argument
+#dx=float(sys.argv[2])
 #print(nbrIter)
-neumannLeft=zeros(int(1/dx))
-neumannRight=zeros(int(1/dx))
-dirichletLeft=zeros(int(1/dx))
-dirichletRight=zeros(int(1/dx))
+nbrIter=10
+idx=1/30.0
+neumannLeft=zeros([int(1/idx-1),1])
+neumannRight=zeros([int(1/idx-1),1])
+dirichletLeft=zeros([int(1/idx-1),1])
+dirichletRight=zeros([int(1/idx-1),1])
 omega=0.8
 #-------------------------------------
 
 #iteration
 
 #create the rooms
-LeftRoom = Room(1,dx)  #left
-MidRoom = Room(2,dx)   #mid
-RightRoom = Room(3,dx) #right
+LeftRoom = Room(1,dx=idx)  #left
+MidRoom = Room(2,dimy=2,dx=idx)   #mid
+RightRoom = Room(3,dx=idx) #right
 
 for i in range(nbrIter):
     
@@ -55,7 +57,7 @@ for i in range(nbrIter):
         LeftRoom.compute_func()
         LeftRoom.matrice=omega*LeftRoom.matrice+(1-omega)*tempLeft.matrice#relax
         dirichletLeft=LeftRoom.get_boundary()[0]#is this right?
-        comm.Send(dirichletLeft,dest=1)
+        comm.Send(ascontiguousarray(dirichletLeft),dest=1)
         
     if rank is 1:
         print("hello from mid")
@@ -74,8 +76,8 @@ for i in range(nbrIter):
         if i is nbtIter-1: #end condition
             plot_func(LeftRoom,MidRoom,RightRoom)
         else:
-            comm.Send(neumannLeft,dest=0)
-            comm.Send(neumannRight,dest=2)
+            comm.Send(ascontiguousarray(neumannLeft),dest=0)
+            comm.Send(ascontiguousarray(neumannRight),dest=2)
         
     if rank is 2:
         print("hello from right")
@@ -88,7 +90,7 @@ for i in range(nbrIter):
         RightRoom.compute_func()
         RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempRight.matrice#relax
         dirichletRight=RightRoom.get_boundary()[0]#is this right?
-        comm.Send(dirichletRight,dest=1)
+        comm.Send(ascontiguousarray(dirichletRight),dest=1)
 
 def plot_func(a,b,c):
     """
