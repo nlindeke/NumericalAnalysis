@@ -47,15 +47,21 @@ for i in range(nbrIter):
         comm.Recv(neumannLeft,source=1)
         LeftRoom.compute_func()
         tempLeft=LeftRoom
-        tempLeft.border(neumannLeft.T)#!!!
+        tempLeft.border(neumannLeft.T)#!!! is the border even used anywhere?
+        for i in range(0,tempLeft.dimyy):
+            tempLeft[tempLeft.dimxx-1,i]=neumannLeft[i]
         tempLeft.compute_func()
         LeftRoom.matrice=omega*LeftRoom.matrice+(1-omega)*tempLeft.matrice#relax
+        dirichletLeft=LeftRoom.get_boundary#is this right?
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
         comm.Recv(dirichletLeft,source=0)
         comm.Recv(dirichletRight,source=2)
-       
+        
+        MidRoom.compute_func
+        tempMid=MidRoom
+        
         comm.Send(neumannLeft,dest=0)
         comm.Send(neumannRight,dest=2)
         if i is nbtIter-1: #end condition
@@ -63,5 +69,12 @@ for i in range(nbrIter):
         
     if rank is 2:
         comm.Recv(neumannRight,source=1)
-        
+        RightRoom.compute_func()
+        tempRight=RightRoom
+        tempRight.border(neumannRight.T)#!!!
+        for i in range(0,tempRight.dimyy):
+            tempRight[0,i]=neumannLeft[i]
+        tempRight.compute_func()
+        RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempLeft.matrice#relax
+        dirichletRight=RightRoom.get_boundary#is this right?
         comm.Send(dirichletRight,dest=1)
