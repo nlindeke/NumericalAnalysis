@@ -27,10 +27,10 @@ rank=comm.Get_rank()
 nbrIter=int(sys.argv[1]) #command line argument
 dx=float(sys.argv[2])
 #print(nbrIter)
-neumannLeft=zeros(1,dx)
-neumannRight=zeros(1,dx)
-dirichletLeft=zeros(1,dx)
-dirichletRight=zeros(1,dx)
+neumannLeft=zeros(int(1/dx))
+neumannRight=zeros(int(1/dx))
+dirichletLeft=zeros(int(1/dx))
+dirichletRight=zeros(int(1/dx))
 omega=0.8
 #-------------------------------------
 
@@ -44,10 +44,11 @@ RightRoom = Room(3,dx) #right
 for i in range(nbrIter):
     
     if rank is 0:
+        print("hello from left")
         comm.Recv(neumannLeft,source=1)
         LeftRoom.compute_func()
         tempLeft=LeftRoom
-        tempLeft.border(neumannLeft.T)#!!! is the border even used anywhere?
+        #tempLeft.border(neumannLeft.T)#!!! is the border even used anywhere?
         for i in range(0,LeftRoom.dimyy):
             LeftRoom[LeftLeft.dimxx-1,i]=neumannLeft[i]
         LeftRoom.compute_func()
@@ -56,6 +57,7 @@ for i in range(nbrIter):
         comm.Send(dirichletLeft,dest=1)
         
     if rank is 1:
+        print("hello from mid")
         comm.Recv(dirichletLeft,source=0)
         comm.Recv(dirichletRight,source=2)
         
@@ -69,16 +71,17 @@ for i in range(nbrIter):
         neumannRight=boundaries[1]
         
         if i is nbtIter-1: #end condition
-            "plot and exit"
+            
         else:
             comm.Send(neumannLeft,dest=0)
             comm.Send(neumannRight,dest=2)
         
     if rank is 2:
+        print("hello from right")
         comm.Recv(neumannRight,source=1)
         RightRoom.compute_func()
         tempRight=RightRoom
-        tempRight.border(neumannRight.T)#!!!
+        #tempRight.border(neumannRight.T)#!!!
         for i in range(0,RightRoom.dimyy):
             tempRightRoom[0,i]=neumannRight[i]
         RightRoom.compute_func()
