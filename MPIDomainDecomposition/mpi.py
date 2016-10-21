@@ -18,6 +18,7 @@ from scipy import *
 import sys
 
 
+
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 #np=comm.size
@@ -71,7 +72,7 @@ for i in range(nbrIter):
         neumannRight=boundaries[1]
         
         if i is nbtIter-1: #end condition
-            
+            plot_func(LeftRoom,MidRoom,RightRoom)
         else:
             comm.Send(neumannLeft,dest=0)
             comm.Send(neumannRight,dest=2)
@@ -88,3 +89,23 @@ for i in range(nbrIter):
         RightRoom.matrice=omega*RightRoom.matrice+(1-omega)*tempRight.matrice#relax
         dirichletRight=RightRoom.get_boundary()[0]#is this right?
         comm.Send(dirichletRight,dest=1)
+
+def plot_func(a,b,c):
+    """
+    A plotting function for the heat distribution
+    """
+    #Rotated_Plot = ndimage.rotate(Your_Plot, 90)
+    fig = plt.figure(figsize=(6,5))
+    st = fig.suptitle("AFB's Worst Nightmare", fontsize="x-large")
+
+    ax1 = fig.add_subplot(131)
+    img = plt.imshow(a.matrice)
+    plt.axis('off')
+    ax2 = fig.add_subplot(132)
+    img = plt.imshow(b.matrice)
+    plt.axis('off')
+    ax2 = fig.add_subplot(133)
+    img = plt.imshow(c.matrice)
+    plt.axis('off')
+    plt.subplots_adjust(wspace=0, hspace=0)
+    plt.show()
