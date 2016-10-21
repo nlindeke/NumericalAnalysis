@@ -1,10 +1,11 @@
 from Heat import Room
+from scipy import ndimage
 import matplotlib.pyplot as plt
 
 a = Room(1,dx=1.0/30)
 b = Room(2,dimy=2,dx=1.0/30)
 c = Room(3,dx=1.0/30)
-for i in range(10):
+for i in range(2):
     a.compute_func()
     c.compute_func()
     
@@ -20,6 +21,22 @@ for i in range(10):
 print(a.matrice)
 print(b.matrice)
 print(c.matrice)
-plt.imshow(a.matrice)
-#plt.imshow(b.matrice)
-#plt.imshow(c.matrice)
+
+
+def plot_func():
+    """
+    A plotting function for the heat distribution
+    """
+    #Rotated_Plot = ndimage.rotate(Your_Plot, 90)
+    fig = plt.figure()
+    ax1 = fig.add_subplot(131)
+    img = plt.imshow(a.matrice)
+    plt.axis('off')
+    ax2 = fig.add_subplot(132)
+    img = plt.imshow(b.matrice)
+    plt.axis('off')
+    ax2 = fig.add_subplot(133)
+    img = plt.imshow(c.matrice, interpolation='nearest')
+    plt.axis('off')
+    plt.subplots_adjust(wspace=0, hspace=0)
+    plt.show()
