@@ -20,14 +20,15 @@ leftborder=zeros((a.dimxx,1))
 rightborder=zeros((a.dimxx,1))
 bound1=zeros((a.dimxx,1))
 bound2=zeros((a.dimxx,1))
+nbrIter=10
 
-for i in range(10):
+for i in range(nbrIter+1):
     if rank==2:#left room
         comm.Recv(ascontiguousarray(leftborder),source=0)
         a.border(leftborder)
         a.compute_func()
         bound1 = a.get_boundary()
-        if i==9:
+        if i==nbrIter:
             comm.Send(a.matrice,dest=0)
         else:
             comm.Send(ascontiguousarray(bound1),dest=0)
@@ -37,7 +38,7 @@ for i in range(10):
         c.border(rightborder)        
         c.compute_func()
         bound2 = c.get_boundary()
-        if i==9:
+        if i==nbrIter:
             comm.Send(c.matrice,dest=0)
         else:
             comm.Send(ascontiguousarray(bound2),dest=0)
@@ -57,7 +58,7 @@ for i in range(10):
         rightborder=boundaries[1]
         comm.Send(ascontiguousarray(leftborder),dest=2)
         comm.Send(ascontiguousarray(rightborder),dest=1)
-        if i == 9:
+        if i == nbrIter:
             print("done")
             comm.Recv(a.matrice,source=2)
             print(b.matrice)
