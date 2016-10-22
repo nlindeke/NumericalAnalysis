@@ -21,6 +21,7 @@ rightborder=zeros((a.dimxx,1))
 bound1=zeros((a.dimxx,1))
 bound2=zeros((a.dimxx,1))
 nbrIter=10
+omega=0.8
 def plot_func():
     """
     A plotting function for the heat distribution
