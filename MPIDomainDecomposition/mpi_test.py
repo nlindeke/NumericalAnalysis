@@ -84,6 +84,7 @@ for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large roo
         comm.Send(ascontiguousarray(leftborder),dest=2)
         comm.Send(ascontiguousarray(rightborder),dest=1)
         if i == nbrIter:
+            print(b.matrice)
             comm.Recv(a.matrice,source=2)
             comm.Recv(a.matrice,source=1)
             plot_func()
