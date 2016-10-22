@@ -22,16 +22,15 @@ bound1=zeros((a.dimxx,1))
 bound2=zeros((a.dimxx,1))
 
 for i in range(10):
-    print(rank)
     if rank==2:#left room
         comm.Recv(leftborder,source=0)
         a.border(leftborder)
         a.compute_func()
         bound1 = a.get_boundary()
         if i==9:
-            comm.Send(ascontiguousarray(a.matrice),dest=0)
+            comm.Send(a.matrice,dest=0)
         else:
-            comm.Send(ascontiguousarray(bound1),dest=0)
+            comm.Send(bound1,dest=0)
         
     if rank==1:#right room
         comm.Recv(rightborder,source=0)
@@ -39,9 +38,9 @@ for i in range(10):
         c.compute_func()
         bound2 = c.get_boundary()
         if i==9:
-            comm.Send(ascontiguousarray(bound2),dest=0)
+            comm.Send(c.matrice,dest=0)
         else:
-            comm.Send(ascontiguousarray(c.matrice),dest=0)
+            comm.Send(bound2,dest=0)
         
     if rank==0:#big room
         if i==0:
@@ -55,12 +54,12 @@ for i in range(10):
         boundaries=b.get_boundary()
         leftborder=boundaries[0]
         rightborder=boundaries[1]
-        comm.Send(ascontiguousarray(leftborder),dest=0)
-        comm.Send(ascontiguousarray(rightborder),dest=1)
+        comm.Send(leftborder,dest=0)
+        comm.Send(rightborder,dest=1)
         if i == 9:
-            comm.Recv(ascontiguousarray(a),source=2)
-            comm.Recv(ascontiguousarray(a),source=1)
             print("done")
+            comm.Recv(a.matrice,source=2)
+            comm.Recv(a.matrice,source=1)
             plot_func()
         
 
