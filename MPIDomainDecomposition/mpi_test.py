@@ -21,52 +21,6 @@ rightborder=zeros((a.dimxx,1))
 bound1=zeros((a.dimxx,1))
 bound2=zeros((a.dimxx,1))
 nbrIter=10
-
-for i in range(nbrIter+1):
-    if rank==2:#left room
-        comm.Recv(ascontiguousarray(leftborder),source=0)
-        a.border(leftborder)
-        a.compute_func()
-        bound1 = a.get_boundary()
-        if i==nbrIter:
-            comm.Send(a.matrice,dest=0)
-        else:
-            comm.Send(ascontiguousarray(bound1),dest=0)
-        
-    if rank==1:#right room
-        comm.Recv(ascontiguousarray(rightborder),source=0)
-        c.border(rightborder)        
-        c.compute_func()
-        bound2 = c.get_boundary()
-        if i==nbrIter:
-            comm.Send(c.matrice,dest=0)
-        else:
-            comm.Send(ascontiguousarray(bound2),dest=0)
-        
-    if rank==0:#big room
-        if i==0:
-            bound1=transpose(zeros((2,1)))
-            print(bound1)
-            bound2=transpose(zeros((2,1)))
-        else:
-            comm.Recv(bound1,source=2)
-            comm.Recv(bound2,source=1)
-        b.boundary(bound2,bound1)
-        b.compute_func()
-        boundaries=b.get_boundary()
-        leftborder=boundaries[0]
-        rightborder=boundaries[1]
-        comm.Send(ascontiguousarray(leftborder),dest=2)
-        comm.Send(ascontiguousarray(rightborder),dest=1)
-        if i == nbrIter:
-            print("done")
-            comm.Recv(a.matrice,source=2)
-            print(b.matrice)
-            comm.Recv(a.matrice,source=1)
-            plot_func()
-        
-
-
 def plot_func():
     """
     A plotting function for the heat distribution
@@ -86,3 +40,54 @@ def plot_func():
     plt.axis('off')
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
+
+for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large room
+    if rank==2:#left room
+        comm.Recv(ascontiguousarray(leftborder),source=0)
+        temp=a
+        temp.border(leftborder)
+        temp.compute_func()
+        a.matrice=omega*a.matrice+(1-omega)*temp.matrice #relaxation
+        bound1 = a.get_boundary()
+        if i==nbrIter:
+            comm.Send(a.matrice,dest=0)
+        else:
+            comm.Send(ascontiguousarray(bound1),dest=0)
+        
+    if rank==1:#right room
+        comm.Recv(ascontiguousarray(rightborder),source=0)
+        temp=c
+        temp.border(rightborder)
+        temp.compute_func()
+        c.matrice=omega*c.matrice+(1-omega)*temp.matrice #relaxation
+        bound2 = c.get_boundary()
+        if i==nbrIter:
+            comm.Send(c.matrice,dest=0)
+        else:
+            comm.Send(ascontiguousarray(bound2),dest=0)
+        
+    if rank==0:#big room
+        if i==0:
+            bound1=transpose(zeros((2,1)))
+            print(bound1)
+            bound2=transpose(zeros((2,1)))
+        else:
+            comm.Recv(bound1,source=2)
+            comm.Recv(bound2,source=1)
+        temp=b
+        temp.boundary(bound2,bound1)
+        temp.compute_func()
+        b.matrice=omega*b.matrice+(1-omega)*temp.matrice #relaxation
+        boundaries=b.get_boundary()
+        leftborder=boundaries[0]
+        rightborder=boundaries[1]
+        comm.Send(ascontiguousarray(leftborder),dest=2)
+        comm.Send(ascontiguousarray(rightborder),dest=1)
+        if i == nbrIter:
+            comm.Recv(a.matrice,source=2)
+            comm.Recv(a.matrice,source=1)
+            plot_func()
+        
+
+
+
