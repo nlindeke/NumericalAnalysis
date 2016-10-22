@@ -2,9 +2,9 @@ from Heat import Room
 from scipy import ndimage
 import matplotlib.pyplot as plt
 
-a = Room(1,dx=1.0/30)
-b = Room(2,dimy=2,dx=1.0/30)
-c = Room(3,dx=1.0/30)
+a = Room(1,dx=1.0/3)
+b = Room(2,dimy=2,dx=1.0/3)
+c = Room(3,dx=1.0/3)
 for i in range(2):
     a.compute_func()
     c.compute_func()
