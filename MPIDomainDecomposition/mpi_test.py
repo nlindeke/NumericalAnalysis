@@ -44,9 +44,9 @@ for i in range(10):
         
     if rank==0:#big room
         if i==0:
-            bound1=zeros((a.dimxx,1))
+            bound1=zeros((a.dimxx-1,1))
             print(bound1)
-            bound2=zeros((a.dimxx,1))
+            bound2=zeros((a.dimxx-1,1))
         else:
             comm.Recv(bound1,source=2)
             comm.Recv(bound2,source=1)
