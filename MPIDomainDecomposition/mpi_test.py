@@ -20,9 +20,9 @@ leftborder=zeros((a.dimxx,1))
 rightborder=zeros((a.dimxx,1))
 bound1=zeros((a.dimxx,1))
 bound2=zeros((a.dimxx,1))
-nbrIter=10
+nbrIter=1
 omega=0.8
-def plot_func():
+def plot_func(x,y,z):
     """
     A plotting function for the heat distribution
     """
@@ -31,13 +31,13 @@ def plot_func():
     st = fig.suptitle("AFB's Worst Nightmare", fontsize="x-large")
 
     ax1 = fig.add_subplot(131)
-    img = plt.imshow(a.matrice)
+    img = plt.imshow(x)
     plt.axis('off')
     ax2 = fig.add_subplot(132)
-    img = plt.imshow(b.matrice)
+    img = plt.imshow(y)
     plt.axis('off')
     ax2 = fig.add_subplot(133)
-    img = plt.imshow(c.matrice)
+    img = plt.imshow(z)
     plt.axis('off')
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
@@ -48,6 +48,7 @@ for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large roo
         temp=a
         temp.border(leftborder)
         temp.compute_func()
+        a.compute_func()
         a.matrice=omega*a.matrice+(1-omega)*temp.matrice #relaxation
         bound1 = a.get_boundary()
         if i==nbrIter:
@@ -60,6 +61,7 @@ for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large roo
         temp=c
         temp.border(rightborder)
         temp.compute_func()
+        c.compute_func()
         c.matrice=omega*c.matrice+(1-omega)*temp.matrice #relaxation
         bound2 = c.get_boundary()
         if i==nbrIter:
@@ -68,9 +70,9 @@ for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large roo
             comm.Send(ascontiguousarray(bound2),dest=0)
         
     if rank==0:#big room
+        print("hello from BIG, i is: ",i)
         if i==0:
             bound1=transpose(zeros((2,1)))
-            print(bound1)
             bound2=transpose(zeros((2,1)))
         else:
             comm.Recv(bound1,source=2)
@@ -78,17 +80,18 @@ for i in range(nbrIter+1):#+1 to allow for initial boundary setup from large roo
         temp=b
         temp.boundary(bound2,bound1)
         temp.compute_func()
+        b.compute_func()
         b.matrice=omega*b.matrice+(1-omega)*temp.matrice #relaxation
         boundaries=b.get_boundary()
-        leftborder=boundaries[0]
-        rightborder=boundaries[1]
+        leftborder=boundaries[1]
+        rightborder=boundaries[0]
         comm.Send(ascontiguousarray(leftborder),dest=2)
         comm.Send(ascontiguousarray(rightborder),dest=1)
         if i == nbrIter:
             print(b.matrice)
             comm.Recv(a.matrice,source=2)
-            comm.Recv(a.matrice,source=1)
-            plot_func()
+            comm.Recv(c.matrice,source=1)
+            plot_func(a.matrice,b.matrice,c.matrice)
         
 
 
