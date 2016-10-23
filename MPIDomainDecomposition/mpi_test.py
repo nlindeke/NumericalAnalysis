@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Oct 21 13:33:06 2016
-
-@author: Laroy
-"""
+#3rd Project in Advanced Numerical Algorithms
+#Charles Rohart, Laroy Sjödal, Ingrid Odlen and Niklas Lindeke
 
 from Heat import Room
 from scipy import ndimage

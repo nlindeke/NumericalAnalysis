@@ -1,15 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Oct  7 13:14:24 2016
-
-@author: Laroy
-"""
-#To install mpi4py on windows with python 3.x:
-#run conda install mpi4py in cmd, then download and run:
-#http://www.microsoft.com/en-us/download/details.aspx?id=47259
-
-#call with: mpiexec -n 3 python "pathToFile" arg1 arg2 ... argn
-
+#3rd Project in Advanced Numerical Algorithms
+#Charles Rohart, Laroy Sjödal, Ingrid Odlen and Niklas Lindeke
 
 from Heat import Room
 from mpi4py import MPI

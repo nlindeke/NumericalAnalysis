@@ -1,3 +1,6 @@
+#3rd Project in Advanced Numerical Algorithms
+#Charles Rohart, Laroy Sjödal, Ingrid Odlen and Niklas Lindeke
+
 from Heat import Room
 from scipy import ndimage
 import matplotlib.pyplot as plt
