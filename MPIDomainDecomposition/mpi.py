@@ -1,5 +1,5 @@
 #3rd Project in Advanced Numerical Algorithms
-#Charles Rohart, Laroy Sjödal, Ingrid Odlen and Niklas Lindeke
+#Charles Rohart, Laroy Sjödahl, Ingrid Odlen and Niklas Lindeke
 
 from Heat import Room
 from mpi4py import MPI
