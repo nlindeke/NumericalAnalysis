@@ -4,6 +4,10 @@ import scipy.linalg as lin
 
 class Room:
     def __init__(self,nbroom,uh=40,uw=15,uwf=5,dx=1.0/3,dimx=1,dimy=1,omega=0.8,tmptemp=24):
+        """
+        We create a Room instance caracterised by its number. Other dimensions
+        can be changed if so wanted.
+        """
         self.uh=uh
         self.uw=uw
         self.uwf=uwf
@@ -23,6 +27,9 @@ class Room:
         self.bound2=tmptemp
         self.unc=None
     def matrice_func(self):
+        """
+        We create a matrix representing the Room instance.
+        """
         matrice=zeros((self.dimyy+1,self.dimxx+1))
         if self.nbroom!=2:
             for i in range(self.dimyy+1):
@@ -43,6 +50,10 @@ class Room:
                 matrice[self.dimyy,i]=self.uwf
         return matrice
     def compute_func(self):
+        """
+        This function computes the matrix values thanks to Dirichlet-Neumann
+        condition
+        """
         matric=zeros(((self.dimxx+1)*(self.dimyy+1),(self.dimxx+1)*(self.dimyy+1)))
         if self.nbroom==2:
             dim=(self.dimxx-1)*(self.dimyy-1)
@@ -50,6 +61,9 @@ class Room:
             dim=(self.dimxx-1)*(self.dimyy)
         k=0
         for k in range(0,(self.dimxx+1)*(self.dimyy+1)):
+            """
+            Here we create a matrix that will be solved for the solution array
+            """
             #uij+1 + uij-1 - 4uij + ui+1j + ui-1j
             i=k//(self.dimxx+1)
             j=k%(self.dimxx+1)
@@ -79,6 +93,10 @@ class Room:
                             self.matrice[j,0]=self.bound2[j-int((self.dimyy)/2)-1]
                         except:
                             self.matrice[j,0]=self.uw
+        """
+        We now remove all columns and lines that are known and use them to create
+        the solution array
+        """
         l=0
         matric2=matric
         arrayb=zeros((dim,1))
@@ -126,6 +144,9 @@ class Room:
                     self.matrice[i,j]=arraysol[m]
                     m+=1
     def get_boundary(self):
+        """
+        Gets the boundary values
+        """
         bound=[]
         bound2=[]
         if self.nbroom==1:
@@ -147,7 +168,13 @@ class Room:
                         bound2+=[self.matrice[i,1]]
             return bound,bound2
     def boundary(self,bound1,bound2):
+        """
+        Gives boundary values to Room2
+        """
         self.bound1=bound1
         self.bound2=bound2
     def border(self,unc):
+        """
+        Gives boundary value to Room1 and Room3
+        """
         self.unc=unc
