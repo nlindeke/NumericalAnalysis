@@ -72,8 +72,8 @@ for i in range(nbrIter+1):
         
     if rank==0:#big room
         if i==0:
-            bound1=transpose(zeros((2,1)))
-            bound2=transpose(zeros((2,1)))
+            bound1=transpose(zeros((9,1)))
+            bound2=transpose(zeros((9,1)))
         else:
             bound1=comm.recv(source=2)
             bound2=comm.recv(source=1)
