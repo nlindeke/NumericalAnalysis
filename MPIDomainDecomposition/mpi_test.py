@@ -9,9 +9,9 @@ from numpy import *
 comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 #rooms---------------------
-a = Room(1,dx=1.0/3)
-b = Room(2,dimy=2,dx=1.0/3)
-c = Room(3,dx=1.0/3)
+a = Room(1,dx=1.0/20)
+b = Room(2,dimy=2,dx=1.0/20)
+c = Room(3,dx=1.0/20)
 #--------------------------
 
 #initiate the variables used
@@ -45,7 +45,7 @@ def plot_func(x,y,z):
 #Iteration
 for i in range(nbrIter+1):
     if rank==2:#left room
-        comm.Recv(ascontiguousarray(leftborder),source=0)
+        leftborder=comm.recv(source=0)
         temp=a
         temp.border(leftborder)
         temp.compute_func()
@@ -53,12 +53,12 @@ for i in range(nbrIter+1):
         a.matrice=omega*a.matrice+(1-omega)*temp.matrice #relaxation
         bound1 = a.get_boundary()
         if i==nbrIter:#for plotting
-            comm.Send(a.matrice,dest=0)
+            comm.send(a.matrice,dest=0)
         else:
-            comm.Send(ascontiguousarray(bound1),dest=0)
+            comm.send(bound1,dest=0)
         
     if rank==1:#right room
-        comm.Recv(ascontiguousarray(rightborder),source=0)
+        rightborder=comm.recv(source=0)
         temp=c
         temp.border(rightborder)
         temp.compute_func()
@@ -66,17 +66,17 @@ for i in range(nbrIter+1):
         c.matrice=omega*c.matrice+(1-omega)*temp.matrice #relaxation
         bound2 = c.get_boundary()
         if i==nbrIter:#for plotting
-            comm.Send(c.matrice,dest=0)
+            comm.send(c.matrice,dest=0)
         else:
-            comm.Send(ascontiguousarray(bound2),dest=0)
+            comm.send(bound2,dest=0)
         
     if rank==0:#big room
         if i==0:
             bound1=transpose(zeros((2,1)))
             bound2=transpose(zeros((2,1)))
         else:
-            comm.Recv(bound1,source=2)
-            comm.Recv(bound2,source=1)
+            bound1=comm.recv(source=2)
+            bound2=comm.recv(source=1)
         temp=b
         temp.boundary(bound2,bound1)
         temp.compute_func()
@@ -85,11 +85,11 @@ for i in range(nbrIter+1):
         boundaries=b.get_boundary()
         leftborder=boundaries[1]
         rightborder=boundaries[0]
-        comm.Send(ascontiguousarray(leftborder),dest=2)
-        comm.Send(ascontiguousarray(rightborder),dest=1)
+        comm.send(leftborder,dest=2)
+        comm.send(rightborder,dest=1)
         if i == nbrIter:#collect the other rooms and plot
-            comm.Recv(a.matrice,source=2)
-            comm.Recv(c.matrice,source=1)
+            a.matrice=comm.recv(source=2)
+            c.matrice=comm.recv(source=1)
             plot_func(a.matrice,b.matrice,c.matrice)
         
 
